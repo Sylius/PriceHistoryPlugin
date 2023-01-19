@@ -41,6 +41,7 @@ const adminConfig = Encore.getWebpackConfig();
 adminConfig.resolve.alias['sylius/ui'] = uiBundleScripts;
 adminConfig.resolve.alias['sylius/ui-resources'] = uiBundleResources;
 adminConfig.resolve.alias['sylius/bundle'] = syliusBundles;
+adminConfig.resolve.alias['chart.js/dist/Chart.min'] = 'chart.js/dist/chart.min';
 adminConfig.externals = Object.assign({}, adminConfig.externals, { window: 'window', document: 'document' });
 adminConfig.name = 'admin';
 

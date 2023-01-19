@@ -62,6 +62,10 @@ jobs:
                     plugin-build: "yes"
 
             -
+                name: Run ECS
+                run: vendor/bin/ecs check
+
+            -
                 name: Run PHPStan
                 run: vendor/bin/phpstan analyse -c phpstan.neon -l max src/
 
