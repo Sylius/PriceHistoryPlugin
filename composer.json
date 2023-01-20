@@ -36,6 +36,7 @@
         "symfony/dotenv": "^5.4 || ^6.0",
         "symfony/flex": "^2.2.2",
         "symfony/intl": "^5.4 || ^6.0",
+        "symfony/runtime": "^5.4 || ^6.0",
         "symfony/web-profiler-bundle": "^5.4 || ^6.0",
         "vimeo/psalm": "4.27.0"
     },
@@ -44,7 +45,8 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false,
             "phpstan/extension-installer": false,
-            "symfony/flex": true
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     },
     "extra": {
