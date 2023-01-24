@@ -29,7 +29,7 @@ class ChannelPricingLogEntry implements ChannelPricingLogEntryInterface
         $this->loggedAt = new \DateTimeImmutable();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

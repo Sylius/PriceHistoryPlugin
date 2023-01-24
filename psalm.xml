@@ -10,6 +10,9 @@
         <directory name="src" />
         <ignoreFiles>
             <directory name="vendor" />
+            <directory name="src/Migrations" />
+            <file name="src/DependencyInjection/Configuration.php" />
+            <file name="src/DependencyInjection/SyliusPriceHistoryExtension.php"/>
         </ignoreFiles>
     </projectFiles>
 </psalm>
