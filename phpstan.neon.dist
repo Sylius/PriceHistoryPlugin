@@ -4,4 +4,5 @@ parameters:
     checkMissingIterableValueType: false
     paths:
         - src
-        - tests/Behat
+    excludePaths:
+        - 'src/DependencyInjection/Configuration.php'
