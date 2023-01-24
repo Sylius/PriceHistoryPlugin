@@ -21,7 +21,7 @@ class ChannelPricingLogEntrySpec extends ObjectBehavior
 {
     function let(ChannelPricingInterface $channelPricing): void
     {
-        $this->beConstructedWith($channelPricing, 1000, 2000, new \DateTime());
+        $this->beConstructedWith($channelPricing, 1000, 2000);
     }
 
     function it_implements_channel_pricing_log_entry_interface(): void
@@ -52,6 +52,6 @@ class ChannelPricingLogEntrySpec extends ObjectBehavior
 
     function it_gets_a_logged_at(): void
     {
-        $this->getLoggedAt()->shouldReturnAnInstanceOf(\DateTime::class);
+        $this->getLoggedAt()->shouldReturnAnInstanceOf(\DateTimeImmutable::class);
     }
 }

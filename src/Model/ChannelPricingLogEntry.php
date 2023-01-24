@@ -19,12 +19,14 @@ class ChannelPricingLogEntry implements ChannelPricingLogEntryInterface
 {
     private ?int $id = null;
 
+    private \DateTimeInterface $loggedAt;
+
     public function __construct(
         private ChannelPricingInterface $channelPricing,
         private int $price,
         private int $originalPrice,
-        private \DateTimeInterface $loggedAt,
     ) {
+        $this->loggedAt = new \DateTimeImmutable();
     }
 
     public function getId()
