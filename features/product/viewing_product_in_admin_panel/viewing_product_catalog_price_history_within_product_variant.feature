@@ -14,11 +14,10 @@ Feature: Seeing catalog price history within a variant
         And the "Wyborowa Vodka Exquisite" variant is now priced at "$45.00" and originally priced at "$15.00"
         And I am logged in as an administrator
 
-    @todo
+    @api
     Scenario: Seeing the catalog price history of a variant with many catalog promotions
         When I enable "Winter sale" catalog promotion
         And I enable "Christmas sale" catalog promotion
-        And I access "Wyborowa Vodka" product
         And I go to the "Wyborowa Vodka Exquisite" variant price history
         Then I should see 4 log entries in the catalog price history for the "Wyborowa Vodka" variant
         And there should be a log entry on the 1st position with the "$2.50" selling price, "$15.00" original price and datetime of the price change
@@ -26,11 +25,10 @@ Feature: Seeing catalog price history within a variant
         And there should be a log entry on the 3rd position with the "$45.00" selling price, "$15.00" original price and datetime of the price change
         And there should be a log entry on the 4th position with the "$40.00" selling price, no original price and datetime of the price change
 
-    @todo
+    @api
     Scenario: Seeing the catalog price history of a variant with one catalog promotion
         When I enable "Winter sale" catalog promotion
         And I enable "Christmas sale" catalog promotion
-        And I access "Wyborowa Vodka" product
         And I go to the "Wyborowa Vodka Lemon" variant price history
         Then I should see 2 log entries in the catalog price history for the "Wyborowa Vodka Lemon" variant
         And there should be a log entry on the 1st position with the "$5.00" selling price, "$10.00" original price and datetime of the price change

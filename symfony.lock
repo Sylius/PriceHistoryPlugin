@@ -218,6 +218,9 @@
     "sylius-labs/doctrine-migrations-extra-bundle": {
         "version": "v0.2.0"
     },
+    "sylius-labs/sylius-1-11-shim-bundle": {
+        "version": "v1.0.0"
+    },
     "sylius/calendar": {
         "version": "v0.4.0"
     },

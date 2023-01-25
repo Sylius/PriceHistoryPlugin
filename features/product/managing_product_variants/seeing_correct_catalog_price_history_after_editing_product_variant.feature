@@ -9,10 +9,10 @@ Feature: Seeing the correct catalog price history after editing a product varian
         And the store has a product "Wyborowa Vodka" priced at "$40.00" in "United States" channel
         And I am logged in as an administrator
 
-    @todo
+    @api
     Scenario: Seeing historical product variant prices after the product variant has been edited
-        When I want to modify the "Wyborowa Vodka" product
-        And I change its price to $42.00 for "United States" channel
+        When I want to modify the "Wyborowa Vodka" product variant
+        And I change its price to "$42.00" for "United States" channel
         And I save my changes
         And I go to the product price history
         Then I should see 2 log entries in the catalog price history for the "Wyborowa Vodka Exquisite" variant

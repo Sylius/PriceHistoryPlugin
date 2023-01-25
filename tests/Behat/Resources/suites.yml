@@ -1,2 +1,6 @@
-default:
-    suites:
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+imports:
+    - suites/ui/product/viewing_products.yaml
+    - suites/ui/product/managing_product_variants.yaml
