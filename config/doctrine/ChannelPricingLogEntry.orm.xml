@@ -23,7 +23,7 @@
         </id>
 
         <field name="price" column="price" type="integer" />
-        <field name="originalPrice" column="original_price" type="integer" />
+        <field name="originalPrice" column="original_price" type="integer" nullable="true" />
         <field name="loggedAt" column="logged_at" type="datetime" />
 
         <many-to-one field="channelPricing" target-entity="Sylius\Component\Core\Model\ChannelPricing">

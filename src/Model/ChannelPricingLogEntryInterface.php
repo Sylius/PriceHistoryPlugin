@@ -22,7 +22,7 @@ interface ChannelPricingLogEntryInterface extends ResourceInterface
 
     public function getPrice(): int;
 
-    public function getOriginalPrice(): int;
+    public function getOriginalPrice(): ?int;
 
     public function getLoggedAt(): \DateTimeInterface;
 }

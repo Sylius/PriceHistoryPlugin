@@ -24,7 +24,7 @@ class ChannelPricingLogEntry implements ChannelPricingLogEntryInterface
     public function __construct(
         private ChannelPricingInterface $channelPricing,
         private int $price,
-        private int $originalPrice,
+        private ?int $originalPrice,
     ) {
         $this->loggedAt = new \DateTimeImmutable();
     }
@@ -44,7 +44,7 @@ class ChannelPricingLogEntry implements ChannelPricingLogEntryInterface
         return $this->price;
     }
 
-    public function getOriginalPrice(): int
+    public function getOriginalPrice(): ?int
     {
         return $this->originalPrice;
     }
