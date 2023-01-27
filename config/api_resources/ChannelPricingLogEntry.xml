@@ -23,6 +23,13 @@
                 <attribute name="normalization_context">
                     <attribute name="groups">admin:channel-pricing-log-entry:read</attribute>
                 </attribute>
+                <attribute name="filters">
+                    <attribute>sylius_price_history.api.channel_pricing_channel_filter</attribute>
+                    <attribute>sylius_price_history.api.channel_pricing_product_variant_filter</attribute>
+                </attribute>
+                <attribute name="order">
+                    <attribute name="id">DESC</attribute>
+                </attribute>
             </collectionOperation>
         </collectionOperations>
 
