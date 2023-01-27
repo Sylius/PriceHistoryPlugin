@@ -1,7 +1,0 @@
-parameters:
-    level: max
-    reportUnmatchedIgnoredErrors: true
-    checkMissingIterableValueType: false
-    paths:
-        - src
-        - tests/Behat

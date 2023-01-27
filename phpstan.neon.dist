@@ -1,0 +1,10 @@
+parameters:
+    level: max
+    reportUnmatchedIgnoredErrors: true
+    checkMissingIterableValueType: false
+    paths:
+        - src
+    excludePaths:
+        - 'src/DependencyInjection/Configuration.php'
+    ignoreErrors:
+        - '/Method Sylius\\PriceHistoryPlugin\\Model\\\w+\:\:getId\(\) has no return type specified./'
