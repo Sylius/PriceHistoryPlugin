@@ -17,7 +17,8 @@ use Sylius\Component\Core\Model\ChannelPricingInterface;
 
 class ChannelPricingLogEntry implements ChannelPricingLogEntryInterface
 {
-    private ?int $id = null;
+    /** @var mixed|null */
+    private $id;
 
     private \DateTimeInterface $loggedAt;
 
@@ -29,7 +30,10 @@ class ChannelPricingLogEntry implements ChannelPricingLogEntryInterface
         $this->loggedAt = new \DateTimeImmutable();
     }
 
-    public function getId(): ?int
+    /**
+     * @psalm-suppress MissingReturnType
+     */
+    public function getId()
     {
         return $this->id;
     }
