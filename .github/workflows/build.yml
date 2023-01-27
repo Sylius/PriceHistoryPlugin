@@ -82,6 +82,10 @@ jobs:
                 run: vendor/bin/phpunit --colors=always
 
             -
+                name: Run Behat
+                run: vendor/bin/behat --format=progress --colors --strict -vvv --no-interaction --tags="~@todo"
+
+            -
                 name: Upload Behat logs
                 uses: actions/upload-artifact@v2
                 if: failure()
