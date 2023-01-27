@@ -18,14 +18,14 @@ use Sylius\Component\Core\Model\ChannelPricingInterface;
 class ChannelPricingLogEntry implements ChannelPricingLogEntryInterface
 {
     /** @var mixed|null */
-    private $id;
+    protected $id;
 
-    private \DateTimeInterface $loggedAt;
+    protected \DateTimeInterface $loggedAt;
 
     public function __construct(
-        private ChannelPricingInterface $channelPricing,
-        private int $price,
-        private ?int $originalPrice,
+        protected ChannelPricingInterface $channelPricing,
+        protected int $price,
+        protected ?int $originalPrice,
     ) {
         $this->loggedAt = new \DateTimeImmutable();
     }
