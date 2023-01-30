@@ -15,6 +15,10 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
+use Sylius\Component\Core\Formatter\StringInflector;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius1_11\Behat\Client\ApiClientInterface;
 use Sylius\Behat\Client\ResponseCheckerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
@@ -26,21 +30,27 @@ final class ChannelPricingLogEntryContext implements Context
     public function __construct(
         private ApiClientInterface $client,
         private ResponseCheckerInterface $responseChecker,
-        private IriConverterInterface $iriConverter,
+        private ProductVariantRepositoryInterface $productVariantRepository,
         private SharedStorageInterface $sharedStorage,
     ) {
     }
 
     /**
-     * @When /^I go to the ("[^"]+" variant) price history$/
+     * @When I go to the :variantName product variant price history
      */
-    public function iGoToTheVariantPriceHistory(ProductVariantInterface $productVariant): void
+    public function iGoToTheVariantPriceHistory(string $variantName): void
     {
-        Assert::notNull($channel = $this->sharedStorage->get('channel'));
+        $channel = $this->sharedStorage->get('channel');
+        Assert::notNull($channel);
+
+        $productVariant = $this->productVariantRepository->findOneBy(['code' => StringInflector::nameToCode($variantName)]);
+        Assert::notNull($productVariant);
+
+        $this->sharedStorage->set('variant', $productVariant);
 
         $this->client->index();
-        $this->client->addFilter('channel', $this->iriConverter->getIriFromItem($channel));
-        $this->client->addFilter('productVariant', $this->iriConverter->getIriFromItem($productVariant));
+        $this->client->addFilter('channelPricing.channelCode', $channel->getCode());
+        $this->client->addFilter('channelPricing.productVariant.code', $productVariant->getCode());
         $this->client->filter();
     }
 
@@ -53,19 +63,19 @@ final class ChannelPricingLogEntryContext implements Context
     }
 
     /**
-     * @Then /^I should see (\d+) log entries in the catalog price history for the ("[^"]+" variant)$/
+     * @Then /^I should see (\d+) log entries in the catalog price history$/
      */
-    public function iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(int $count, ProductVariantInterface $productVariant): void
+    public function iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(int $count): void
     {
         Assert::same($this->responseChecker->countCollectionItems($this->client->getLastResponse()), $count);
     }
 
     /**
-     * @Then /^I should see a single log entry in the catalog price history for the ("[^"]+" variant)$/
+     * @Then /^I should see a single log entry in the catalog price history$/
      */
-    public function iShouldSeeASingleLogEntryInTheCatalogPriceHistoryForTheVariant(ProductVariantInterface $productVariant): void
+    public function iShouldSeeASingleLogEntryInTheCatalogPriceHistoryForTheVariant(): void
     {
-        $this->iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(1, $productVariant);
+        $this->iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(1);
     }
 
     /**

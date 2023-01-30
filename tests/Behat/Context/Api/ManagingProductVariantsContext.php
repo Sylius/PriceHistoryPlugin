@@ -15,7 +15,7 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
-use Sylius\Behat\Client\ApiClientInterface;
+use Sylius1_11\Behat\Client\ApiClientInterface;
 use Sylius\Behat\Client\ResponseCheckerInterface;
 use Sylius\Behat\Context\Api\Resources;
 use Sylius\Component\Core\Model\ChannelInterface;
@@ -57,7 +57,7 @@ final class ManagingProductVariantsContext implements Context
      */
     public function iWantToModifyAProduct(ProductVariantInterface $productVariant)
     {
-        $this->client->buildUpdateRequest(Resources::PRODUCT_VARIANTS, $productVariant->getCode());
+        $this->client->buildUpdateRequest($productVariant->getCode());
     }
 
     /**

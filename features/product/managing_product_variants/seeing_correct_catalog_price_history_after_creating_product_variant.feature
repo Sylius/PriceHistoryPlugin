@@ -16,8 +16,8 @@ Feature: Seeing the correct catalog price history after creating a product varia
         And I set its price to "$20.00" for "United States" channel
         And I set its original price to "$25.00" for "United States" channel
         And I add it
-        And I go to the product price history
-        Then I should see a single log entry in the catalog price history for the "Wyborowa Vodka" variant
+        And I go to the "Wyborowa Vodka" product variant price history
+        Then I should see a single log entry in the catalog price history
         And there should be a log entry with the "$20.00" selling price, "$25.00" original price and datetime of the price change
 
     @api
@@ -27,21 +27,19 @@ Feature: Seeing the correct catalog price history after creating a product varia
         And I specify its code as "WYBOROWA_VODKA"
         And I set its price to "$20.00" for "United States" channel
         And I add it
-        And I go to the product price history
-        Then I should see a single log entry in the catalog price history for the "Wyborowa Vodka" variant
+        And I go to the "Wyborowa Vodka" product variant price history
+        Then I should see a single log entry in the catalog price history
         And there should be a log entry with the "$20.00" selling price, no original price and datetime of the price change
 
     @api
     Scenario: Seeing historical product variant prices after the product variant has been created with catalog promotions applied
-        Given the store has "Alcohol" taxonomy
-        And the store has a "Wyborowa Vodka" configurable product
-        And there is a catalog promotion "Christmas sale" that reduces price by "50%" and applies on "Alcohol" taxon
+        Given the store has a "Wyborowa Vodka" configurable product
+        And there is a catalog promotion "Christmas sale" that reduces price by "50%" and applies on "Wyborowa Vodka" product
         When I want to create a new variant of this product
-        And I choose main taxon "Alcohol"
         And I specify its code as "WYBOROWA_VODKA"
         And I set its price to "$20.00" for "United States" channel
         And I add it
-        And I go to the product price history
-        Then I should see 2 log entries in the catalog price history for the "Wyborowa Vodka" variant
+        And I go to the "Wyborowa Vodka" product variant price history
+        Then I should see 2 log entries in the catalog price history
         And there should be a log entry on the 1st position with the "$10.00" selling price, "$20.00" original price and datetime of the price change
         And there should be a log entry on the 2nd position with the "$20.00" selling price, no original price and datetime of the price change

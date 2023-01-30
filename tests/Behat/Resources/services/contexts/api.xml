@@ -16,7 +16,7 @@
         <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\ChannelPricingLogEntryContext" public="true">
             <argument type="service" id="sylius_price_history.behat.api_platform_client.admin.channel_pricing_log_entry" />
             <argument type="service" id="Sylius\Behat\Client\ResponseCheckerInterface" />
-            <argument type="service" id="api_platform.iri_converter" />
+            <argument type="service" id="sylius.repository.product_variant" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 

@@ -61,26 +61,25 @@ final class CatalogPromotionContext implements Context
     }
 
     /**
-     * @Given /^there is disabled catalog promotion "([^"]+)" with priority ([^"]+) that reduces price by ("[^"]+") and applies on ("[^"]+" variant)$/
+     * @Given /^there is a catalog promotion "([^"]+)" with priority ([^"]+) that reduces price by ("[^"]+") and applies on ("[^"]+" product)$/
      */
-    public function thereIsACatalogPromotionWithPriorityThatReducesPriceByAndAppliesOnVariant(
+    public function thereIsACatalogPromotionWithPriorityThatReducesPriceByAndAppliesOnProduct(
         string $name,
         int $priority,
         float $discount,
-        ProductVariantInterface $variant,
+        ProductInterface $product,
     ): void {
         $catalogPromotion = $this->createCatalogPromotion(
             $name,
             [[
-                'type' => InForVariantsScopeVariantChecker::TYPE,
-                'configuration' => ['variants' => [$variant->getCode()]],
+                'type' => InForProductScopeVariantChecker::TYPE,
+                'configuration' => ['products' => [$product->getCode()]],
             ]],
             [[
                 'type' => PercentageDiscountPriceCalculator::TYPE,
                 'configuration' => ['amount' => $discount],
             ]],
-            $priority,
-            false,
+            $priority
         );
 
         $this->entityManager->flush();

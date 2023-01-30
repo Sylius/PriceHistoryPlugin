@@ -14,7 +14,7 @@ Feature: Seeing the correct catalog price history after editing a product varian
         When I want to modify the "Wyborowa Vodka" product variant
         And I change its price to "$42.00" for "United States" channel
         And I save my changes
-        And I go to the product price history
-        Then I should see 2 log entries in the catalog price history for the "Wyborowa Vodka Exquisite" variant
+        And I go to the "Wyborowa Vodka" product variant price history
+        Then I should see 2 log entries in the catalog price history
         And there should be a log entry on the 1st position with the "$42.00" selling price, no original price and datetime of the price change
         And there should be a log entry on the 2nd position with the "$40.00" selling price, no original price and datetime of the price change

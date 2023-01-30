@@ -18,7 +18,7 @@ default:
                 - Sylius\Behat\Context\Setup\CatalogPromotionContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\CatalogPromotionContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ProductContext
-                - sylius.behat.context.setup.admin_security
+                - sylius.behat.context.setup.admin_api_security
                 - sylius.behat.context.setup.admin_user
                 - sylius.behat.context.setup.channel
                 - sylius.behat.context.setup.locale
