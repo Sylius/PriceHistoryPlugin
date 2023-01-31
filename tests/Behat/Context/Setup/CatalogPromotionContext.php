@@ -91,7 +91,7 @@ final class CatalogPromotionContext implements Context
     /**
      * @Given /^there is disabled catalog promotion "([^"]+)" with priority ([^"]+) that reduces price by fixed ("[^"]+") in the ("[^"]+" channel) and applies on ("[^"]+" product)$/
      */
-    public function thereIsACatalogPromotionWithPriorityThatReducesPriceByFixedInTheChannelAndAppliesOnProduct(
+    public function thereIsDisabledCatalogPromotionWithPriorityThatReducesPriceByFixedInTheChannelAndAppliesOnProduct(
         string $name,
         int $priority,
         int $discount,

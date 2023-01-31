@@ -27,7 +27,6 @@ final class ManagingProductVariantsContext implements Context
     public function __construct(
         private ApiClientInterface $client,
         private ResponseCheckerInterface $responseChecker,
-        private IriConverterInterface $iriConverter
     ) {
     }
 
@@ -42,14 +41,6 @@ final class ManagingProductVariantsContext implements Context
                 'channelCode' => $channel->getCode(),
             ],
         ]);
-    }
-
-    /**
-     * @When /^I choose main (taxon "[^"]+")$/
-     */
-    public function iChooseMainTaxon(TaxonInterface $taxon): void
-    {
-        $this->client->updateRequestData(['mainTaxon' => $this->iriConverter->getIriFromItem($taxon)]);
     }
 
     /**

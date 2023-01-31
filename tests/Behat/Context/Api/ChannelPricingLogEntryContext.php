@@ -55,14 +55,6 @@ final class ChannelPricingLogEntryContext implements Context
     }
 
     /**
-     * @When I go to the product price history
-     */
-    public function iGoToTheProductPriceHistory(): void
-    {
-        $this->iGoToTheVariantPriceHistory($this->sharedStorage->get('variant'));
-    }
-
-    /**
      * @Then /^I should see (\d+) log entries in the catalog price history$/
      */
     public function iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(int $count): void
@@ -71,7 +63,7 @@ final class ChannelPricingLogEntryContext implements Context
     }
 
     /**
-     * @Then /^I should see a single log entry in the catalog price history$/
+     * @Then I should see a single log entry in the catalog price history
      */
     public function iShouldSeeASingleLogEntryInTheCatalogPriceHistoryForTheVariant(): void
     {
@@ -85,8 +77,7 @@ final class ChannelPricingLogEntryContext implements Context
         int $position,
         int $price,
         int|string $originalPrice,
-    ): void
-    {
+    ): void {
         if ('no' === $originalPrice) {
             $originalPrice = null;
         }
