@@ -1,0 +1,12 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+sylius_fixtures:
+    suites:
+        default:
+            fixtures:
+                channel_pricing_log_entry:
+                    options:
+                        random: 128
+                catalog_promotion:
+                    priority: -1

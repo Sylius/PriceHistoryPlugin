@@ -18,4 +18,16 @@
     <imports>
         <import resource="services/**/*.xml" />
     </imports>
+
+    <services>
+        <service id="sylius_price_history.fixture.example_factory.channel_pricing_log_entry" class="Sylius\PriceHistoryPlugin\Fixture\Factory\ChannelPricingLogEntryExampleFactory">
+            <argument type="service" id="sylius.repository.channel_pricing" />
+        </service>
+
+        <service id="sylius_price_history.fixture.channel_pricing_log_entry" class="Sylius\PriceHistoryPlugin\Fixture\ChannelPricingLogEntryFixture">
+            <argument type="service" id="sylius_price_history_plugin.manager.channel_pricing_log_entry" />
+            <argument type="service" id="sylius_price_history.fixture.example_factory.channel_pricing_log_entry" />
+            <tag name="sylius_fixtures.fixture" />
+        </service>
+    </services>
 </container>
