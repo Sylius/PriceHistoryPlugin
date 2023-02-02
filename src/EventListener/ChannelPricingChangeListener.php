@@ -16,13 +16,22 @@ namespace Sylius\PriceHistoryPlugin\EventListener;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
+use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\PriceHistoryPlugin\Checker\ProductVariantVisibilityCheckerInterface;
 use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntry;
 use Webmozart\Assert\Assert;
 
 final class ChannelPricingChangeListener
 {
     private const SUPPORTED_FIELDS = ['price', 'originalPrice'];
+
+    public function __construct(
+        private ProductVariantVisibilityCheckerInterface $productVariantVisibilityChecker,
+        private ChannelRepositoryInterface $channelRepository,
+    ) {
+    }
 
     public function onFlush(OnFlushEventArgs $eventArgs): void
     {
@@ -65,7 +74,11 @@ final class ChannelPricingChangeListener
     {
         Assert::notNull($price = $model->getPrice());
 
-        return new ChannelPricingLogEntry($model, $price, $model->getOriginalPrice());
+        $channel = $this->channelRepository->findOneByCode($model->getChannelCode());
+        dd($channel);
+        $isChangeVisible = $this->productVariantVisibilityChecker->isVisibleInChannel($model->getProductVariant(), $channel);
+
+        return new ChannelPricingLogEntry($model, $price, $model->getOriginalPrice(), $isChangeVisible);
     }
 
     private function isPriceChanged(UnitOfWork $unitOfWork, ChannelPricingInterface $channelPricing): bool

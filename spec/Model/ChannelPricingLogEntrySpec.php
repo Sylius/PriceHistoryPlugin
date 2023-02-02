@@ -21,7 +21,7 @@ class ChannelPricingLogEntrySpec extends ObjectBehavior
 {
     function let(ChannelPricingInterface $channelPricing): void
     {
-        $this->beConstructedWith($channelPricing, 1000, 2000);
+        $this->beConstructedWith($channelPricing, 1000, 2000, true);
     }
 
     function it_implements_channel_pricing_log_entry_interface(): void
@@ -31,7 +31,7 @@ class ChannelPricingLogEntrySpec extends ObjectBehavior
 
     function it_initialize_with_no_original_price(ChannelPricingInterface $channelPricing): void
     {
-        $this->beConstructedWith($channelPricing, 1000, null);
+        $this->beConstructedWith($channelPricing, 1000, null, true);
         $this->getOriginalPrice()->shouldReturn(null);
     }
 
@@ -53,5 +53,17 @@ class ChannelPricingLogEntrySpec extends ObjectBehavior
     function it_gets_a_logged_at(): void
     {
         $this->getLoggedAt()->shouldReturnAnInstanceOf(\DateTimeImmutable::class);
+    }
+
+    function it_can_be_visible(): void
+    {
+        $this->isVisible()->shouldReturn(true);
+    }
+
+    function it_can_be_invisible(ChannelPricingInterface $channelPricing): void
+    {
+        $this->beConstructedWith($channelPricing, 1000, 2000, false);
+
+        $this->isVisible()->shouldReturn(false);
     }
 }

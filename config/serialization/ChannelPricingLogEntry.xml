@@ -25,6 +25,9 @@
         <attribute name="originalPrice">
             <group>admin:channel_pricing_log_entry:read</group>
         </attribute>
+        <attribute name="visible">
+            <group>admin:channel-pricing-log-entry:read</group>
+        </attribute>
         <attribute name="loggedAt">
             <group>admin:channel_pricing_log_entry:read</group>
         </attribute>
