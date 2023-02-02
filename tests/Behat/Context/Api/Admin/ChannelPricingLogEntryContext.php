@@ -44,6 +44,7 @@ final class ChannelPricingLogEntryContext implements Context
         $this->client->index();
         $this->client->addFilter('channelPricing.channelCode', $channel->getCode());
         $this->client->addFilter('channelPricing.productVariant.code', $productVariant->getCode());
+        $this->client->addFilter('visible', true);
         $this->client->filter();
     }
 
@@ -54,6 +55,14 @@ final class ChannelPricingLogEntryContext implements Context
     public function iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(int $count = 1): void
     {
         Assert::same($this->responseChecker->countCollectionItems($this->client->getLastResponse()), $count);
+    }
+
+    /**
+     * @Then I should not see any log entries in the catalog price history
+     */
+    public function iShouldNotSeeAnyLogEntriesInTheCatalogPriceHistoryForTheVariant(): void
+    {
+        $this->iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(0);
     }
 
     /**
@@ -72,6 +81,7 @@ final class ChannelPricingLogEntryContext implements Context
 
         Assert::same($logEntry['price'], $price);
         Assert::same($logEntry['originalPrice'], $originalPrice);
+        Assert::same($logEntry['isVisible'], true);
         Assert::keyExists($logEntry, 'loggedAt');
     }
 
