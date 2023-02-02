@@ -17,16 +17,16 @@
 >
     <class name="Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntry">
         <attribute name="channelPricing">
-            <group>admin:channel-pricing-log-entry:read</group>
+            <group>admin:channel_pricing_log_entry:read</group>
         </attribute>
         <attribute name="price">
-            <group>admin:channel-pricing-log-entry:read</group>
+            <group>admin:channel_pricing_log_entry:read</group>
         </attribute>
         <attribute name="originalPrice">
-            <group>admin:channel-pricing-log-entry:read</group>
+            <group>admin:channel_pricing_log_entry:read</group>
         </attribute>
         <attribute name="loggedAt">
-            <group>admin:channel-pricing-log-entry:read</group>
+            <group>admin:channel_pricing_log_entry:read</group>
         </attribute>
     </class>
 </serializer>

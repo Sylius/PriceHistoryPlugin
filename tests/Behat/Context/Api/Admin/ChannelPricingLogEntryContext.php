@@ -11,18 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api;
+namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin;
 
-use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
-use Sylius\Component\Core\Formatter\StringInflector;
-use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
-use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
-use Sylius1_11\Behat\Client\ApiClientInterface;
 use Sylius\Behat\Client\ResponseCheckerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Sylius1_11\Behat\Client\ApiClientInterface;
 use Webmozart\Assert\Assert;
 
 final class ChannelPricingLogEntryContext implements Context
@@ -36,15 +32,12 @@ final class ChannelPricingLogEntryContext implements Context
     }
 
     /**
-     * @When I go to the :variantName product variant price history
+     * @When /^I go to the price history of a (variant with code "[^"]+")$/
      */
-    public function iGoToTheVariantPriceHistory(string $variantName): void
+    public function iGoToThePriceHistoryOfAVariant(ProductVariantInterface $productVariant): void
     {
         $channel = $this->sharedStorage->get('channel');
         Assert::notNull($channel);
-
-        $productVariant = $this->productVariantRepository->findOneBy(['code' => StringInflector::nameToCode($variantName)]);
-        Assert::notNull($productVariant);
 
         $this->sharedStorage->set('variant', $productVariant);
 
@@ -55,19 +48,12 @@ final class ChannelPricingLogEntryContext implements Context
     }
 
     /**
-     * @Then /^I should see (\d+) log entries in the catalog price history$/
-     */
-    public function iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(int $count): void
-    {
-        Assert::same($this->responseChecker->countCollectionItems($this->client->getLastResponse()), $count);
-    }
-
-    /**
+     * @Then I should see :count log entries in the catalog price history
      * @Then I should see a single log entry in the catalog price history
      */
-    public function iShouldSeeASingleLogEntryInTheCatalogPriceHistoryForTheVariant(): void
+    public function iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(int $count = 1): void
     {
-        $this->iShouldSeeLogEntriesInTheCatalogPriceHistoryForTheVariant(1);
+        Assert::same($this->responseChecker->countCollectionItems($this->client->getLastResponse()), $count);
     }
 
     /**

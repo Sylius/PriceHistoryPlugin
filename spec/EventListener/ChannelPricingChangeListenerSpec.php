@@ -132,7 +132,7 @@ class ChannelPricingChangeListenerSpec extends ObjectBehavior
         $this->onFlush($eventArgs);
     }
 
-    function it_creates_channel_pricing_log_entry_if_at_least_one_supported_field_have_not_changed(
+    function it_creates_channel_pricing_log_entry_if_at_least_one_supported_field_has_changed(
         OnFlushEventArgs $eventArgs,
         EntityManagerInterface $entityManager,
         ChannelPricingInterface $updatedChannelPricing,

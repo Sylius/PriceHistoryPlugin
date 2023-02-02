@@ -11,16 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api;
+namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin;
 
-use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
-use Sylius1_11\Behat\Client\ApiClientInterface;
 use Sylius\Behat\Client\ResponseCheckerInterface;
-use Sylius\Behat\Context\Api\Resources;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Core\Model\TaxonInterface;
+use Sylius1_11\Behat\Client\ApiClientInterface;
 
 final class ManagingProductVariantsContext implements Context
 {
@@ -46,7 +43,7 @@ final class ManagingProductVariantsContext implements Context
     /**
      * @When /^I want to modify the ("[^"]+" product variant)$/
      */
-    public function iWantToModifyAProduct(ProductVariantInterface $productVariant)
+    public function iWantToModifyProductVariant(ProductVariantInterface $productVariant)
     {
         $this->client->buildUpdateRequest($productVariant->getCode());
     }

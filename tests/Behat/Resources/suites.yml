@@ -2,5 +2,5 @@
 # (c) Paweł Jędrzejewski
 
 imports:
-    - suites/ui/product/viewing_products.yaml
-    - suites/ui/product/managing_product_variants.yaml
+    - suites/api/product/managing_product_variants.yaml
+    - suites/api/product/viewing_products.yaml
