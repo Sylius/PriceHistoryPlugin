@@ -41,6 +41,13 @@ Sylius\Component\Core\Model\Product:
         currentLocale: 'en_US'
         translations:
             en_US: '@product_translation_mug'
+    product_cup:
+        code: 'CUP'
+        enabled: false
+        channels: ['@channel_home', '@channel_fashion']
+        currentLocale: 'en_US'
+        translations:
+            en_US: '@product_translation_cup'
 
 Sylius\Component\Core\Model\ProductTranslation:
     product_translation_mug:
@@ -49,6 +56,12 @@ Sylius\Component\Core\Model\ProductTranslation:
         name: 'Mug'
         description: '<paragraph(2)>'
         translatable: '@product_mug'
+    product_translation_cup:
+        slug: 'cup'
+        locale: 'en_US'
+        name: 'Cup'
+        description: '<paragraph(2)>'
+        translatable: '@product_cup'
 
 Sylius\Component\Core\Model\ProductVariant:
     product_variant_mug_blue:
@@ -70,6 +83,27 @@ Sylius\Component\Core\Model\ProductVariant:
         channelPricings:
             HOME: '@channel_pricing_product_variant_mug_red_home'
             FASHION: '@channel_pricing_product_variant_mug_red_fashion'
+    
+    product_variant_mug_white:
+        code: 'MUG_WHITE'
+        enabled: false
+        product: '@product_mug'
+        currentLocale: 'en_US'
+        translations:
+            en_US: '@product_variant_translation_mug_white'
+        channelPricings:
+            HOME: '@channel_pricing_product_variant_mug_white_home'
+            FASHION: '@channel_pricing_product_variant_mug_white_fashion'
+            
+    product_variant_cup:
+        code: 'CUP'
+        product: '@product_cup'
+        currentLocale: 'en_US'
+        translations:
+            en_US: '@product_variant_translation_cup'
+        channelPricings:
+            HOME: '@channel_pricing_product_variant_cup_home'
+            FASHION: '@channel_pricing_product_variant_cup_fashion'
 
 Sylius\Component\Product\Model\ProductVariantTranslation:
     product_variant_translation_mug_blue:
@@ -80,6 +114,14 @@ Sylius\Component\Product\Model\ProductVariantTranslation:
         locale: 'en_US'
         name: 'Red Mug'
         translatable: '@product_variant_mug_red'
+    product_variant_translation_mug_white:
+        locale: 'en_US'
+        name: 'White Mug'
+        translatable: '@product_variant_mug_white'
+    product_variant_translation_cup:
+        locale: 'en_US'
+        name: 'Cup'
+        translatable: '@product_variant_cup'
 
 Sylius\Component\Core\Model\ChannelPricing:
     channel_pricing_product_variant_mug_blue_home:
@@ -95,3 +137,15 @@ Sylius\Component\Core\Model\ChannelPricing:
     channel_pricing_product_variant_mug_red_fashion:
         channelCode: 'FASHION'
         price: 3000
+    channel_pricing_product_variant_mug_white_home:
+        channelCode: 'HOME'
+        price: 1500
+    channel_pricing_product_variant_mug_white_fashion:
+        channelCode: 'FASHION'
+        price: 2000
+    channel_pricing_product_variant_cup_home:
+        channelCode: 'HOME'
+        price: 1500
+    channel_pricing_product_variant_cup_fashion:
+        channelCode: 'FASHION'
+        price: 2500

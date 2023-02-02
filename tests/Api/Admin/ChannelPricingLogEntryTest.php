@@ -110,6 +110,31 @@ final class ChannelPricingLogEntryTest extends JsonApiTestCase
         );
     }
 
+    /** @test */
+    public function it_gets_visible_channel_pricing_log_entries(): void
+    {
+        $fixtures = $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'product_variant.yaml']);
+        $header = $this->getLoggedHeader();
+
+        $uri = '/api/v2/admin/channel-pricing-log-entries';
+        $uri .= '?channelPricing.channelCode=' . $fixtures['channel_home']->getCode();
+        $uri .= '&channelPricing.productVariant.code[]=' . $fixtures['product_variant_mug_blue']->getCode();
+        $uri .= '&channelPricing.productVariant.code[]=' . $fixtures['product_variant_mug_white']->getCode();
+        $uri .= '&visible=true';
+
+        $this->client->request(
+            method: 'GET',
+            uri: $uri,
+            server: $header,
+        );
+
+        $this->assertResponse(
+            $this->client->getResponse(),
+            'admin/get_filtered_channel_pricing_log_entries_response',
+            Response::HTTP_OK
+        );
+    }
+
     private function getLoggedHeader(): array
     {
         $token = $this->logInAdminUser('api@example.com');
