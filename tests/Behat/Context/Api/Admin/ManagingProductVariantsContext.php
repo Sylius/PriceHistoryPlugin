@@ -41,11 +41,11 @@ final class ManagingProductVariantsContext implements Context
     }
 
     /**
-     * @When /^I want to modify the ("[^"]+" product variant)$/
+     * @When I want to modify the :variant product variant
      */
-    public function iWantToModifyProductVariant(ProductVariantInterface $productVariant)
+    public function iWantToModifyProductVariant(ProductVariantInterface $variant): void
     {
-        $this->client->buildUpdateRequest($productVariant->getCode());
+        $this->client->buildUpdateRequest($variant->getCode());
     }
 
     /**
