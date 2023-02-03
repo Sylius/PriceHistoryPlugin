@@ -135,6 +135,18 @@
             "config/routes/liip_imagine.yaml"
         ]
     },
+    "nelmio/alice": {
+        "version": "3.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.3",
+            "ref": "42b52d2065dc3fde27912d502c18ca1926e35ae2"
+        },
+        "files": [
+            "config/packages/nelmio_alice.yaml"
+        ]
+    },
     "payum/payum-bundle": {
         "version": "2.5",
         "recipe": {
@@ -217,6 +229,9 @@
     },
     "sylius-labs/doctrine-migrations-extra-bundle": {
         "version": "v0.2.0"
+    },
+    "sylius-labs/sylius-1-11-shim-bundle": {
+        "version": "v1.0.0"
     },
     "sylius/calendar": {
         "version": "v0.4.0"
@@ -430,6 +445,15 @@
             "package.json",
             "webpack.config.js"
         ]
+    },
+    "theofidry/alice-data-fixtures": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
+        }
     },
     "willdurand/hateoas-bundle": {
         "version": "2.5",

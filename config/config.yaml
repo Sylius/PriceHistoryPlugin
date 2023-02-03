@@ -1,0 +1,7 @@
+parameters:
+    sylius_price_history_api_resources_path: '%kernel.project_dir%/vendor/sylius/price-history-plugin/config/api_resources/'
+
+api_platform:
+    mapping:
+        paths:
+            - '%sylius_price_history_api_resources_path%'

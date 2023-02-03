@@ -15,11 +15,15 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Service\SharedStorageInterface;
+use Sylius\Component\Core\Event\ProductUpdated;
+use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Sylius\Component\Product\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
+use Sylius\Component\Resource\Factory\FactoryInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class ProductContext implements Context
 {
@@ -27,6 +31,9 @@ final class ProductContext implements Context
         private SharedStorageInterface $sharedStorage,
         private ProductRepositoryInterface $productRepository,
         private ProductVariantResolverInterface $defaultVariantResolver,
+        private MessageBusInterface $eventBus,
+        private FactoryInterface $productVariantFactory,
+        private FactoryInterface $channelPricingFactory,
     ) {
     }
 
@@ -50,24 +57,40 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the ("[^"]+" variant) is now priced at ("[^"]+") and originally priced at ("[^"]+")$/
+     * @Given /^the (product "[^"]+") has a "([^"]+)" variant priced at ("[^"]+") and originally priced at ("[^"]+")$/
      */
-    public function theProductVariantIsPricedAtAndOriginallyPricedAt(
-        ProductVariantInterface $productVariant,
+    public function theProductHasVariantPricedAtAndOriginallyPricedAt(
+        ProductInterface $product,
+        string $productVariantName,
         int $price,
         int $originalPrice,
     ): void {
         /** @var ChannelPricingInterface $channelPricing */
-        $channelPricing = $productVariant->getChannelPricings()->first();
+        $channelPricing = $this->channelPricingFactory->createNew();
         $channelPricing->setPrice($price);
         $channelPricing->setOriginalPrice($originalPrice);
+        $channelPricing->setChannelCode($this->sharedStorage->get('channel')->getCode());
 
-        $this->saveProduct($productVariant->getProduct());
+        /** @var ProductVariantInterface $variant */
+        $variant = $this->productVariantFactory->createNew();
+        $variant->setName($productVariantName);
+        $variant->setCode(StringInflector::nameToUppercaseCode($productVariantName));
+        $variant->setProduct($product);
+        $variant->setOnHand(0);
+        $variant->addChannelPricing($channelPricing);
+        $variant->setShippingRequired(true);
+
+        $product->setVariantSelectionMethod(ProductInterface::VARIANT_SELECTION_CHOICE);
+        $product->addVariant($variant);
+
+        $this->saveProduct($product);
     }
 
     private function saveProduct(ProductInterface $product): void
     {
         $this->productRepository->add($product);
+        $this->eventBus->dispatch(new ProductUpdated($product->getCode()));
         $this->sharedStorage->set('product', $product);
+        $this->sharedStorage->set('variant', $product->getVariants()->first());
     }
 }

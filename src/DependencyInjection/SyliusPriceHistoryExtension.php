@@ -16,8 +16,10 @@ namespace Sylius\PriceHistoryPlugin\DependencyInjection;
 use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class SyliusPriceHistoryExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
@@ -28,6 +30,9 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
+        $loader->load('services.xml');
+
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->getConfiguration([], $container);
 
@@ -51,7 +56,7 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
 
     protected function getMigrationsDirectory(): string
     {
-        return '@SyliusPriceHistoryPlugin/Migrations';
+        return '@SyliusPriceHistoryPlugin/src/Migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array
@@ -78,7 +83,7 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
                 'mappings' => [
                     'SyliusPriceHistoryPlugin' => [
                         'type' => 'xml',
-                        'dir' => $metadata['SyliusPriceHistoryPlugin']['path'] . '/../config/doctrine/',
+                        'dir' => $metadata['SyliusPriceHistoryPlugin']['path'] . '/config/doctrine/',
                         'is_bundle' => false,
                         'prefix' => 'Sylius\PriceHistoryPlugin\Model',
                         'alias' => 'SyliusPriceHistoryPlugin',

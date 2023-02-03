@@ -1,0 +1,32 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+default:
+    suites:
+        api_viewing_products:
+            contexts:
+                - sylius.behat.context.hook.doctrine_orm
+
+                - Sylius\Behat\Context\Transform\CatalogPromotionContext
+                - sylius.behat.context.transform.channel
+                - sylius.behat.context.transform.lexical
+                - sylius.behat.context.transform.locale
+                - sylius.behat.context.transform.product
+                - sylius.behat.context.transform.product_variant
+                - sylius.behat.context.transform.shared_storage
+
+                - Sylius\Behat\Context\Setup\CatalogPromotionContext
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ProductContext
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\CatalogPromotionContext
+                - sylius.behat.context.setup.admin_api_security
+                - sylius.behat.context.setup.admin_user
+                - sylius.behat.context.setup.channel
+                - sylius.behat.context.setup.locale
+                - sylius.behat.context.setup.product
+                - sylius.behat.context.setup.shop_security
+                
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ChannelPricingLogEntryContext
+                - sylius.behat.context.api.admin.managing_catalog_promotions
+
+            filters:
+                tags: "@viewing_products&&@api"
