@@ -80,3 +80,12 @@ Feature: Seeing the product's lowest price from 30 days before the discount
         And this product's price was discounted to "$20.00"
         When I check this product's details
         Then I should see "$10.00" as this product's lowest price from 30 days before the discount
+
+    @todo
+    Scenario: Not seeing the lowest price information on a product that has a discount but showing it is disabled on the channel
+        Given the lowest price of discounted products prior to the current discount is disabled on the channel
+        And the store has a product "Wyborowa Vodka" priced at "$37.00"
+        And this product's price was discounted to "$21.00"
+        And this product's discounted price changed to "$30.00"
+        When I check this product's details
+        Then I should not see information about its lowest price
