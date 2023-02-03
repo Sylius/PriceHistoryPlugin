@@ -1,5 +1,5 @@
-@viewing_products
-Feature: Seeing catalog price history within a variant
+@managing_catalog_promotions
+Feature: Seeing price history for a product variant after changes of catalog promotions
     In order to be aware of historical variant prices
     As an Administrator
     I want to browse the catalog price history of a specific variant
