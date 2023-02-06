@@ -3,4 +3,4 @@
 
 imports:
     - suites/api/product/managing_product_variants.yaml
-    - suites/api/product/viewing_products.yaml
+    - suites/api/promotion/managing_catalog_promotions.yaml

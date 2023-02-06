@@ -1,5 +1,5 @@
-@viewing_products
-Feature: Seeing catalog price history for a simple product
+@managing_catalog_promotions
+Feature: Seeing the price history of a simple product after changes to catalog promotions
     In order to be aware of historical simple product prices
     As an Administrator
     I want to browse the catalog price history of a simple product

@@ -3,9 +3,10 @@
 
 default:
     suites:
-        api_managing_product_variants:
+        api_managing_catalog_promotions:
             contexts:
                 - sylius.behat.context.hook.doctrine_orm
+                - Sylius\Calendar\Tests\Behat\Context\Hook\CalendarContext
 
                 - sylius.behat.context.transform.channel
                 - sylius.behat.context.transform.lexical
@@ -14,21 +15,21 @@ default:
                 - sylius.behat.context.transform.product_variant
                 - sylius.behat.context.transform.shared_storage
                 - sylius.behat.context.transform.taxon
+                - Sylius\Behat\Context\Transform\CatalogPromotionContext
 
                 - sylius.behat.context.setup.admin_api_security
-                - sylius.behat.context.setup.admin_user
                 - sylius.behat.context.setup.channel
-                - sylius.behat.context.setup.locale
                 - sylius.behat.context.setup.product
-                - sylius.behat.context.setup.shop_security
+                - sylius.behat.context.setup.product_taxon
                 - sylius.behat.context.setup.taxonomy
                 - Sylius\Behat\Context\Setup\CatalogPromotionContext
-                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\CatalogPromotionContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ProductContext
-                
-                - sylius.behat.context.api.admin.managing_product_variants
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\CatalogPromotionContext
+
+
+                - sylius.behat.context.api.admin.managing_catalog_promotions
+                - sylius.behat.context.api.shop.product_variant
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ChannelPricingLogEntryContext
-                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ManagingProductVariantsContext
 
             filters:
-                tags: "@managing_product_variants&&@api"
+                tags: "@managing_catalog_promotions&&@api"
