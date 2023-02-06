@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\PriceHistoryPlugin\EventListener;
+namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -22,8 +22,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\PriceHistoryPlugin\EventListener\ChannelPricingChangeListener;
-use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntryInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
+use Sylius\PriceHistoryPlugin\Infrastructure\EventListener\ChannelPricingChangeListener;
 
 class ChannelPricingChangeListenerSpec extends ObjectBehavior
 {

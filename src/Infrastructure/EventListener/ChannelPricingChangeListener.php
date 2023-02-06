@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\EventListener;
+namespace Sylius\PriceHistoryPlugin\Infrastructure\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntry;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntry;
 use Webmozart\Assert\Assert;
 
 final class ChannelPricingChangeListener

@@ -16,7 +16,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
 >
     <services>
-        <service id="sylius_price_history.listener.channel_pricing_change" class="Sylius\PriceHistoryPlugin\EventListener\ChannelPricingChangeListener">
+        <service id="sylius_price_history.listener.channel_pricing_change" class="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\ChannelPricingChangeListener">
             <tag name="doctrine.event_listener" event="onFlush" lazy="true" />
         </service>
     </services>
