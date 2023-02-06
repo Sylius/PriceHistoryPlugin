@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\Sylius\PriceHistoryPlugin\Remover;
+namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\Remover;
 
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Calendar\Provider\DateTimeProviderInterface;
-use Sylius\PriceHistoryPlugin\Event\OldChannelPricingLogEntriesEvents;
-use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntryInterface;
-use Sylius\PriceHistoryPlugin\Remover\ChannelPricingLogEntriesRemover;
-use Sylius\PriceHistoryPlugin\Repository\ChannelPricingLogEntryRepositoryInterface;
+use Sylius\PriceHistoryPlugin\Domain\Repository\ChannelPricingLogEntryRepositoryInterface;
+use Sylius\PriceHistoryPlugin\Infrastructure\Event\OldChannelPricingLogEntriesEvents;
+use Sylius\PriceHistoryPlugin\Infrastructure\Remover\ChannelPricingLogEntriesRemover;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -84,13 +84,13 @@ final class ChannelPricingLogEntriesRemoverSpec extends ObjectBehavior
         $manager->remove($channelPricingLogEntry)->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            new  GenericEvent([$channelPricingLogEntry->getWrappedObject()]),
+            new GenericEvent([$channelPricingLogEntry->getWrappedObject()]),
             OldChannelPricingLogEntriesEvents::PRE_REMOVE,
         )->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            new  GenericEvent([$channelPricingLogEntry->getWrappedObject()]),
+            new GenericEvent([$channelPricingLogEntry->getWrappedObject()]),
             OldChannelPricingLogEntriesEvents::POST_REMOVE,
         )->shouldBeCalled();
         $manager->clear()->shouldBeCalled();
@@ -115,11 +115,11 @@ final class ChannelPricingLogEntriesRemoverSpec extends ObjectBehavior
         ;
 
         $eventDispatcher->dispatch(
-            new  GenericEvent([$firstChannelPricingLogEntry->getWrappedObject()]),
+            new GenericEvent([$firstChannelPricingLogEntry->getWrappedObject()]),
             OldChannelPricingLogEntriesEvents::PRE_REMOVE,
         )->shouldBeCalledTimes(1);
         $eventDispatcher->dispatch(
-            new  GenericEvent([$secondChannelPricingLogEntry->getWrappedObject()]),
+            new GenericEvent([$secondChannelPricingLogEntry->getWrappedObject()]),
             OldChannelPricingLogEntriesEvents::PRE_REMOVE,
         )->shouldBeCalledTimes(1);
 
@@ -127,11 +127,11 @@ final class ChannelPricingLogEntriesRemoverSpec extends ObjectBehavior
         $manager->remove($secondChannelPricingLogEntry)->shouldBeCalledTimes(1);
 
         $eventDispatcher->dispatch(
-            new  GenericEvent([$firstChannelPricingLogEntry->getWrappedObject()]),
+            new GenericEvent([$firstChannelPricingLogEntry->getWrappedObject()]),
             OldChannelPricingLogEntriesEvents::POST_REMOVE,
         )->shouldBeCalledTimes(1);
         $eventDispatcher->dispatch(
-            new  GenericEvent([$secondChannelPricingLogEntry->getWrappedObject()]),
+            new GenericEvent([$secondChannelPricingLogEntry->getWrappedObject()]),
             OldChannelPricingLogEntriesEvents::POST_REMOVE,
         )->shouldBeCalledTimes(1);
 

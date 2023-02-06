@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Repository;
+namespace Sylius\PriceHistoryPlugin\Domain\Repository;
 
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntryInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 
 interface ChannelPricingLogEntryRepositoryInterface extends RepositoryInterface
 {

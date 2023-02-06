@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Remover;
+namespace Sylius\PriceHistoryPlugin\Application\Remover;
 
 interface ChannelPricingLogEntriesRemoverInterface
 {

@@ -18,10 +18,10 @@ use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Sylius\PriceHistoryPlugin\Remover\ChannelPricingLogEntriesRemoverInterface;
+use Sylius\PriceHistoryPlugin\Application\Remover\ChannelPricingLogEntriesRemoverInterface;
 use Webmozart\Assert\Assert;
 
-final class ManagingPriceHistory implements Context
+final class ManagingPriceHistoryContext implements Context
 {
     public function __construct(
         private RepositoryInterface $channelPricingLogEntryRepository,

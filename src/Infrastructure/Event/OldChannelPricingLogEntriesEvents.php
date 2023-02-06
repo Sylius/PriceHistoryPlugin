@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Event;
+namespace Sylius\PriceHistoryPlugin\Infrastructure\Event;
 
 interface OldChannelPricingLogEntriesEvents
 {

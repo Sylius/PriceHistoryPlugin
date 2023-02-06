@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Command;
+namespace Sylius\PriceHistoryPlugin\Infrastructure\Cli\Command;
 
-use Sylius\PriceHistoryPlugin\Remover\ChannelPricingLogEntriesRemoverInterface;
+use Sylius\PriceHistoryPlugin\Application\Remover\ChannelPricingLogEntriesRemoverInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -51,7 +51,7 @@ final class ClearPriceHistoryCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $days = $input->getArgument('days');
-        if (!is_numeric($days) || !is_int($days) || $days < 1) {
+        if (!is_int($days) || $days < 1) {
             $this->io->error('Number of days must be an integer greater than 0');
 
             return Command::FAILURE;

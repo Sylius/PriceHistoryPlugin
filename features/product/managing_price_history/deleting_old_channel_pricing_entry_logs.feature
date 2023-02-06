@@ -6,8 +6,8 @@ Feature: Deleting old channel pricing entry logs
 
     Background:
         Given the store operates on a single channel in "United States"
-        And the store has a product "PHP T-Shirt"
-        And this product's price has been initially set to "$10.00" on "2022-03-14"
+        And it is "2022-03-14" now
+        And the store has a product "PHP T-Shirt" priced at "$10.00"
         And on "2022-03-20" its price changed to "$20.00"
         And on "2022-03-29" its original price changed to "$25.00"
         And on "2022-04-14" its price changed to "$15.00" and original price to "$30.00"

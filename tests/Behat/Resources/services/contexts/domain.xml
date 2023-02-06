@@ -16,10 +16,10 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
 >
     <services>
-        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Domain\ManagingPriceHistory" public="true">
-            <argument type="service" id="sylius_price_history_plugin.repository.channel_pricing_log_entry" />
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Domain\ManagingPriceHistoryContext" public="true">
+            <argument type="service" id="sylius_price_history.repository.channel_pricing_log_entry" />
             <argument type="service" id="sylius.product_variant_resolver.default" />
-            <argument type="service" id="Sylius\PriceHistoryPlugin\Remover\ChannelPricingLogEntriesRemoverInterface" />
+            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Remover\ChannelPricingLogEntriesRemoverInterface" />
         </service>
     </services>
 </container>

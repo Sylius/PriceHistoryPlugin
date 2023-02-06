@@ -16,8 +16,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
 >
     <services>
-        <service id="Sylius\PriceHistoryPlugin\Command\ClearPriceHistoryCommand">
-            <argument type="service" id="Sylius\PriceHistoryPlugin\Remover\ChannelPricingLogEntriesRemoverInterface" />
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\Cli\Command\ClearPriceHistoryCommand">
+            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Remover\ChannelPricingLogEntriesRemoverInterface" />
             <tag name="console.command" command="sylius:price-history:clear" />
         </service>
     </services>

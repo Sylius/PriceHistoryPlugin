@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
+use Sylius\PriceHistoryPlugin\Domain\Repository\ChannelPricingLogEntryRepositoryInterface as DomainChannelPricingLogEntryRepositoryInterface;
 
-interface ChannelPricingLogEntryRepositoryInterface
+interface ChannelPricingLogEntryRepositoryInterface extends DomainChannelPricingLogEntryRepositoryInterface
 {
     public function createByChannelPricingIdListQueryBuilder(mixed $channelPricingId): QueryBuilder;
 }

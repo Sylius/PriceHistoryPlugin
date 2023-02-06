@@ -17,6 +17,6 @@ default:
                 - Sylius\Calendar\Tests\Behat\Context\Setup\CalendarContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\PriceHistoryContext
 
-                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Domain\ManagingPriceHistory
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Domain\ManagingPriceHistoryContext
             filters:
                 tags: "@managing_price_history&&@domain"

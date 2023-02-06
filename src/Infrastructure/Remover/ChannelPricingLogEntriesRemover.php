@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Remover;
+namespace Sylius\PriceHistoryPlugin\Infrastructure\Remover;
 
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Calendar\Provider\DateTimeProviderInterface;
-use Sylius\PriceHistoryPlugin\Event\OldChannelPricingLogEntriesEvents;
-use Sylius\PriceHistoryPlugin\Repository\ChannelPricingLogEntryRepositoryInterface;
+use Sylius\PriceHistoryPlugin\Application\Remover\ChannelPricingLogEntriesRemoverInterface;
+use Sylius\PriceHistoryPlugin\Domain\Repository\ChannelPricingLogEntryRepositoryInterface;
+use Sylius\PriceHistoryPlugin\Infrastructure\Event\OldChannelPricingLogEntriesEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;

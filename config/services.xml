@@ -20,7 +20,7 @@
     </imports>
 
     <parameters>
-        <parameter key="sylius_price_history.expired_logs_batch_size">100</parameter>
+        <parameter key="sylius_price_history.expired_logs_removal_batch_size">100</parameter>
     </parameters>
 
     <services>
@@ -30,12 +30,12 @@
             <argument type="service" id="Sylius\Calendar\Provider\DateTimeProviderInterface" />
         </service>
 
-        <service id="Sylius\PriceHistoryPlugin\Remover\ChannelPricingLogEntriesRemoverInterface" class="Sylius\PriceHistoryPlugin\Remover\ChannelPricingLogEntriesRemover">
-            <argument type="service" id="sylius_price_history_plugin.repository.channel_pricing_log_entry" />
+        <service id="Sylius\PriceHistoryPlugin\Application\Remover\ChannelPricingLogEntriesRemoverInterface" class="Sylius\PriceHistoryPlugin\Infrastructure\Remover\ChannelPricingLogEntriesRemover">
+            <argument type="service" id="sylius_price_history.repository.channel_pricing_log_entry" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="Sylius\Calendar\Provider\DateTimeProviderInterface" />
             <argument type="service" id="event_dispatcher" />
-            <argument>%sylius_price_history.expired_logs_batch_size%</argument>
+            <argument>%sylius_price_history.expired_logs_removal_batch_size%</argument>
         </service>
     </services>
 </container>
