@@ -1,0 +1,128 @@
+<?php
+
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Paweł Jędrzejewski
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace spec\Sylius\PriceHistoryPlugin\Remover;
+
+use Doctrine\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Sylius\PriceHistoryPlugin\Event\OldChannelPricingLogEntriesEvents;
+use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntryInterface;
+use Sylius\PriceHistoryPlugin\Remover\ChannelPricingLogEntriesRemover;
+use Sylius\PriceHistoryPlugin\Repository\ChannelPricingLogEntryRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+
+final class ChannelPricingLogEntriesRemoverSpec extends ObjectBehavior
+{
+    private const BATCH_SIZE = 1;
+
+    function let(
+        ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntriesRepository,
+        ObjectManager $manager,
+        EventDispatcherInterface $eventDispatcher,
+    ): void {
+        $this->beConstructedWith(
+            $channelPricingLogEntriesRepository,
+            $manager,
+            $eventDispatcher,
+            self::BATCH_SIZE,
+        );
+    }
+
+    function it_implements_channel_pricing_log_entries_remover_interface(): void
+    {
+        $this->shouldImplement(ChannelPricingLogEntriesRemover::class);
+    }
+
+    function it_does_nothing_when_no_log_entries_were_found(
+        ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntriesRepository,
+        ObjectManager $manager,
+        EventDispatcherInterface $eventDispatcher,
+    ): void {
+        $channelPricingLogEntriesRepository->findOlderThan(Argument::cetera())->willReturn([]);
+
+        $manager->remove(Argument::any())->shouldNotBeCalled();
+        $manager->flush()->shouldNotBeCalled();
+        $manager->clear()->shouldNotBeCalled();
+
+        $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
+
+        $this->remove(1);
+    }
+
+    function it_removes_a_single_batch_of_channel_pricing_log_entries_when_there_is_no_more(
+        ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntriesRepository,
+        ObjectManager $manager,
+        EventDispatcherInterface $eventDispatcher,
+        ChannelPricingLogEntryInterface $channelPricingLogEntry,
+    ): void {
+        $channelPricingLogEntriesRepository
+            ->findOlderThan(Argument::cetera())
+            ->willReturn([$channelPricingLogEntry], [])
+        ;
+
+        $manager->remove($channelPricingLogEntry)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            new  GenericEvent([$channelPricingLogEntry->getWrappedObject()]),
+            OldChannelPricingLogEntriesEvents::PRE_REMOVE,
+        )->shouldBeCalled();
+        $manager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            new  GenericEvent([$channelPricingLogEntry->getWrappedObject()]),
+            OldChannelPricingLogEntriesEvents::POST_REMOVE,
+        )->shouldBeCalled();
+        $manager->clear()->shouldBeCalled();
+
+        $this->remove(1);
+    }
+
+    function it_removes_multiple_batches_of_channel_pricing_log_entries(
+        ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntriesRepository,
+        ObjectManager $manager,
+        EventDispatcherInterface $eventDispatcher,
+        ChannelPricingLogEntryInterface $firstChannelPricingLogEntry,
+        ChannelPricingLogEntryInterface $secondChannelPricingLogEntry,
+    ): void {
+        $channelPricingLogEntriesRepository
+            ->findOlderThan(Argument::cetera())
+            ->willReturn([$firstChannelPricingLogEntry], [$secondChannelPricingLogEntry], [])
+        ;
+
+        $eventDispatcher->dispatch(
+            new  GenericEvent([$firstChannelPricingLogEntry->getWrappedObject()]),
+            OldChannelPricingLogEntriesEvents::PRE_REMOVE,
+        )->shouldBeCalledTimes(1);
+        $eventDispatcher->dispatch(
+            new  GenericEvent([$secondChannelPricingLogEntry->getWrappedObject()]),
+            OldChannelPricingLogEntriesEvents::PRE_REMOVE,
+        )->shouldBeCalledTimes(1);
+
+        $manager->remove($firstChannelPricingLogEntry)->shouldBeCalledTimes(1);
+        $manager->remove($secondChannelPricingLogEntry)->shouldBeCalledTimes(1);
+
+        $eventDispatcher->dispatch(
+            new  GenericEvent([$firstChannelPricingLogEntry->getWrappedObject()]),
+            OldChannelPricingLogEntriesEvents::POST_REMOVE,
+        )->shouldBeCalledTimes(1);
+        $eventDispatcher->dispatch(
+            new  GenericEvent([$secondChannelPricingLogEntry->getWrappedObject()]),
+            OldChannelPricingLogEntriesEvents::POST_REMOVE,
+        )->shouldBeCalledTimes(1);
+
+        $manager->flush()->shouldBeCalledTimes(2);
+        $manager->clear()->shouldBeCalledTimes(2);
+
+        $this->remove(1);
+    }
+}
