@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use Doctrine\Persistence\ObjectManager;
 use Sylius\Behat\Service\SharedStorageInterface;
-use Sylius\Calendar\Tests\Behat\Context\Setup\CalendarContext;
 use Sylius\Component\Core\Event\ProductUpdated;
 use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
@@ -26,19 +24,16 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
     public function __construct(
         private SharedStorageInterface $sharedStorage,
-        private CalendarContext $calendarContext,
         private ProductRepositoryInterface $productRepository,
         private ProductVariantResolverInterface $defaultVariantResolver,
         private MessageBusInterface $eventBus,
         private FactoryInterface $productVariantFactory,
         private FactoryInterface $channelPricingFactory,
-        private ObjectManager $productVariantManager,
     ) {
     }
 

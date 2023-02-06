@@ -14,6 +14,7 @@ namespace spec\Sylius\PriceHistoryPlugin\Remover;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Sylius\Calendar\Provider\DateTimeProviderInterface;
 use Sylius\PriceHistoryPlugin\Event\OldChannelPricingLogEntriesEvents;
 use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntryInterface;
 use Sylius\PriceHistoryPlugin\Remover\ChannelPricingLogEntriesRemover;
@@ -28,11 +29,13 @@ final class ChannelPricingLogEntriesRemoverSpec extends ObjectBehavior
     function let(
         ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntriesRepository,
         ObjectManager $manager,
+        DateTimeProviderInterface $dateTimeProvider,
         EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $channelPricingLogEntriesRepository,
             $manager,
+            $dateTimeProvider,
             $eventDispatcher,
             self::BATCH_SIZE,
         );
@@ -46,9 +49,13 @@ final class ChannelPricingLogEntriesRemoverSpec extends ObjectBehavior
     function it_does_nothing_when_no_log_entries_were_found(
         ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntriesRepository,
         ObjectManager $manager,
+        DateTimeProviderInterface $dateTimeProvider,
         EventDispatcherInterface $eventDispatcher,
     ): void {
-        $channelPricingLogEntriesRepository->findOlderThan(Argument::cetera())->willReturn([]);
+        $date = new \DateTimeImmutable();
+        $dateTimeProvider->now()->willReturn($date);
+
+        $channelPricingLogEntriesRepository->findOlderThan($date->modify('-1 days'), self::BATCH_SIZE)->willReturn([]);
 
         $manager->remove(Argument::any())->shouldNotBeCalled();
         $manager->flush()->shouldNotBeCalled();
@@ -62,11 +69,15 @@ final class ChannelPricingLogEntriesRemoverSpec extends ObjectBehavior
     function it_removes_a_single_batch_of_channel_pricing_log_entries_when_there_is_no_more(
         ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntriesRepository,
         ObjectManager $manager,
+        DateTimeProviderInterface $dateTimeProvider,
         EventDispatcherInterface $eventDispatcher,
         ChannelPricingLogEntryInterface $channelPricingLogEntry,
     ): void {
+        $date = new \DateTimeImmutable();
+        $dateTimeProvider->now()->willReturn($date);
+
         $channelPricingLogEntriesRepository
-            ->findOlderThan(Argument::cetera())
+            ->findOlderThan($date->modify('-1 days'), self::BATCH_SIZE)
             ->willReturn([$channelPricingLogEntry], [])
         ;
 
@@ -90,12 +101,16 @@ final class ChannelPricingLogEntriesRemoverSpec extends ObjectBehavior
     function it_removes_multiple_batches_of_channel_pricing_log_entries(
         ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntriesRepository,
         ObjectManager $manager,
+        DateTimeProviderInterface $dateTimeProvider,
         EventDispatcherInterface $eventDispatcher,
         ChannelPricingLogEntryInterface $firstChannelPricingLogEntry,
         ChannelPricingLogEntryInterface $secondChannelPricingLogEntry,
     ): void {
+        $date = new \DateTimeImmutable();
+        $dateTimeProvider->now()->willReturn($date);
+
         $channelPricingLogEntriesRepository
-            ->findOlderThan(Argument::cetera())
+            ->findOlderThan($date->modify('-1 days'), self::BATCH_SIZE)
             ->willReturn([$firstChannelPricingLogEntry], [$secondChannelPricingLogEntry], [])
         ;
 

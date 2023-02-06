@@ -31,8 +31,6 @@ final class ClearPriceHistoryCommand extends Command
 
     protected static $defaultDescription = 'Clears the price history up to a given number of days ago';
 
-    /**
-     */
     public function __construct(private ChannelPricingLogEntriesRemoverInterface $channelPricingLogEntriesRemover)
     {
         parent::__construct();
@@ -61,7 +59,8 @@ final class ClearPriceHistoryCommand extends Command
 
         if ($input->isInteractive()) {
             $confirmation = $this->io->confirm(sprintf(
-                'Are you sure you want to clear the price history from before %s days ago?', $days
+                'Are you sure you want to clear the price history from before %s days ago?',
+                $days,
             ), false);
 
             if (false === $confirmation) {

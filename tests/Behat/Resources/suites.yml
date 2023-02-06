@@ -5,5 +5,6 @@ imports:
     - suites/api/channel/managing_channels.yaml
     - suites/api/product/managing_product_variants.yaml
     - suites/api/promotion/managing_catalog_promotions.yaml
+    - suites/domain/managing_price_history.yaml
     - suites/ui/product/managing_product_variants.yaml
     - suites/ui/promotion/managing_catalog_promotions.yaml

@@ -9,19 +9,24 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Sylius\PriceHistoryPlugin\Remover;
 
 use Doctrine\Persistence\ObjectManager;
+use Sylius\Calendar\Provider\DateTimeProviderInterface;
 use Sylius\PriceHistoryPlugin\Event\OldChannelPricingLogEntriesEvents;
 use Sylius\PriceHistoryPlugin\Repository\ChannelPricingLogEntryRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Webmozart\Assert\Assert;
 
 final class ChannelPricingLogEntriesRemover implements ChannelPricingLogEntriesRemoverInterface
 {
     public function __construct(
         private ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntriesRepository,
         private ObjectManager $channelPricingLogEntriesManager,
+        private DateTimeProviderInterface $dateTimeProvider,
         private EventDispatcherInterface $eventDispatcher,
         private int $batchSize = 100,
     ) {
@@ -29,7 +34,7 @@ final class ChannelPricingLogEntriesRemover implements ChannelPricingLogEntriesR
 
     public function remove(int $fromDays): void
     {
-        $fromDate = new \DateTimeImmutable(sprintf('-%d days', $fromDays));
+        $fromDate = $this->getFromDate($fromDays);
         while ([] !== $oldChannelPricingLogEntries = $this->getBatch($fromDate)) {
             foreach ($oldChannelPricingLogEntries as $oldChannelPricingLogEntry) {
                 $this->channelPricingLogEntriesManager->remove($oldChannelPricingLogEntry);
@@ -50,5 +55,14 @@ final class ChannelPricingLogEntriesRemover implements ChannelPricingLogEntriesR
         $this->channelPricingLogEntriesManager->flush();
         $this->eventDispatcher->dispatch(new GenericEvent($deletedChannelPricingLogEntries), OldChannelPricingLogEntriesEvents::POST_REMOVE);
         $this->channelPricingLogEntriesManager->clear();
+    }
+
+    private function getFromDate(int $fromDays): \DateTimeInterface
+    {
+        $now = $this->dateTimeProvider->now();
+        Assert::methodExists($now, 'modify');
+
+        /** @psalm-suppress UndefinedInterfaceMethod */
+        return $now->modify(sprintf('-%d days', $fromDays));
     }
 }
