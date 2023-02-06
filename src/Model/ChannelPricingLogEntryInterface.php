@@ -24,5 +24,7 @@ interface ChannelPricingLogEntryInterface extends ResourceInterface
 
     public function getOriginalPrice(): ?int;
 
+    public function isVisible(): bool;
+
     public function getLoggedAt(): \DateTimeInterface;
 }

@@ -26,6 +26,7 @@ class ChannelPricingLogEntry implements ChannelPricingLogEntryInterface
         protected ChannelPricingInterface $channelPricing,
         protected int $price,
         protected ?int $originalPrice,
+        protected bool $visible,
     ) {
         $this->loggedAt = new \DateTimeImmutable();
     }
@@ -56,5 +57,10 @@ class ChannelPricingLogEntry implements ChannelPricingLogEntryInterface
     public function getLoggedAt(): \DateTimeInterface
     {
         return $this->loggedAt;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->visible;
     }
 }

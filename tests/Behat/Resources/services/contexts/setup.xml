@@ -25,8 +25,11 @@
             <argument type="service" id="sylius.repository.product" />
             <argument type="service" id="sylius.product_variant_resolver.default" />
             <argument type="service" id="sylius.event_bus" />
+            <argument type="service" id="sylius.factory.product" />
             <argument type="service" id="sylius.factory.product_variant" />
             <argument type="service" id="sylius.factory.channel_pricing" />
+            <argument type="service" id="sylius.generator.slug" />
+            <argument type="service" id="sylius.locale_provider" />
         </service>
     </services>
 </container>

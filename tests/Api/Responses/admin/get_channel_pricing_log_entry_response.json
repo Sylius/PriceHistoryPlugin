@@ -5,5 +5,6 @@
     "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
     "price": 1000,
     "originalPrice": 2000,
+    "visible": true,
     "loggedAt": "@date@"
 }

@@ -21,6 +21,8 @@ use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Locale\Provider\LocaleProviderInterface;
+use Sylius\Component\Product\Generator\SlugGeneratorInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -32,9 +34,30 @@ final class ProductContext implements Context
         private ProductRepositoryInterface $productRepository,
         private ProductVariantResolverInterface $defaultVariantResolver,
         private MessageBusInterface $eventBus,
+        private FactoryInterface $productFactory,
         private FactoryInterface $productVariantFactory,
         private FactoryInterface $channelPricingFactory,
+        private SlugGeneratorInterface $slugGenerator,
+        private LocaleProviderInterface $localeProvider,
     ) {
+    }
+
+    /**
+     * @Given /^the store has(?:| a| an) "([^"]+)" configurable product with no channel enabled$/
+     */
+    public function storeHasAConfigurableProductWithNoChannelEnabled($productName)
+    {
+        /** @var ProductInterface $product */
+        $product = $this->productFactory->createNew();
+        $product->setCode(StringInflector::nameToUppercaseCode($productName));
+
+        $product->setFallbackLocale($this->localeProvider->getDefaultLocaleCode());
+        $product->setCurrentLocale($this->localeProvider->getDefaultLocaleCode());
+
+        $product->setName($productName);
+        $product->setSlug($this->slugGenerator->generate($productName));
+
+        $this->saveProduct($product);
     }
 
     /**
@@ -52,6 +75,20 @@ final class ProductContext implements Context
         $channelPricing = $productVariant->getChannelPricings()->first();
         $channelPricing->setPrice($price);
         $channelPricing->setOriginalPrice($originalPrice);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the ("[^"]+" product) is disabled with a new price ("[^"]+")$/
+     */
+    public function theProductIsDisabledWithANewPrice(ProductInterface $product, int $price)
+    {
+        /** @var ProductVariantInterface $productVariant */
+        $productVariant = $this->defaultVariantResolver->getVariant($product);
+        $productVariant->disable();
+        $channelPricing = $productVariant->getChannelPricingForChannel($this->sharedStorage->get('channel'));
+        $channelPricing->setPrice($price);
 
         $this->saveProduct($product);
     }

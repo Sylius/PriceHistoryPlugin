@@ -7,24 +7,18 @@
             "@id": "\/api\/v2\/admin\/channel-pricing-log-entries\/@integer@",
             "@type": "ChannelPricingLogEntry",
             "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
-            "price": 3000,
+            "price": 2500,
             "originalPrice": null,
+            "visible": false,
             "loggedAt": "@date@"
         },
         {
             "@id": "\/api\/v2\/admin\/channel-pricing-log-entries\/@integer@",
             "@type": "ChannelPricingLogEntry",
             "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
-            "price": 1000,
-            "originalPrice": 2000,
-            "loggedAt": "@date@"
-        },
-        {
-            "@id": "\/api\/v2\/admin\/channel-pricing-log-entries\/@integer@",
-            "@type": "ChannelPricingLogEntry",
-            "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
-            "price": 3000,
+            "price": 1500,
             "originalPrice": null,
+            "visible": false,
             "loggedAt": "@date@"
         },
         {
@@ -33,10 +27,56 @@
             "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
             "price": 2000,
             "originalPrice": null,
+            "visible": false,
+            "loggedAt": "@date@"
+        },
+        {
+            "@id": "\/api\/v2\/admin\/channel-pricing-log-entries\/@integer@",
+            "@type": "ChannelPricingLogEntry",
+            "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
+            "price": 1500,
+            "originalPrice": null,
+            "visible": false,
+            "loggedAt": "@date@"
+        },
+        {
+            "@id": "\/api\/v2\/admin\/channel-pricing-log-entries\/@integer@",
+            "@type": "ChannelPricingLogEntry",
+            "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
+            "price": 3000,
+            "originalPrice": null,
+            "visible": true,
+            "loggedAt": "@date@"
+        },
+        {
+            "@id": "\/api\/v2\/admin\/channel-pricing-log-entries\/@integer@",
+            "@type": "ChannelPricingLogEntry",
+            "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
+            "price": 3000,
+            "originalPrice": null,
+            "visible": true,
+            "loggedAt": "@date@"
+        },
+        {
+            "@id": "\/api\/v2\/admin\/channel-pricing-log-entries\/@integer@",
+            "@type": "ChannelPricingLogEntry",
+            "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
+            "price": 2000,
+            "originalPrice": null,
+            "visible": true,
+            "loggedAt": "@date@"
+        },
+        {
+            "@id": "\/api\/v2\/admin\/channel-pricing-log-entries\/@integer@",
+            "@type": "ChannelPricingLogEntry",
+            "channelPricing": "\/api\/v2\/admin\/channel-pricings\/@integer@",
+            "price": 1000,
+            "originalPrice": 2000,
+            "visible": true,
             "loggedAt": "@date@"
         }
     ],
-    "hydra:totalItems": 4,
+    "hydra:totalItems": 8,
     "hydra:search": {
         "@type": "hydra:IriTemplate",
         "hydra:template": "\/api\/v2\/admin\/channel-pricing-log-entries{?channelPricing.channelCode,channelPricing.channelCode[],channelPricing.productVariant.code,channelPricing.productVariant.code[]}",

@@ -29,5 +29,12 @@
             </argument>
             <tag name="api_platform.filter" />
         </service>
+
+        <service id="sylius_price_history.api.visible_filter" parent="api_platform.doctrine.orm.boolean_filter" public="true">
+            <argument type="collection">
+                <argument key="visible" />
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
     </services>
 </container>
