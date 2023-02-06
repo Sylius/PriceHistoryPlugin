@@ -66,12 +66,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Sylius\\PriceHistoryPlugin\\": "src/",
-            "Tests\\Sylius\\PriceHistoryPlugin\\": "tests/"
+            "Sylius\\PriceHistoryPlugin\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "spec\\Sylius\\PriceHistoryPlugin\\": "spec/",
+            "Tests\\Sylius\\PriceHistoryPlugin\\": "tests/",
             "Tests\\Sylius\\PriceHistoryPlugin\\Application\\": "tests/Application/src/"
         }
     }
