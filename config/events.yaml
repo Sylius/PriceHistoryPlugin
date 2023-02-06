@@ -1,0 +1,7 @@
+sylius_ui:
+    events:
+        sylius.admin.configurable_product.show.variant_content:
+            blocks:
+                pricing:
+                    template: '@SyliusPriceHistoryPlugin/Admin/Product/Show/_variantContentPricing.html.twig'
+                    priority: 10

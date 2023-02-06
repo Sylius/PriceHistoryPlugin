@@ -1,0 +1,16 @@
+sylius_price_history_admin_channel_pricing_log_entry_index:
+    path: products/{productId}/variants/{variantId}/channel-pricing/{channelPricingId}/channel-pricing-log-entries
+    methods: [GET]
+    defaults:
+        _controller: sylius_price_history.controller.channel_pricing_log_entry::indexAction
+        _sylius:
+            section: admin
+            permission: true
+            template: '@SyliusAdmin/Crud/index.html.twig'
+            grid: sylius_price_history_admin_channel_pricing_log_entry
+            vars:
+                icon: book
+                templates:
+                    breadcrumb: "@SyliusPriceHistoryPlugin/Admin/ChannelPricingLogEntry/Index/_breadcrumb.html.twig"
+                header: sylius_price_history.ui.channel_pricing_history
+                subheader: sylius_price_history.ui.show_history_for_channel_pricing
