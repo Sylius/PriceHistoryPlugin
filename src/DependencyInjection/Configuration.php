@@ -29,7 +29,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('sylius_price_history_plugin');
+        $treeBuilder = new TreeBuilder('sylius_price_history');
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addResourcesSection($rootNode);

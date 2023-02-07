@@ -43,7 +43,7 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
     {
         $config = $this->getCurrentConfiguration($container);
 
-        $this->registerResources('sylius_price_history_plugin', 'doctrine/orm', $config['resources'], $container);
+        $this->registerResources('sylius_price_history', 'doctrine/orm', $config['resources'], $container);
 
         $this->prependDoctrineMigrations($container);
         $this->prependDoctrineMapping($container);

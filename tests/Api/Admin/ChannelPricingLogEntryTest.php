@@ -51,7 +51,7 @@ final class ChannelPricingLogEntryTest extends JsonApiTestCase
         $channelPricing = $fixtures['channel_pricing_product_variant_mug_blue_home'];
 
         /** @var RepositoryInterface $channelPricingLogEntryRepository */
-        $channelPricingLogEntryRepository = $this->getContainer()->get('sylius_price_history_plugin.repository.channel_pricing_log_entry');
+        $channelPricingLogEntryRepository = $this->getContainer()->get('sylius_price_history.repository.channel_pricing_log_entry');
         /** @var ChannelPricingLogEntryInterface $firstLogEntry */
         $channelPricingLogEntry = $channelPricingLogEntryRepository->findOneBy(['channelPricing' => $channelPricing]);
 
