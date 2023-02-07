@@ -1,0 +1,29 @@
+Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
+    us_channel:
+        code: 'US'
+        name: 'US Channel'
+        hostname: 'us.localhost'
+        baseCurrency: '@currency_usd'
+        defaultLocale: '@locale_en'
+        enabled: true
+        taxCalculationStrategy: 'order_items_based'
+        shippingAddressInCheckoutRequired: true
+        lowestPriceForDiscountedProductsVisible: false
+    eu_channel:
+        code: 'EU'
+        name: 'EU Channel'
+        hostname: 'eu.localhost'
+        baseCurrency: '@currency_usd'
+        defaultLocale: '@locale_en'
+        enabled: true
+        taxCalculationStrategy: 'order_items_based'
+        shippingAddressInCheckoutRequired: true
+        lowestPriceForDiscountedProductsVisible: true
+
+Sylius\Component\Currency\Model\Currency:
+    currency_usd:
+        code: 'USD'
+
+Sylius\Component\Locale\Model\Locale:
+    locale_en:
+        code: 'en_US'
