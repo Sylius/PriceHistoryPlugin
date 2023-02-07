@@ -15,7 +15,7 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
-use Sylius\PriceHistoryPlugin\Model\ChannelInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 
 final class ChannelContext implements Context
 {

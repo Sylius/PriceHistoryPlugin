@@ -27,7 +27,6 @@ default:
                 - sylius.behat.context.setup.zone
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ChannelContext
 
-                - sylius.behat.context.api.admin.managing_channels
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ManagingChannelsContext
 
             filters:

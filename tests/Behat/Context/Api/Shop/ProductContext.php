@@ -13,13 +13,9 @@ declare(strict_types=1);
 
 namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Shop;
 
-use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
-use Sylius\Behat\Client\ApiClientInterface;
-use Sylius\Behat\Client\RequestFactoryInterface;
 use Sylius\Behat\Client\ResponseCheckerInterface;
-use Sylius\Behat\Service\Setter\ChannelContextSetterInterface;
-use Sylius\Behat\Service\SharedStorageInterface;
+use Sylius1_11\Behat\Client\ApiClientInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
@@ -27,11 +23,6 @@ final class ProductContext implements Context
     public function __construct(
         private ApiClientInterface $client,
         private ResponseCheckerInterface $responseChecker,
-        private SharedStorageInterface $sharedStorage,
-        private IriConverterInterface $iriConverter,
-        private ChannelContextSetterInterface $channelContextSetter,
-        private RequestFactoryInterface $requestFactory,
-        private string $apiUrlPrefix,
     ) {
     }
 

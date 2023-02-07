@@ -26,7 +26,6 @@ final class ChannelPricingLogEntryContext implements Context
     public function __construct(
         private ApiClientInterface $client,
         private ResponseCheckerInterface $responseChecker,
-        private ProductVariantRepositoryInterface $productVariantRepository,
         private SharedStorageInterface $sharedStorage,
     ) {
     }
