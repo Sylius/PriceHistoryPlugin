@@ -47,6 +47,8 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
 
         $this->prependDoctrineMigrations($container);
         $this->prependDoctrineMapping($container);
+
+        $this->prependApiPlatformMapping($container);
     }
 
     protected function getMigrationsNamespace(): string
@@ -68,9 +70,6 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
 
     private function prependDoctrineMapping(ContainerBuilder $container): void
     {
-        /** @var array<string, array<string, string>> $metadata */
-        $metadata = $container->getParameter('kernel.bundles_metadata');
-
         $config = array_merge(...$container->getExtensionConfig('doctrine'));
 
         // do not register mappings if dbal not configured.
@@ -83,11 +82,22 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
                 'mappings' => [
                     'SyliusPriceHistoryPlugin' => [
                         'type' => 'xml',
-                        'dir' => $metadata['SyliusPriceHistoryPlugin']['path'] . '/config/doctrine/',
+                        'dir' => $this->getPath($container, '/config/doctrine/'),
                         'is_bundle' => false,
                         'prefix' => 'Sylius\PriceHistoryPlugin\Model',
                         'alias' => 'SyliusPriceHistoryPlugin',
                     ],
+                ],
+            ],
+        ]);
+    }
+
+    private function prependApiPlatformMapping(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('api_platform', [
+            'mapping' => [
+                'paths' => [
+                    $this->getPath($container, '/config/api_resources/'),
                 ],
             ],
         ]);
@@ -101,5 +111,13 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
         $configs = $container->getExtensionConfig($this->getAlias());
 
         return $this->processConfiguration($configuration, $configs);
+    }
+
+    private function getPath(ContainerBuilder $container, string $path): string
+    {
+        /** @var array<string, array<string, string>> $metadata */
+        $metadata = $container->getParameter('kernel.bundles_metadata');
+
+        return $metadata['SyliusPriceHistoryPlugin']['path'] . $path;
     }
 }
