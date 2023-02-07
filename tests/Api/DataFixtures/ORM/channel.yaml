@@ -7,7 +7,6 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         defaultLocale: '@locale_en'
         enabled: true
         taxCalculationStrategy: 'order_items_based'
-        shippingAddressInCheckoutRequired: true
         lowestPriceForDiscountedProductsVisible: false
     eu_channel:
         code: 'EU'
@@ -17,7 +16,6 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         defaultLocale: '@locale_en'
         enabled: true
         taxCalculationStrategy: 'order_items_based'
-        shippingAddressInCheckoutRequired: true
         lowestPriceForDiscountedProductsVisible: true
 
 Sylius\Component\Currency\Model\Currency:

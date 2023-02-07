@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Tests\Sylius\PriceHistoryPlugin\Api\Admin;
 
-use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntryInterface;
+use Sylius\Bundle\CoreBundle\Application\Kernel;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Sylius\PriceHistoryPlugin\Api\JsonApiTestCase;
 
@@ -36,13 +34,12 @@ final class ChannelTest extends JsonApiTestCase
                 'baseCurrency' => '/api/v2/admin/currencies/USD',
                 'defaultLocale' => '/api/v2/admin/locales/en_US',
                 'taxCalculationStrategy' => 'order_items_based',
-                'shippingAddressInCheckoutRequired' => true,
             ], JSON_THROW_ON_ERROR)
         );
 
         $this->assertResponse(
             $this->client->getResponse(),
-            'admin/post_channel_with_enabled_lowest_price_for_discounted_products_visible_field_response',
+            $this->getResponseFilename('post', true),
             Response::HTTP_CREATED
         );
     }
@@ -62,14 +59,13 @@ final class ChannelTest extends JsonApiTestCase
                 'baseCurrency' => '/api/v2/admin/currencies/USD',
                 'defaultLocale' => '/api/v2/admin/locales/en_US',
                 'taxCalculationStrategy' => 'order_items_based',
-                'shippingAddressInCheckoutRequired' => true,
                 'lowestPriceForDiscountedProductsVisible' => true,
             ], JSON_THROW_ON_ERROR)
         );
 
         $this->assertResponse(
             $this->client->getResponse(),
-            'admin/post_channel_with_enabled_lowest_price_for_discounted_products_visible_field_response',
+            $this->getResponseFilename('post', true),
             Response::HTTP_CREATED
         );
     }
@@ -89,14 +85,13 @@ final class ChannelTest extends JsonApiTestCase
                 'baseCurrency' => '/api/v2/admin/currencies/USD',
                 'defaultLocale' => '/api/v2/admin/locales/en_US',
                 'taxCalculationStrategy' => 'order_items_based',
-                'shippingAddressInCheckoutRequired' => true,
                 'lowestPriceForDiscountedProductsVisible' => false,
             ], JSON_THROW_ON_ERROR)
         );
 
         $this->assertResponse(
             $this->client->getResponse(),
-            'admin/post_channel_with_disabled_lowest_price_for_discounted_products_visible_field_response',
+            $this->getResponseFilename('post', false),
             Response::HTTP_CREATED
         );
     }
@@ -117,7 +112,7 @@ final class ChannelTest extends JsonApiTestCase
 
         $this->assertResponse(
             $this->client->getResponse(),
-            'admin/put_channel_with_enabled_lowest_price_for_discounted_products_visible_field_response',
+            $this->getResponseFilename('put', true),
             Response::HTTP_OK
         );
     }
@@ -138,7 +133,7 @@ final class ChannelTest extends JsonApiTestCase
 
         $this->assertResponse(
             $this->client->getResponse(),
-            'admin/put_channel_with_disabled_lowest_price_for_discounted_products_visible_field_response',
+            $this->getResponseFilename('put', false),
             Response::HTTP_OK
         );
     }
@@ -157,8 +152,21 @@ final class ChannelTest extends JsonApiTestCase
 
         $this->assertResponse(
             $this->client->getResponse(),
-            'admin/put_channel_with_no_lowest_price_for_discounted_products_visible_field_response',
+            $this->getResponseFilename('put', null),
             Response::HTTP_OK
+        );
+    }
+
+    private function getResponseFilename(string $httpMethod, ?bool $lowestPriceForDiscountedProductsVisible): string
+    {
+        return sprintf(
+            'admin/%s.%s/%s_channel_with_%s_lowest_price_for_discounted_products_visible_field_response',
+            Kernel::MAJOR_VERSION,
+            Kernel::MINOR_VERSION,
+            $httpMethod,
+            null === $lowestPriceForDiscountedProductsVisible
+                ? 'no'
+                : ($lowestPriceForDiscountedProductsVisible ? 'enabled' : 'disabled'),
         );
     }
 }

@@ -19,7 +19,6 @@
     "skippingShippingStepAllowed": false,
     "skippingPaymentStepAllowed": false,
     "accountVerificationRequired": true,
-    "shippingAddressInCheckoutRequired": true,
     "lowestPriceForDiscountedProductsVisible": false,
     "shopBillingData": null,
     "menuTaxon": null,
