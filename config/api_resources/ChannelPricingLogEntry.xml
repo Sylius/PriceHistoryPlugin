@@ -15,7 +15,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
-    <resource class="%sylius_price_history_plugin.model.channel_pricing_log_entry.class%" shortName="ChannelPricingLogEntry">
+    <resource class="%sylius_price_history.model.channel_pricing_log_entry.class%" shortName="ChannelPricingLogEntry">
         <collectionOperations>
             <collectionOperation name="admin_get">
                 <attribute name="method">GET</attribute>
