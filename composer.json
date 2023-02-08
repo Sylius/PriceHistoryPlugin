@@ -68,7 +68,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Sylius\\PriceHistoryPlugin\\": "src/"
+            "Sylius\\PriceHistoryPlugin\\": "src/",
+            "Tests\\Sylius\\PriceHistoryPlugin\\Behat\\": "tests/Behat/"
         }
     },
     "autoload-dev": {
