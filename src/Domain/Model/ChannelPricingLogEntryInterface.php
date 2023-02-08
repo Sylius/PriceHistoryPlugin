@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Model;
+namespace Sylius\PriceHistoryPlugin\Domain\Model;
 
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;

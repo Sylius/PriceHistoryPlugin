@@ -16,7 +16,7 @@ namespace Tests\Sylius\PriceHistoryPlugin\Api\Admin;
 use ApiTestCase\JsonApiTestCase;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntryInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Sylius\PriceHistoryPlugin\Api\Utils\AdminUserLoginTrait;
 

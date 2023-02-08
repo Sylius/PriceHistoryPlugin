@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\PriceHistoryPlugin\Model;
+namespace spec\Sylius\PriceHistoryPlugin\Domain\Model;
 
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\PriceHistoryPlugin\Model\ChannelPricingLogEntryInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 
 class ChannelPricingLogEntrySpec extends ObjectBehavior
 {

@@ -51,12 +51,12 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
 
     protected function getMigrationsNamespace(): string
     {
-        return 'Sylius\PriceHistoryPlugin\Migrations';
+        return 'Sylius\PriceHistoryPlugin\Infrastructure\Migrations';
     }
 
     protected function getMigrationsDirectory(): string
     {
-        return '@SyliusPriceHistoryPlugin/src/Migrations';
+        return '@SyliusPriceHistoryPlugin/src/Infrastructure/Migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array
@@ -85,7 +85,7 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
                         'type' => 'xml',
                         'dir' => $metadata['SyliusPriceHistoryPlugin']['path'] . '/config/doctrine/',
                         'is_bundle' => false,
-                        'prefix' => 'Sylius\PriceHistoryPlugin\Model',
+                        'prefix' => 'Sylius\PriceHistoryPlugin\Domain\Model',
                         'alias' => 'SyliusPriceHistoryPlugin',
                     ],
                 ],
