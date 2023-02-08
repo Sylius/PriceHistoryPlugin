@@ -18,4 +18,12 @@
     <imports>
         <import resource="services/**/*.xml" />
     </imports>
+
+    <services>
+        <service id="Sylius\PriceHistoryPlugin\Application\Logger\PriceChangeLoggerInterface" class="Sylius\PriceHistoryPlugin\Application\Logger\PriceChangeLogger">
+            <argument type="service" id="sylius_price_history.factory.channel_pricing_log_entry" />
+            <argument type="service" id="sylius_price_history.manager.channel_pricing_log_entry" />
+            <argument type="service" id="Sylius\Calendar\Provider\DateTimeProviderInterface" />
+        </service>
+    </services>
 </container>

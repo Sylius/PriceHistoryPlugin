@@ -22,17 +22,24 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\PriceHistoryPlugin\Application\Logger\PriceChangeLoggerInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Sylius\PriceHistoryPlugin\Infrastructure\EventListener\ChannelPricingChangeListener;
 
 class ChannelPricingChangeListenerSpec extends ObjectBehavior
 {
+    function let(PriceChangeLoggerInterface $priceChangeLogger): void
+    {
+        $this->beConstructedWith($priceChangeLogger);
+    }
+
     function it_is_initializable(): void
     {
         $this->shouldHaveType(ChannelPricingChangeListener::class);
     }
 
-    function it_creates_channel_pricing_log_entries_for_updated_and_newly_created_channel_pricings_only(
+    function it_logs_price_change_for_updated_and_newly_created_channel_pricings_only(
+        PriceChangeLoggerInterface $priceChangeLogger,
         OnFlushEventArgs $eventArgs,
         EntityManagerInterface $entityManager,
         ChannelPricingInterface $newChannelPricing,
@@ -81,18 +88,19 @@ class ChannelPricingChangeListenerSpec extends ObjectBehavior
 
         $unitOfWork->shouldReceive('computeChangeSets')->withNoArgs()->once();
 
-        $entityManager
-            ->persist(Argument::type(ChannelPricingLogEntryInterface::class))
-            ->shouldBeCalledTimes(2)    // once for updated channel pricing and once for new channel pricing
-        ;
-        $entityManager->persist(Argument::type(ProductInterface::class))->shouldNotBeCalled();
-
         $entityManager->getUnitOfWork()->willReturn($unitOfWork);
+
+        $priceChangeLogger->log($newChannelPricing)->shouldBeCalledOnce();
+        $priceChangeLogger->log($newProduct)->shouldNotBeCalled();
+
+        $priceChangeLogger->log($updatedChannelPricing)->shouldBeCalledOnce();
+        $priceChangeLogger->log($updatedProduct)->shouldNotBeCalled();
 
         $this->onFlush($eventArgs);
     }
 
-    function it_does_not_create_channel_pricing_log_entry_if_price_and_original_price_have_not_changed(
+    function it_does_not_log_price_change_if_price_and_original_price_have_not_changed(
+        PriceChangeLoggerInterface $priceChangeLogger,
         OnFlushEventArgs $eventArgs,
         EntityManagerInterface $entityManager,
         ChannelPricingInterface $updatedChannelPricing,
@@ -125,14 +133,16 @@ class ChannelPricingChangeListenerSpec extends ObjectBehavior
         ;
 
         $unitOfWork->shouldReceive('computeChangeSets')->withNoArgs()->once();
-        $entityManager->persist(Argument::type(ChannelPricingLogEntryInterface::class))->shouldNotBeCalled();
 
         $entityManager->getUnitOfWork()->willReturn($unitOfWork);
+
+        $priceChangeLogger->log(Argument::any())->shouldNotBeCalled();
 
         $this->onFlush($eventArgs);
     }
 
-    function it_creates_channel_pricing_log_entry_if_at_least_one_supported_field_has_changed(
+    function it_logs_price_change_if_at_least_one_supported_field_has_changed(
+        PriceChangeLoggerInterface $priceChangeLogger,
         OnFlushEventArgs $eventArgs,
         EntityManagerInterface $entityManager,
         ChannelPricingInterface $updatedChannelPricing,
@@ -165,9 +175,10 @@ class ChannelPricingChangeListenerSpec extends ObjectBehavior
         ;
 
         $unitOfWork->shouldReceive('computeChangeSets')->withNoArgs()->once();
-        $entityManager->persist(Argument::type(ChannelPricingLogEntryInterface::class))->shouldBeCalledOnce();
 
         $entityManager->getUnitOfWork()->willReturn($unitOfWork);
+
+        $priceChangeLogger->log($updatedChannelPricing)->shouldBeCalledOnce();
 
         $this->onFlush($eventArgs);
     }

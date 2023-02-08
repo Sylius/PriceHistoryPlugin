@@ -15,4 +15,15 @@
             <file name="src/DependencyInjection/SyliusPriceHistoryExtension.php"/>
         </ignoreFiles>
     </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnStatement errorLevel="info" />
+        <MoreSpecificReturnType errorLevel="info" />
+
+        <InvalidStringClass>
+            <errorLevel type="info">
+                <file name="src/Application/Factory/ChannelPricingLogEntryFactory.php" />
+            </errorLevel>
+        </InvalidStringClass>
+    </issueHandlers>
 </psalm>
