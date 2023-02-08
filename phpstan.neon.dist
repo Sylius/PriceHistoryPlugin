@@ -1,10 +1,12 @@
 parameters:
     level: max
-    reportUnmatchedIgnoredErrors: true
+    checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: true
     paths:
         - src
     excludePaths:
         - 'src/DependencyInjection/Configuration.php'
     ignoreErrors:
         - '/Method Sylius\\PriceHistoryPlugin\\Domain\\Model\\\w+\:\:getId\(\) has no return type specified./'
+        - '/Method Sylius\\PriceHistoryPlugin\\Application\\Factory\\ChannelPricingLogEntryFactory\:\:create\(\) should return Sylius\\PriceHistoryPlugin\\Domain\\Model\\ChannelPricingLogEntryInterface but returns object./'

@@ -17,6 +17,7 @@
 >
     <services>
         <service id="sylius_price_history.listener.channel_pricing_change" class="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\ChannelPricingChangeListener">
+            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Logger\PriceChangeLoggerInterface" />
             <tag name="doctrine.event_listener" event="onFlush" lazy="true" />
         </service>
     </services>

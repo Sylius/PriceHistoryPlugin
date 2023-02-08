@@ -15,7 +15,7 @@ namespace Sylius\PriceHistoryPlugin\DependencyInjection;
 
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Sylius\Bundle\ResourceBundle\Form\Type\DefaultResourceType;
-use Sylius\Component\Resource\Factory\Factory;
+use Sylius\PriceHistoryPlugin\Application\Factory\ChannelPricingLogEntryFactory;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntry;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -55,7 +55,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(ChannelPricingLogEntryInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                        ->scalarNode('factory')->defaultValue(ChannelPricingLogEntryFactory::class)->end()
                                         ->scalarNode('form')->defaultValue(DefaultResourceType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
