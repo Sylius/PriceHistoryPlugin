@@ -20,6 +20,10 @@
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ChannelContext" public="true">
+            <argument type="service" id="sylius.manager.channel" />
+        </service>
+
         <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ProductContext" public="true">
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.product" />

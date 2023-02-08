@@ -10,5 +10,13 @@ doctrine:
         driver: 'pdo_mysql'
         server_version: '5.7'
         charset: UTF8
-
         url: '%env(resolve:DATABASE_URL)%'
+    orm:
+        entity_managers:
+            default:
+                mappings:
+                    App:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/src/Entity'
+                        prefix: Tests\Sylius\PriceHistoryPlugin\Application\Entity

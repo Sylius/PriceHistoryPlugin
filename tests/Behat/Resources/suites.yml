@@ -2,5 +2,6 @@
 # (c) Paweł Jędrzejewski
 
 imports:
+    - suites/api/channel/managing_channels.yaml
     - suites/api/product/managing_product_variants.yaml
     - suites/api/promotion/managing_catalog_promotions.yaml

@@ -24,6 +24,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
@@ -82,6 +83,63 @@ final class ProductContext implements Context
 
         $product->setVariantSelectionMethod(ProductInterface::VARIANT_SELECTION_CHOICE);
         $product->addVariant($variant);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^(this product)'s price was discounted to ("[^"]+")$/
+     * @Given /^(this product)'s discounted price changed to ("[^"]+")$/
+     */
+    public function thisProductsPriceWasDiscountedTo(ProductInterface $product, int $price): void
+    {
+        /** @var ProductVariantInterface $productVariant */
+        $productVariant = $this->defaultVariantResolver->getVariant($product);
+
+        /** @var ChannelPricingInterface $channelPricing */
+        $channelPricing = $productVariant->getChannelPricings()->first();
+
+        Assert::notSame(
+            $channelPricing->getOriginalPrice(),
+            $price,
+            'This is not a discount as the original price is the same as the current price.'
+        );
+
+        $channelPricing->setOriginalPrice($channelPricing->getPrice());
+        $channelPricing->setPrice($price);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^(this product)'s discount was removed$/
+     */
+    public function thisProductsDiscountWasRemoved(ProductInterface $product): void
+    {
+        /** @var ProductVariantInterface $productVariant */
+        $productVariant = $this->defaultVariantResolver->getVariant($product);
+
+        /** @var ChannelPricingInterface $channelPricing */
+        $channelPricing = $productVariant->getChannelPricings()->first();
+
+        $channelPricing->setPrice($channelPricing->getOriginalPrice());
+        $channelPricing->setOriginalPrice(null);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^(this product)'s price was changed to ("[^"]+")$/
+     * @Given /^(this product)'s price was changed back to ("[^"]+")$/
+     */
+    public function theProductChangedItsPriceTo(ProductInterface $product, int $price): void
+    {
+        /** @var ProductVariantInterface $productVariant */
+        $productVariant = $this->defaultVariantResolver->getVariant($product);
+
+        /** @var ChannelPricingInterface $channelPricing */
+        $channelPricing = $productVariant->getChannelPricingForChannel($this->sharedStorage->get('channel'));
+        $channelPricing->setPrice($price);
 
         $this->saveProduct($product);
     }

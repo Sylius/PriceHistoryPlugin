@@ -13,19 +13,14 @@ declare(strict_types=1);
 
 namespace Tests\Sylius\PriceHistoryPlugin\Api\Admin;
 
-use ApiTestCase\JsonApiTestCase;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\Sylius\PriceHistoryPlugin\Api\Utils\AdminUserLoginTrait;
+use Tests\Sylius\PriceHistoryPlugin\Api\JsonApiTestCase;
 
 final class ChannelPricingLogEntryTest extends JsonApiTestCase
 {
-    use AdminUserLoginTrait;
-
-    private const CONTENT_TYPE_HEADER = ['CONTENT_TYPE' => 'application/ld+json', 'HTTP_ACCEPT' => 'application/ld+json'];
-
     /** @test */
     public function it_denies_access_to_a_channel_pricing_log_entries_for_not_authenticated_user(): void
     {
@@ -34,7 +29,7 @@ final class ChannelPricingLogEntryTest extends JsonApiTestCase
         $this->client->request(
             method: 'GET',
             uri: '/api/v2/admin/channel-pricing-log-entries',
-            server: self::CONTENT_TYPE_HEADER,
+            server: $this->getUnloggedHeader(),
         );
 
         $response = $this->client->getResponse();
@@ -45,7 +40,6 @@ final class ChannelPricingLogEntryTest extends JsonApiTestCase
     public function it_gets_single_channel_pricing_log_entry(): void
     {
         $fixtures = $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'product_variant.yaml']);
-        $header = $this->getLoggedHeader();
 
         /** @var ChannelPricingInterface $channelPricing */
         $channelPricing = $fixtures['channel_pricing_product_variant_mug_blue_home'];
@@ -58,7 +52,7 @@ final class ChannelPricingLogEntryTest extends JsonApiTestCase
         $this->client->request(
             method: 'GET',
             uri: sprintf('/api/v2/admin/channel-pricing-log-entries/%d', $channelPricingLogEntry->getId()),
-            server: $header,
+            server: $this->getLoggedHeader(),
         );
 
         $this->assertResponse(
@@ -72,12 +66,11 @@ final class ChannelPricingLogEntryTest extends JsonApiTestCase
     public function it_gets_all_channel_pricing_log_entries(): void
     {
         $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'product_variant.yaml']);
-        $header = $this->getLoggedHeader();
 
         $this->client->request(
             method: 'GET',
             uri: '/api/v2/admin/channel-pricing-log-entries',
-            server: $header,
+            server: $this->getLoggedHeader(),
         );
 
         $this->assertResponse(
@@ -91,7 +84,6 @@ final class ChannelPricingLogEntryTest extends JsonApiTestCase
     public function it_gets_filtered_channel_pricing_log_entries(): void
     {
         $fixtures = $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'product_variant.yaml']);
-        $header = $this->getLoggedHeader();
 
         $uri = '/api/v2/admin/channel-pricing-log-entries';
         $uri .= '?channelPricing.channelCode=' . $fixtures['channel_home']->getCode();
@@ -100,7 +92,7 @@ final class ChannelPricingLogEntryTest extends JsonApiTestCase
         $this->client->request(
             method: 'GET',
             uri: $uri,
-            server: $header,
+            server: $this->getLoggedHeader(),
         );
 
         $this->assertResponse(
@@ -108,14 +100,5 @@ final class ChannelPricingLogEntryTest extends JsonApiTestCase
             'admin/get_filtered_channel_pricing_log_entries_response',
             Response::HTTP_OK
         );
-    }
-
-    private function getLoggedHeader(): array
-    {
-        $token = $this->logInAdminUser('api@example.com');
-        $authorizationHeader = self::$kernel->getContainer()->getParameter('sylius.api.authorization_header');
-        $header['HTTP_' . $authorizationHeader] = 'Bearer ' . $token;
-
-        return array_merge($header, self::CONTENT_TYPE_HEADER);
     }
 }

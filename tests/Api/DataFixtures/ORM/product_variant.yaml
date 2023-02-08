@@ -1,4 +1,4 @@
-Sylius\Component\Core\Model\Channel:
+Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
     channel_home:
         code: 'HOME'
         name: 'Home Channel'

@@ -1,0 +1,11 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+# TODO: Remove this file when support for Sylius 1.11 is dropped.
+'%sylius.model.channel.class%':
+    itemOperations:
+        admin_put:
+            method: PUT
+            path: /admin/channels/{code}
+            denormalization_context:
+                groups: ['admin:channel:update']
