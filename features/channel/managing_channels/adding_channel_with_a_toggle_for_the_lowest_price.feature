@@ -11,7 +11,7 @@ Feature: Choosing whether to show the lowest product price or not while creating
         And I am logged in as an administrator
 
     @api
-    Scenario: Adding a new channel with lowest price from 30 days before the product has been discounted enabled by default
+    Scenario: Adding a new channel with lowest price before the product has been discounted enabled by default
         When I want to create a new channel
         And I specify its code as "MOBILE"
         And I name it "Mobile channel"
@@ -23,7 +23,7 @@ Feature: Choosing whether to show the lowest product price or not while creating
         And it should have the lowest price of discounted products prior to the current discount enabled
 
     @api @no-ui
-    Scenario: Adding a new channel with lowest price from 30 days before the product has been discounted enabled
+    Scenario: Adding a new channel with lowest price before the product has been discounted enabled
         When I want to create a new channel
         And I specify its code as "MOBILE"
         And I name it "Mobile channel"
@@ -36,7 +36,7 @@ Feature: Choosing whether to show the lowest product price or not while creating
         And it should have the lowest price of discounted products prior to the current discount enabled
 
     @api
-    Scenario: Adding a new channel with lowest price from 30 days before the product has been discounted disabled
+    Scenario: Adding a new channel with lowest price before the product has been discounted disabled
         When I want to create a new channel
         And I specify its code as "MOBILE"
         And I name it "Mobile channel"
