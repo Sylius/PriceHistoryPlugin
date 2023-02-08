@@ -30,12 +30,12 @@ final class SyliusPriceHistoryExtensionTest extends AbstractExtensionTestCase
         $doctrineMigrationsExtensionConfig = $this->container->getExtensionConfig('doctrine_migrations');
 
         self::assertArrayHasKey(
-            'Sylius\PriceHistoryPlugin\Migrations',
+            'Sylius\PriceHistoryPlugin\Infrastructure\Migrations',
             $doctrineMigrationsExtensionConfig[0]['migrations_paths']
         );
         self::assertSame(
-            '@SyliusPriceHistoryPlugin/src/Migrations',
-            $doctrineMigrationsExtensionConfig[0]['migrations_paths']['Sylius\PriceHistoryPlugin\Migrations']
+            '@SyliusPriceHistoryPlugin/src/Infrastructure/Migrations',
+            $doctrineMigrationsExtensionConfig[0]['migrations_paths']['Sylius\PriceHistoryPlugin\Infrastructure\Migrations']
         );
 
         $syliusLabsDoctrineMigrationsExtraExtensionConfig = $this->container
@@ -43,12 +43,12 @@ final class SyliusPriceHistoryExtensionTest extends AbstractExtensionTestCase
         ;
 
         self::assertArrayHasKey(
-            'Sylius\PriceHistoryPlugin\Migrations',
+            'Sylius\PriceHistoryPlugin\Infrastructure\Migrations',
             $syliusLabsDoctrineMigrationsExtraExtensionConfig[0]['migrations']
         );
         self::assertSame(
             ['Sylius\Bundle\CoreBundle\Migrations'],
-            $syliusLabsDoctrineMigrationsExtraExtensionConfig[0]['migrations']['Sylius\PriceHistoryPlugin\Migrations']
+            $syliusLabsDoctrineMigrationsExtraExtensionConfig[0]['migrations']['Sylius\PriceHistoryPlugin\Infrastructure\Migrations']
         );
     }
 
@@ -83,7 +83,7 @@ final class SyliusPriceHistoryExtensionTest extends AbstractExtensionTestCase
             'type' => 'xml',
             'dir' => __DIR__ . '../../config/doctrine/',
             'is_bundle' => false,
-            'prefix' => 'Sylius\PriceHistoryPlugin\Model',
+            'prefix' => 'Sylius\PriceHistoryPlugin\Domain\Model',
             'alias' => 'SyliusPriceHistoryPlugin',
         ]);
     }
