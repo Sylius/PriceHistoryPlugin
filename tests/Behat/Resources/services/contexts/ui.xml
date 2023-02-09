@@ -26,7 +26,6 @@
             <argument type="service" id="Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel\CreatePage" />
             <argument type="service" id="Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel\UpdatePage" />
             <argument type="service" id="sylius.behat.current_page_resolver" />
-            <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
         <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin\ManagingProductVariantsContext" public="true">

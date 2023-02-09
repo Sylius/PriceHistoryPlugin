@@ -16,7 +16,6 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin;
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Context\Ui\Admin\ManagingChannelsContext as BaseManagingChannelsContext;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
-use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel\CreatePageInterface;
 use Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel\UpdatePageInterface;
@@ -29,7 +28,6 @@ final class ManagingChannelsContext implements Context
         private CreatePageInterface $createPage,
         private UpdatePageInterface $updatePage,
         private CurrentPageResolverInterface $currentPageResolver,
-        private SharedStorageInterface $sharedStorage,
     ) {
     }
 
@@ -51,16 +49,15 @@ final class ManagingChannelsContext implements Context
     /**
      * @Then /^the ("[^"]+" channel) should have the lowest price of discounted products prior to the current discount (enabled|disabled)$/
      */
-    public function itShouldHaveTheLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountEnabledOrDisabled(
+    public function theChannelShouldHaveTheLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountEnabledOrDisabled(
         ChannelInterface $channel,
         string $visible,
     ): void {
         $this->managingChannelsContext->iWantToModifyChannel($channel);
 
-        if ('enabled' === $visible) {
-            Assert::true($this->updatePage->isShowingTheLowestPriceOfDiscountedProductsPriorToTheDiscount());
-        } else {
-            Assert::false($this->updatePage->isShowingTheLowestPriceOfDiscountedProductsPriorToTheDiscount());
-        }
+        Assert::same(
+            'enabled' === $visible,
+            $this->updatePage->isShowingTheLowestPriceOfDiscountedProductsPriorToTheDiscount(),
+        );
     }
 }
