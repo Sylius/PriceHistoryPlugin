@@ -17,9 +17,11 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
 >
     <services>
-        <service id="sylius_price_history.behat.api_platform_client.admin.channel_pricing_log_entry" class="Sylius1_11\Behat\Client\ApiPlatformClient" parent="sylius.behat.api_platform_client.legacy">
-            <argument>channel-pricing-log-entries</argument>
-            <argument>admin</argument>
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin\ChannelPricingLogEntryContext" public="true">
+            <argument type="service" id="sylius_price_history.behat.page.admin.channel_pricing_log_entry.index" />
+        </service>
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin\ManagingProductVariantsContext" public="true">
+            <argument type="service" id="sylius.behat.page.admin.product_variant.update" />
         </service>
     </services>
 </container>

@@ -1,0 +1,8 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+sylius_price_history:
+    ui:
+        channel_pricing_history: 'Channel pricing history'
+        price_history: 'Price history'
+        show_history_for_channel_pricing: 'Show history for channel pricing'
