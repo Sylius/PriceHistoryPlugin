@@ -1,5 +1,13 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
 sylius_ui:
     events:
+        sylius.admin.channel.form.second_column_content:
+            blocks:
+                price_history_toggle:
+                    template: '@SyliusPriceHistoryPlugin/Channel/Admin/Form/_additionalConfiguration.html.twig'
+                    priority: 5
         sylius.admin.configurable_product.show.variant_content:
             blocks:
                 pricing:
