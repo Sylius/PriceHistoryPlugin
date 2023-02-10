@@ -36,5 +36,11 @@
             <argument type="service" id="sylius.factory.product_variant" />
             <argument type="service" id="sylius.factory.channel_pricing" />
         </service>
+
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\PriceHistoryContext" public="true">
+            <argument type="service" id="Sylius\Calendar\Tests\Behat\Context\Setup\CalendarContext" />
+            <argument type="service" id="sylius.manager.channel_pricing" />
+            <argument type="service" id="sylius.product_variant_resolver.default" />
+        </service>
     </services>
 </container>

@@ -15,8 +15,9 @@ namespace Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use Webmozart\Assert\Assert;
 
-final class ChannelPricingLogEntryRepository extends EntityRepository implements ChannelPricingLogEntryRepositoryInterface
+class ChannelPricingLogEntryRepository extends EntityRepository implements ChannelPricingLogEntryRepositoryInterface
 {
     public function createByChannelPricingIdListQueryBuilder(mixed $channelPricingId): QueryBuilder
     {
@@ -26,5 +27,20 @@ final class ChannelPricingLogEntryRepository extends EntityRepository implements
             ->orderBy('o.id', 'DESC')
             ->setParameter('channelPricingId', $channelPricingId)
         ;
+    }
+
+    public function findOlderThan(\DateTimeInterface $date, ?int $limit = null): array
+    {
+        $queryBuilder = $this->createQueryBuilder('o')
+            ->andWhere('o.loggedAt < :date')
+            ->setParameter('date', $date)
+        ;
+
+        if (null !== $limit) {
+            Assert::positiveInteger($limit);
+            $queryBuilder->setMaxResults($limit);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

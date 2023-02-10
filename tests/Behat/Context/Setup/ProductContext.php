@@ -24,7 +24,6 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
@@ -142,6 +141,70 @@ final class ProductContext implements Context
         $channelPricing->setPrice($price);
 
         $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^on "([^"]+)" (its) price changed to ("[^"]+")$/
+     */
+    public function onDayItsPriceChangedTo(string $date, ProductInterface $product, int $price): void
+    {
+        $channelPricing = $this->getChannelPricingFromProduct($product);
+
+        $this->calendarContext->itIsNow($date);
+        $channelPricing->setPrice($price);
+
+        $this->productVariantManager->flush();
+    }
+
+    /**
+     * @Given /^on "([^"]+)" (its) original price changed to ("[^"]+")$/
+     */
+    public function onDayItsOriginalPriceChangedTo(string $date, ProductInterface $product, int $originalPrice): void
+    {
+        $channelPricing = $this->getChannelPricingFromProduct($product);
+
+        $this->calendarContext->itIsNow($date);
+        $channelPricing->setOriginalPrice($originalPrice);
+
+        $this->productVariantManager->flush();
+    }
+
+    /**
+     * @Given /^on "([^"]+)" (its) price changed to ("[^"]+") and original price to ("[^"]+")$/
+     */
+    public function onDayItsOriginalPriceChangedToAndOriginalPriceTo(string $date, ProductInterface $product, int $price, int $originalPrice): void
+    {
+        $channelPricing = $this->getChannelPricingFromProduct($product);
+
+        $this->calendarContext->itIsNow($date);
+        $channelPricing->setPrice($price);
+        $channelPricing->setOriginalPrice($originalPrice);
+
+        $this->productVariantManager->flush();
+    }
+
+    /**
+     * @Given /^on "([^"]+)" (its) original price has been removed$/
+     */
+    public function onDayItsOriginalPriceHasBeenRemoved(string $date, ProductInterface $product): void
+    {
+        $channelPricing = $this->getChannelPricingFromProduct($product);
+
+        $this->calendarContext->itIsNow($date);
+        $channelPricing->setOriginalPrice(null);
+
+        $this->productVariantManager->flush();
+    }
+
+    private function getChannelPricingFromProduct(ProductInterface $product): ChannelPricingInterface
+    {
+        $variant = $this->defaultVariantResolver->getVariant($product);
+        Assert::notNull($variant);
+
+        $channelPricing = $variant->getChannelPricings()->first();
+        Assert::isInstanceOf($channelPricing, ChannelPricingInterface::class);
+
+        return $channelPricing;
     }
 
     private function saveProduct(ProductInterface $product): void
