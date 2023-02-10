@@ -15,19 +15,15 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Context\Ui\Admin\ManagingChannelsContext as BaseManagingChannelsContext;
-use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
-use Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel\CreatePageInterface;
-use Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel\UpdatePageInterface;
+use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\ShowTheLowestPriceOfDiscountedProductsPriorToTheDiscountElementInterface;
 use Webmozart\Assert\Assert;
 
 final class ManagingChannelsContext implements Context
 {
     public function __construct(
         private BaseManagingChannelsContext $managingChannelsContext,
-        private CreatePageInterface $createPage,
-        private UpdatePageInterface $updatePage,
-        private CurrentPageResolverInterface $currentPageResolver,
+        private ShowTheLowestPriceOfDiscountedProductsPriorToTheDiscountElementInterface $showingTheLowestPriceOfDiscountedProductsPriorToTheDiscountElement,
     ) {
     }
 
@@ -36,14 +32,7 @@ final class ManagingChannelsContext implements Context
      */
     public function iEnableShowingTheLowestPriceOfDiscountedProducts(string $visible): void
     {
-        /** @var CreatePageInterface|UpdatePageInterface $currentPage */
-        $currentPage = $this->currentPageResolver->getCurrentPageWithForm([$this->createPage, $this->updatePage]);
-
-        if ('enable' === $visible) {
-            $currentPage->enableShowingTheLowestPriceOfDiscountedProductsPriorToTheDiscount();
-        } else {
-            $currentPage->disableShowingTheLowestPriceOfDiscountedProductsPriorToTheDiscount();
-        }
+        $this->showingTheLowestPriceOfDiscountedProductsPriorToTheDiscountElement->$visible();
     }
 
     /**
@@ -57,7 +46,7 @@ final class ManagingChannelsContext implements Context
 
         Assert::same(
             'enabled' === $visible,
-            $this->updatePage->isShowingTheLowestPriceOfDiscountedProductsPriorToTheDiscount(),
+            $this->showingTheLowestPriceOfDiscountedProductsPriorToTheDiscountElement->isEnabled(),
         );
     }
 }
