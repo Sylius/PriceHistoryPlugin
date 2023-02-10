@@ -82,6 +82,24 @@ Feature: Seeing the product's lowest price from 30 days before the discount
         Then I should see "$10.00" as this product's lowest price from 30 days before the discount
 
     @todo
+    Scenario: Seeing the lowest price information on a product that had a discount, the price was changed below previous discount while a less attractive discount was added and a less attractive discount was added
+        Given the store has a product "Wyborowa Vodka" priced at "$37.00"
+        And this product's price was discounted to "$20.00"
+        And this product's price was changed to "$19.00" and discounted price to "$21.00"
+        And this product's discounted price changed to "$33.00"
+        When I check this product's details
+        Then I should see "$20.00" as this product's lowest price from 30 days before the discount
+
+    @todo
+    Scenario: Seeing the lowest price information on a product with same discount repeated
+        Given the store has a product "Wyborowa Vodka" priced at "$37.00"
+        And this product's price was discounted to "$20.00"
+        And this product's discount was removed
+        And this product's price was discounted to "$20.00"
+        When I check this product's details
+        Then I should see "$20.00" as this product's lowest price from 30 days before the discount
+
+    @todo
     Scenario: Not seeing the lowest price information on a product that has a discount but showing it is disabled on the channel
         Given the lowest price of discounted products prior to the current discount is disabled on the channel
         And the store has a product "Wyborowa Vodka" priced at "$37.00"
