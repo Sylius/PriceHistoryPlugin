@@ -39,7 +39,7 @@ final class ClearPriceHistoryCommandTest extends TestCase
      * @test
      * @dataProvider getInvalidDays
      */
-    public function it_does_not_clear_pricing_history_when_number_of_days_below_one(mixed $days): void
+    public function it_does_not_clear_pricing_history_when_number_of_days_is_invalid(mixed $days): void
     {
         $this->remover->expects($this->never())->method('remove');
 
@@ -56,7 +56,7 @@ final class ClearPriceHistoryCommandTest extends TestCase
      * @test
      * @dataProvider getValidDays
      */
-    public function it_clears_pricing_history_when_non_interactive(int $days): void
+    public function it_clears_pricing_history_when_non_interactive(int|string $days): void
     {
         $this->remover->expects($this->once())->method('remove');
 
@@ -97,16 +97,26 @@ final class ClearPriceHistoryCommandTest extends TestCase
 
     public function getInvalidDays(): iterable
     {
-        yield [-1];
-        yield [1.1];
-        yield ['a'];
         yield [0];
+        yield ['0'];
+        yield [0.0];
+        yield ['0.0'];
+        yield [-1];
+        yield ['-1'];
+        yield [-1.0];
+        yield ['-1.0'];
+        yield [1.1];
+        yield ['1.1'];
+        yield ['a'];
     }
 
     public function getValidDays(): iterable
     {
         yield [1];
+        yield ['1'];
         yield [30];
+        yield ['30'];
         yield [60];
+        yield ['60'];
     }
 }
