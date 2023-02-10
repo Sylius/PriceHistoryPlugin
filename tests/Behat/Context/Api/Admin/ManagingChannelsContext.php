@@ -133,11 +133,11 @@ final class ManagingChannelsContext implements Context
      * @Then /^it should have the lowest price of discounted products prior to the current discount (enabled|disabled)$/
      */
     public function itShouldHaveTheLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountEnabledOrDisabled(
-        string $visible
+        string $visible,
     ): void {
         $lowestPriceForDiscountedProductsVisible = $this->responseChecker->getValue(
             $this->client->getLastResponse(),
-            'lowestPriceForDiscountedProductsVisible'
+            'lowestPriceForDiscountedProductsVisible',
         );
 
         Assert::same($lowestPriceForDiscountedProductsVisible, $visible === 'enabled');

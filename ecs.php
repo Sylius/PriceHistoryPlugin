@@ -10,7 +10,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->import('vendor/sylius-labs/coding-standard/ecs.php');
 
     $ecsConfig->parallel();
-    $ecsConfig->paths(['src']);
+    $ecsConfig->paths(['src', 'tests/Behat']);
     $ecsConfig->ruleWithConfiguration(PhpdocSeparationFixer::class, ['groups' => [['Given', 'When', 'Then']]]);
     $ecsConfig->ruleWithConfiguration(
         HeaderCommentFixer::class,
