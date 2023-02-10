@@ -18,9 +18,9 @@ use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Event\ProductUpdated;
 use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -101,7 +101,7 @@ final class ProductContext implements Context
         Assert::notSame(
             $channelPricing->getOriginalPrice(),
             $price,
-            'This is not a discount as the original price is the same as the current price.'
+            'This is not a discount as the original price is the same as the current price.',
         );
 
         $channelPricing->setOriginalPrice($channelPricing->getPrice());

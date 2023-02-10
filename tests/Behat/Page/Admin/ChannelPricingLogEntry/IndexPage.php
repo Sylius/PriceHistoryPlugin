@@ -45,6 +45,6 @@ class IndexPage extends BaseIndexPage implements IndexPageInterface
         $dates = $this->getColumnFields('loggedAt');
         Assert::notEmpty($dates[$position - 1]);
 
-        return ($availablePrices[$position - 1] === $price && $availableOriginalPrices[$position - 1] === $originalPrice);
+        return $availablePrices[$position - 1] === $price && $availableOriginalPrices[$position - 1] === $originalPrice;
     }
 }

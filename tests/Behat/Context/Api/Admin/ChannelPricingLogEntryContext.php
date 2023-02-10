@@ -17,7 +17,6 @@ use Behat\Behat\Context\Context;
 use Sylius\Behat\Client\ResponseCheckerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius1_11\Behat\Client\ApiClientInterface;
 use Webmozart\Assert\Assert;
 
@@ -84,7 +83,7 @@ final class ChannelPricingLogEntryContext implements Context
         $this->thereShouldBeALogEntryOnThePositionWithTheSellingPriceOriginalPriceAndDatetimeOfThePriceChange(
             1,
             $price,
-            $originalPrice
+            $originalPrice,
         );
     }
 }

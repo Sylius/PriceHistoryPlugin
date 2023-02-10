@@ -54,7 +54,7 @@ final class ChannelPricingLogEntryContext implements Context
      */
     public function thereShouldBeALogEntryOnThePositionWithTheSellingPriceOriginalPriceAndDatetimeOfThePriceChange(
         int $position,
-        string  $price,
+        string $price,
         string $originalPrice = '-',
     ): void {
         Assert::true($this->indexPage->isLogEntryWithPriceAndOriginalPriceOnPosition($price, $originalPrice, $position));
