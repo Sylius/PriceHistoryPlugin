@@ -11,7 +11,9 @@
                 <td class="gray text"><strong>{{ 'sylius.ui.channels'|trans }}</strong></td>
                 <td class="gray text"><strong>{{ 'sylius.ui.price'|trans }}</strong></td>
                 <td class="gray text"><strong>{{ 'sylius.ui.original_price'|trans }}</strong></td>
-                <td class="gray text"><strong>{{ 'sylius.ui.discounted_by'|trans }}</strong></td>
+                {% if is_sylius_equal_or_above_version(11200) %}
+                    <td class="gray text"><strong>{{ 'sylius.ui.discounted_by'|trans }}</strong></td>
+                {% endif %}
                 <td class="gray text"><strong>{{ 'sylius.ui.history'|trans }}</strong></td>
             </tr>
             {% set currencies = sylius_channels_currencies() %}
@@ -27,7 +29,9 @@
                     {% else %}
                         <td><span class="gray text">-</span></td>
                     {% endif %}
-                    {% include '@SyliusAdmin/Product/Show/_appliedPromotions.html.twig' %}
+                    {% if is_sylius_equal_or_above_version(11200) %}
+                        {% include '@SyliusAdmin/Product/Show/_appliedPromotions.html.twig' %}
+                    {% endif %}
                     <td>
                         <a class="ui blue labeled icon button" href="{{ path('sylius_price_history_admin_channel_pricing_log_entry_index', {
                             'productId': product.id,
