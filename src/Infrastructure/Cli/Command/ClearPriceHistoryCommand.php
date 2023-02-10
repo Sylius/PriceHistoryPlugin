@@ -50,8 +50,8 @@ final class ClearPriceHistoryCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $days = $input->getArgument('days');
-        if (!is_int($days) || $days < 1) {
+        $days = filter_var($input->getArgument('days'), \FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if (false === $days) {
             $this->io->error('Number of days must be an integer greater than 0');
 
             return Command::FAILURE;
