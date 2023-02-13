@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel;
 
-interface ShowTheLowestPriceOfDiscountedProductsPriorToTheDiscountElementInterface
+interface LowestPriceFlagElementInterface
 {
     public function enable(): void;
 

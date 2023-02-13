@@ -16,14 +16,14 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin;
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Context\Ui\Admin\ManagingChannelsContext as BaseManagingChannelsContext;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
-use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\ShowTheLowestPriceOfDiscountedProductsPriorToTheDiscountElementInterface;
+use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\LowestPriceFlagElementInterface;
 use Webmozart\Assert\Assert;
 
 final class ManagingChannelsContext implements Context
 {
     public function __construct(
         private BaseManagingChannelsContext $managingChannelsContext,
-        private ShowTheLowestPriceOfDiscountedProductsPriorToTheDiscountElementInterface $showingTheLowestPriceOfDiscountedProductsPriorToTheDiscountElement,
+        private LowestPriceFlagElementInterface $lowestPriceFlagElement,
     ) {
     }
 
@@ -32,7 +32,7 @@ final class ManagingChannelsContext implements Context
      */
     public function iEnableShowingTheLowestPriceOfDiscountedProducts(string $visible): void
     {
-        $this->showingTheLowestPriceOfDiscountedProductsPriorToTheDiscountElement->$visible();
+        $this->lowestPriceFlagElement->$visible();
     }
 
     /**
@@ -46,7 +46,7 @@ final class ManagingChannelsContext implements Context
 
         Assert::same(
             'enabled' === $visible,
-            $this->showingTheLowestPriceOfDiscountedProductsPriorToTheDiscountElement->isEnabled(),
+            $this->lowestPriceFlagElement->isEnabled(),
         );
     }
 }
