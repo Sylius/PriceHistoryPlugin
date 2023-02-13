@@ -17,7 +17,7 @@ use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Resource\Exception\UnsupportedMethodException;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 
-class ChannelPricingLogEntryFactory implements ChannelPricingLogEntryFactoryInterface
+final class ChannelPricingLogEntryFactory implements ChannelPricingLogEntryFactoryInterface
 {
     public function __construct(private string $className)
     {
@@ -43,11 +43,14 @@ class ChannelPricingLogEntryFactory implements ChannelPricingLogEntryFactoryInte
         int $price,
         ?int $originalPrice = null,
     ): ChannelPricingLogEntryInterface {
-        return new $this->className(
+        /** @var ChannelPricingLogEntryInterface $channelPricingLogEntry */
+        $channelPricingLogEntry = new $this->className(
             $channelPricing,
             $loggedAt,
             $price,
             $originalPrice,
         );
+
+        return $channelPricingLogEntry;
     }
 }

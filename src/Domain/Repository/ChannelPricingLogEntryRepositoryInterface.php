@@ -24,13 +24,11 @@ interface ChannelPricingLogEntryRepositoryInterface extends RepositoryInterface
      */
     public function findOlderThan(\DateTimeInterface $date, ?int $limit = null): array;
 
-    public function findLatestOne(ChannelPricingInterface $channelPricing): ?ChannelPricingLogEntryInterface;
+    public function findLatestOneByChannelPricing(ChannelPricingInterface $channelPricing): ?ChannelPricingLogEntryInterface;
 
     public function findLowestPriceInPeriod(
         int $channelPricingLogEntryId,
         ChannelPricingInterface $channelPricing,
         \DateTimeInterface $startDate,
     ): ?int;
-
-    public function findLatestPriceBeyondPeriod(ChannelPricingInterface $channelPricing, \DateTimeInterface $startDate): ?int;
 }
