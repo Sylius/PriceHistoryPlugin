@@ -1,7 +1,7 @@
 {% import '@SyliusAdmin/Macro/breadcrumb.html.twig' as breadcrumb %}
 
 {% set product_variant = configuration.vars.product_variant %}
-{% set product = configuration.vars.product %}
+{% set product = configuration.vars.product_variant.product %}
 
 {{ breadcrumb.crumble([
     { label: 'sylius.ui.administration'|trans, url: path('sylius_admin_dashboard') },

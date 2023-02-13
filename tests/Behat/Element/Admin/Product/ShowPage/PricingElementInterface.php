@@ -19,5 +19,5 @@ interface PricingElementInterface
 {
     public function getVariantPricingRowForChannel(string $variantName, string $channelName): NodeElement;
 
-    public function getSimpleProductPricingRowForChannel($channelName): NodeElement;
+    public function getSimpleProductPricingRowForChannel(string $channelName): NodeElement;
 }

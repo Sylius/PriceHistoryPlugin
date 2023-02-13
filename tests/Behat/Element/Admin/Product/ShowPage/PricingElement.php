@@ -15,46 +15,27 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Product\ShowPage;
 
 use Behat\Mink\Element\NodeElement;
 use FriendsOfBehat\PageObjectExtension\Element\Element;
-use Webmozart\Assert\Assert;
 
 final class PricingElement extends Element implements PricingElementInterface
 {
     public function getVariantPricingRowForChannel(string $variantName, string $channelName): NodeElement
     {
-        $pricingRow = $this->getDocument()->find(
-            'css',
-            sprintf('tr:contains("%s") + tr:contains("%s")', $variantName, $channelName),
-        );
-
-        Assert::notNull(
-            $pricingRow,
-            sprintf('Cannot find pricing row for variant "%s" in channel "%s"', $variantName, $channelName),
-        );
-
-        return $pricingRow;
+        return $this->getElement('variant_pricing_row', [
+            '%variantName%' => $variantName,
+            '%channelName%' => $channelName,
+        ]);
     }
 
-    public function getSimpleProductPricingRowForChannel($channelName): NodeElement
+    public function getSimpleProductPricingRowForChannel(string $channelName): NodeElement
     {
-        $pricingElement = $this->getElement('pricing_element');
-
-        $pricingRow = $pricingElement->find(
-            'css',
-            sprintf('tr:contains("%s")', $channelName),
-        );
-
-        Assert::notNull(
-            $pricingRow,
-            sprintf('Cannot find pricing row for product in channel "%s"', $channelName),
-        );
-
-        return $pricingRow;
+        return $this->getElement('simple_product_pricing_row', ['%channelName%' => $channelName]);
     }
 
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
-            'pricing_element' => '#pricing',
+            'simple_product_pricing_row' => '#pricing tr:contains("%channelName%")',
+            'variant_pricing_row' => 'tr:contains("%variantName%") + tr:contains("%channelName%")',
         ]);
     }
 }

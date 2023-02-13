@@ -15,14 +15,11 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
 use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Product\ShowPage\PricingElementInterface;
-use Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Product\ShowPageInterface;
 
 final class ProductShowPageContext implements Context
 {
-    public function __construct(
-        private ShowPageInterface $productShowPage,
-        private PricingElementInterface $pricingElement,
-    ) {
+    public function __construct(private PricingElementInterface $pricingElement)
+    {
     }
 
     /**
@@ -31,7 +28,7 @@ final class ProductShowPageContext implements Context
     public function iAccessThePriceHistoryIndexPageOfSimpleProductForChannel(string $channelName): void
     {
         $pricingRow = $this->pricingElement->getSimpleProductPricingRowForChannel($channelName);
-        $this->productShowPage->showPriceHistory($pricingRow);
+        $pricingRow->clickLink('Show');
     }
 
     /**
@@ -40,6 +37,6 @@ final class ProductShowPageContext implements Context
     public function iAccessThePriceHistoryIndexPageOfVariantForChannel(string $variantName, string $channelName): void
     {
         $pricingRow = $this->pricingElement->getVariantPricingRowForChannel($variantName, $channelName);
-        $this->productShowPage->showPriceHistory($pricingRow);
+        $pricingRow->clickLink('Show');
     }
 }
