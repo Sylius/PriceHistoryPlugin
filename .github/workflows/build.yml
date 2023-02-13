@@ -30,7 +30,7 @@ jobs:
                 mysql: ["5.7", "8.0"]
 
                 exclude:
-                    -   
+                    -
                         symfony: "^6.0"
                         sylius: "~1.11.14"
 
@@ -51,7 +51,7 @@ jobs:
                     tools: flex,symfony
                     coverage: none
 
-            -   
+            -
                 name: Build test application
                 uses: SyliusLabs/BuildTestAppAction@v1.3
                 with:
@@ -64,6 +64,10 @@ jobs:
             -
                 name: Run ECS
                 run: vendor/bin/ecs check
+
+            -
+                name: Run Arkitect
+                run: vendor/bin/phparkitect check
 
             -
                 name: Run PHPStan

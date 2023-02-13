@@ -25,6 +25,7 @@
         "lchrusciel/api-test-case": "^5.2",
         "matthiasnoback/symfony-config-test": "^4.3",
         "matthiasnoback/symfony-dependency-injection-test": "^4.3",
+        "phparkitect/phparkitect": "^0.3.14",
         "phpspec/phpspec": "^7.2",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^1.8.1",
