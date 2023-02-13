@@ -26,6 +26,24 @@
             </errorLevel>
         </InvalidStringClass>
 
-        <PropertyNotSetInConstructor errorLevel="info" />
+        <PropertyNotSetInConstructor>
+            <errorLevel type="info">
+                <file name="src/Infrastructure/Serializer/ProductVariantNormalizer.php" />
+                <file name="src/Infrastructure/Cli/Command/ClearPriceHistoryCommand.php" />
+            </errorLevel>
+        </PropertyNotSetInConstructor>
+
+        <DeprecatedClass>
+            <errorLevel type="info">
+                <referencedClass name="Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface" /> <!-- deprecated in Symfony 6.1, probably a bug in psalm, as this is referenced as DeprecatedClass, not an interface -->
+            </errorLevel>
+        </DeprecatedClass>
+
+        <DeprecatedInterface>
+            <errorLevel type="info">
+                <referencedClass name="Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface" /> <!-- deprecated in Symfony 6.1 -->
+                <referencedClass name="Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface" /> <!-- deprecated in Symfony 6.1 -->
+            </errorLevel>
+        </DeprecatedInterface>
     </issueHandlers>
 </psalm>
