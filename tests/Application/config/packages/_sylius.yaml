@@ -21,3 +21,9 @@ sylius_channel:
         channel:
             classes:
                 model: Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel
+
+sylius_core:
+    resources:
+        channel_pricing:
+            classes:
+                model: Tests\Sylius\PriceHistoryPlugin\Application\Entity\ChannelPricing
