@@ -130,9 +130,10 @@ final class ManagingChannelsContext implements Context
     }
 
     /**
-     * @Then /^it should have the lowest price of discounted products prior to the current discount (enabled|disabled)$/
+     * @Then /^the ("[^"]+" channel) should have the lowest price of discounted products prior to the current discount (enabled|disabled)$/
      */
-    public function itShouldHaveTheLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountEnabledOrDisabled(
+    public function theChannelShouldHaveTheLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountEnabledOrDisabled(
+        ChannelInterface $channel,
         string $visible,
     ): void {
         $lowestPriceForDiscountedProductsVisible = $this->responseChecker->getValue(

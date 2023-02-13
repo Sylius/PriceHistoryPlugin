@@ -10,40 +10,40 @@ Feature: Choosing whether to show the lowest product price or not while creating
         And the store operates in "United States" and "Poland"
         And I am logged in as an administrator
 
-    @api
-    Scenario: Adding a new channel with lowest price from 30 days before the product has been discounted enabled by default
+    @api @ui
+    Scenario: Adding a new channel with lowest price before the product has been discounted enabled by default
         When I want to create a new channel
         And I specify its code as "MOBILE"
-        And I name it "Mobile channel"
+        And I name it "Mobile"
         And I choose "Euro" as the base currency
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I add it
         Then I should be notified that it has been successfully created
-        And it should have the lowest price of discounted products prior to the current discount enabled
+        And the "Mobile" channel should have the lowest price of discounted products prior to the current discount enabled
 
     @api @no-ui
-    Scenario: Adding a new channel with lowest price from 30 days before the product has been discounted enabled
+    Scenario: Adding a new channel with lowest price before the product has been discounted enabled
         When I want to create a new channel
         And I specify its code as "MOBILE"
-        And I name it "Mobile channel"
+        And I name it "Mobile"
         And I choose "Euro" as the base currency
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I enable showing the lowest price of discounted products
         And I add it
         Then I should be notified that it has been successfully created
-        And it should have the lowest price of discounted products prior to the current discount enabled
+        And the "Mobile" channel should have the lowest price of discounted products prior to the current discount enabled
 
-    @api
-    Scenario: Adding a new channel with lowest price from 30 days before the product has been discounted disabled
+    @api @ui
+    Scenario: Adding a new channel with lowest price before the product has been discounted disabled
         When I want to create a new channel
         And I specify its code as "MOBILE"
-        And I name it "Mobile channel"
+        And I name it "Mobile"
         And I choose "Euro" as the base currency
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I disable showing the lowest price of discounted products
         And I add it
         Then I should be notified that it has been successfully created
-        And it should have the lowest price of discounted products prior to the current discount disabled
+        And the "Mobile" channel should have the lowest price of discounted products prior to the current discount disabled
