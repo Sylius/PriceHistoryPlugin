@@ -17,6 +17,7 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         enabled: true
         taxCalculationStrategy: 'order_items_based'
         lowestPriceForDiscountedProductsVisible: true
+        lowestPriceForDiscountedProductsCheckingPeriod: 25
 
 Sylius\Component\Currency\Model\Currency:
     currency_usd:

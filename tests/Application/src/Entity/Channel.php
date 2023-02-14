@@ -14,6 +14,6 @@ use Sylius\PriceHistoryPlugin\Domain\Model\LowestPriceForDiscountedProductsVisib
 #[ORM\Table(name: 'sylius_channel')]
 class Channel extends BaseChannel implements ChannelInterface
 {
-    use LowestPriceForDiscountedProductsVisibleAwareTrait;
     use LowestPriceForDiscountedProductsCheckingPeriodTrait;
+    use LowestPriceForDiscountedProductsVisibleAwareTrait;
 }

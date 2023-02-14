@@ -39,7 +39,7 @@ final class ChannelTest extends JsonApiTestCase
 
         $this->assertResponse(
             $this->client->getResponse(),
-            $this->getResponseFilename('post', true),
+            $this->getLowestPriceVisibleResponseFilename('post', true),
             Response::HTTP_CREATED
         );
     }
@@ -65,7 +65,7 @@ final class ChannelTest extends JsonApiTestCase
 
         $this->assertResponse(
             $this->client->getResponse(),
-            $this->getResponseFilename('post', true),
+            $this->getLowestPriceVisibleResponseFilename('post', true),
             Response::HTTP_CREATED
         );
     }
@@ -91,7 +91,58 @@ final class ChannelTest extends JsonApiTestCase
 
         $this->assertResponse(
             $this->client->getResponse(),
-            $this->getResponseFilename('post', false),
+            $this->getLowestPriceVisibleResponseFilename('post', false),
+            Response::HTTP_CREATED
+        );
+    }
+
+    /** @test */
+    public function it_creates_a_channel_with_default_lowest_price_for_discounted_products_checking_period(): void
+    {
+        $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'currency.yaml', 'locale.yaml']);
+
+        $this->client->request(
+            method: 'POST',
+            uri: '/api/v2/admin/channels',
+            server: $this->getLoggedHeader(),
+            content: json_encode([
+                'name' => 'Web Store',
+                'code' => 'WEB',
+                'baseCurrency' => '/api/v2/admin/currencies/USD',
+                'defaultLocale' => '/api/v2/admin/locales/en_US',
+                'taxCalculationStrategy' => 'order_items_based',
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->assertResponse(
+            $this->client->getResponse(),
+            $this->getLowestPricePeriodResponseFilename('post', 'default'),
+            Response::HTTP_CREATED
+        );
+    }
+
+    /** @test */
+    public function it_creates_a_channel_with_custom_lowest_price_for_discounted_products_checking_period(): void
+    {
+        $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'currency.yaml', 'locale.yaml']);
+
+        $this->client->request(
+            method: 'POST',
+            uri: '/api/v2/admin/channels',
+            server: $this->getLoggedHeader(),
+            content: json_encode([
+                'name' => 'Web Store',
+                'code' => 'WEB',
+                'baseCurrency' => '/api/v2/admin/currencies/USD',
+                'defaultLocale' => '/api/v2/admin/locales/en_US',
+                'taxCalculationStrategy' => 'order_items_based',
+                'lowestPriceForDiscountedProductsCheckingPeriod' => 10,
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->assertResponse(
+            $this->client->getResponse(),
+            $this->getLowestPricePeriodResponseFilename('post', 'custom'),
             Response::HTTP_CREATED
         );
     }
@@ -112,7 +163,7 @@ final class ChannelTest extends JsonApiTestCase
 
         $this->assertResponse(
             $this->client->getResponse(),
-            $this->getResponseFilename('put', true),
+            $this->getLowestPriceVisibleResponseFilename('put', true),
             Response::HTTP_OK
         );
     }
@@ -133,7 +184,7 @@ final class ChannelTest extends JsonApiTestCase
 
         $this->assertResponse(
             $this->client->getResponse(),
-            $this->getResponseFilename('put', false),
+            $this->getLowestPriceVisibleResponseFilename('put', false),
             Response::HTTP_OK
         );
     }
@@ -152,13 +203,55 @@ final class ChannelTest extends JsonApiTestCase
 
         $this->assertResponse(
             $this->client->getResponse(),
-            $this->getResponseFilename('put', null),
+            $this->getLowestPriceVisibleResponseFilename('put', null),
             Response::HTTP_OK
         );
     }
 
-    private function getResponseFilename(string $httpMethod, ?bool $lowestPriceForDiscountedProductsVisible): string
+    /** @test */
+    public function it_updates_a_channel_with_custom_lowest_price_for_discounted_products_checking_period_field(): void
     {
+        $fixtures = $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'channel.yaml']);
+
+        $this->client->request(
+            method: 'PUT',
+            uri: sprintf('/api/v2/admin/channels/%s', $fixtures['us_channel']->getCode()),
+            server: $this->getLoggedHeader(),
+            content: json_encode([
+                'lowestPriceForDiscountedProductsCheckingPeriod' => 30,
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->assertResponse(
+            $this->client->getResponse(),
+            $this->getLowestPricePeriodResponseFilename('put', 'custom'),
+            Response::HTTP_OK
+        );
+    }
+
+    /** @test */
+    public function it_does_not_update_the_lowest_price_for_discounted_products_checking_period_field_if_the_field_is_not_provided(): void
+    {
+        $fixtures = $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'channel.yaml']);
+
+        $this->client->request(
+            method: 'PUT',
+            uri: sprintf('/api/v2/admin/channels/%s', $fixtures['eu_channel']->getCode()),
+            server: $this->getLoggedHeader(),
+            content: json_encode([], JSON_THROW_ON_ERROR)
+        );
+
+        $this->assertResponse(
+            $this->client->getResponse(),
+            $this->getLowestPricePeriodResponseFilename('put', 'no'),
+            Response::HTTP_OK
+        );
+    }
+
+    private function getLowestPriceVisibleResponseFilename(
+        string $httpMethod,
+        ?bool $lowestPriceForDiscountedProductsVisible
+    ): string {
         return sprintf(
             'admin/%s.%s/%s_channel_with_%s_lowest_price_for_discounted_products_visible_field_response',
             Kernel::MAJOR_VERSION,
@@ -167,6 +260,19 @@ final class ChannelTest extends JsonApiTestCase
             null === $lowestPriceForDiscountedProductsVisible
                 ? 'no'
                 : ($lowestPriceForDiscountedProductsVisible ? 'enabled' : 'disabled'),
+        );
+    }
+
+    private function getLowestPricePeriodResponseFilename(
+        string $httpMethod,
+        ?string $lowestPriceForDiscountedProductsCheckingPeriod
+    ): string {
+        return sprintf(
+            'admin/%s.%s/%s_channel_with_%s_lowest_price_for_discounted_products_checking_period_field_response',
+            Kernel::MAJOR_VERSION,
+            Kernel::MINOR_VERSION,
+            $httpMethod,
+            $lowestPriceForDiscountedProductsCheckingPeriod ?? 'no',
         );
     }
 }
