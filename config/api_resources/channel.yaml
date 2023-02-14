@@ -3,9 +3,17 @@
 
 # TODO: Remove this file when support for Sylius 1.11 is dropped.
 '%sylius.model.channel.class%':
+    collectionOperations:
+        admin_post:
+            method: POST
+            path: /admin/channels
+            validation_groups: ['sylius']
+            denormalization_context:
+                groups: ['admin:channel:create']
     itemOperations:
         admin_put:
             method: PUT
             path: /admin/channels/{code}
+            validation_groups: ['sylius']
             denormalization_context:
                 groups: ['admin:channel:update']
