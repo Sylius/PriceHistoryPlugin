@@ -29,5 +29,8 @@
         <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin\ManagingProductVariantsContext" public="true">
             <argument type="service" id="sylius.behat.page.admin.product_variant.update" />
         </service>
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin\ProductShowPageContext" public="true">
+            <argument type="service" id="sylius_price_history.behat.element.product.show.pricing" />
+        </service>
     </services>
 </container>
