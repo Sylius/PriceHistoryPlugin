@@ -20,4 +20,8 @@ interface ChannelInterface extends BaseChannelInterface
     public function isLowestPriceForDiscountedProductsVisible(): bool;
 
     public function setLowestPriceForDiscountedProductsVisible(bool $visible = true): void;
+
+    public function getLowestPriceForDiscountedProductsCheckingPeriod(): int;
+
+    public function setLowestPriceForDiscountedProductsCheckingPeriod(int $periodInDays): void;
 }
