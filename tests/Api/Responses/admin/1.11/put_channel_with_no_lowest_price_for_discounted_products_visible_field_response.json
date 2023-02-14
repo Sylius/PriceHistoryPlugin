@@ -20,6 +20,7 @@
     "skippingPaymentStepAllowed": false,
     "accountVerificationRequired": true,
     "lowestPriceForDiscountedProductsVisible": true,
+    "lowestPriceForDiscountedProductsCheckingPeriod": 30,
     "shopBillingData": null,
     "menuTaxon": null,
     "description": null,
