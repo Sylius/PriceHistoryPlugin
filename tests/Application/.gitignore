@@ -9,6 +9,9 @@
 
 /node_modules
 
+/yarn.lock
+/composer.lock
+
 ###> symfony/framework-bundle ###
 /.env.*.local
 /.env.local
