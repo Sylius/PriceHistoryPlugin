@@ -10,49 +10,53 @@ Feature: Specifying the lowest price for discounted products checking period whi
         And the store operates in "United States" and "Poland"
         And I am logged in as an administrator
 
-    @todo
+    @api
     Scenario: Adding a new channel without specifying the lowest price for discounted products checking period
         When I want to create a new channel
         And I specify its code as "MOBILE"
-        And I name it "Mobile channel"
+        And I name it "Mobile"
         And I choose "Euro" as the base currency
+        And I make it available in "English (United States)"
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I add it
         Then I should be notified that it has been successfully created
-        And the "MOBILE" channel should have the lowest price for discounted products checking period set to 30 days
+        And the "Mobile" channel should have the lowest price for discounted products checking period set to 30 days
 
-    @todo
+    @api
     Scenario: Adding a new channel with a specified lowest price for discounted products checking period
         When I want to create a new channel
         And I specify its code as "MOBILE"
-        And I name it "Mobile channel"
+        And I name it "Mobile"
         And I choose "Euro" as the base currency
+        And I make it available in "English (United States)"
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I specify 15 days as the lowest price for discounted products checking period
         And I add it
         Then I should be notified that it has been successfully created
-        And its lowest price for discounted products checking period should be set to 15 days
+        And the "Mobile" channel should have the lowest price for discounted products checking period set to 15 days
 
-    @todo
+    @api
     Scenario: Being prevented from creating a new channel with the lowest price for discounted products checking period equal to zero
         When I want to create a new channel
         And I specify its code as "MOBILE"
-        And I name it "Mobile channel"
+        And I name it "Mobile"
         And I choose "Euro" as the base currency
+        And I make it available in "English (United States)"
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I specify 0 days as the lowest price for discounted products checking period
         And I try to add it
         Then I should be notified that the lowest price for discounted products checking period must be greater than 0
 
-    @todo
+    @api
     Scenario: Being prevented from creating a new channel with a negative lowest price for discounted products checking period
         When I want to create a new channel
         And I specify its code as "MOBILE"
-        And I name it "Mobile channel"
+        And I name it "Mobile"
         And I choose "Euro" as the base currency
+        And I make it available in "English (United States)"
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I disable showing the lowest price of discounted products

@@ -16,6 +16,7 @@ Feature: Choosing whether to show the lowest product price or not while creating
         And I specify its code as "MOBILE"
         And I name it "Mobile"
         And I choose "Euro" as the base currency
+        And I make it available in "English (United States)"
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I add it
@@ -28,6 +29,7 @@ Feature: Choosing whether to show the lowest product price or not while creating
         And I specify its code as "MOBILE"
         And I name it "Mobile"
         And I choose "Euro" as the base currency
+        And I make it available in "English (United States)"
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I enable showing the lowest price of discounted products
@@ -41,6 +43,7 @@ Feature: Choosing whether to show the lowest product price or not while creating
         And I specify its code as "MOBILE"
         And I name it "Mobile"
         And I choose "Euro" as the base currency
+        And I make it available in "English (United States)"
         And I choose "English (United States)" as a default locale
         And I select the "Order items based" as tax calculation strategy
         And I disable showing the lowest price of discounted products
