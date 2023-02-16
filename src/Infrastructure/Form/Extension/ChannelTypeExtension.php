@@ -16,6 +16,7 @@ namespace Sylius\PriceHistoryPlugin\Infrastructure\Form\Extension;
 use Sylius\Bundle\ChannelBundle\Form\Type\ChannelType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class ChannelTypeExtension extends AbstractTypeExtension
@@ -26,6 +27,9 @@ final class ChannelTypeExtension extends AbstractTypeExtension
             ->add('lowestPriceForDiscountedProductsVisible', CheckboxType::class, [
                 'label' => 'sylius_price_history.form.channel.lowest_price_for_discounted_products_visible',
                 'required' => false,
+            ])
+            ->add('lowestPriceForDiscountedProductsCheckingPeriod', IntegerType::class, [
+                'label' => 'sylius_price_history.form.channel.period_for_which_the_lowest_price_is_calculated',
             ])
         ;
     }

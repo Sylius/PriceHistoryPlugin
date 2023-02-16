@@ -17,5 +17,6 @@
 >
     <services>
         <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\LowestPriceFlagElement" parent="sylius.behat.element" />
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\DiscountedProductsCheckingPeriodInputElement" parent="sylius.behat.element" />
     </services>
 </container>
