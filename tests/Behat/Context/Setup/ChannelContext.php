@@ -44,4 +44,12 @@ final class ChannelContext implements Context
 
         $this->channelManager->flush();
     }
+
+    /**
+     * @Given /^the lowest price of discounted products prior to the current discount is disabled on (this channel)$/
+     */
+    public function theLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountIsDisabledOnThisChannel(ChannelInterface $channel)
+    {
+        $channel->setLowestPriceForDiscountedProductsVisible(false);
+    }
 }
