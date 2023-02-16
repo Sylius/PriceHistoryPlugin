@@ -32,4 +32,16 @@ final class ChannelContext implements Context
 
         $this->channelManager->flush();
     }
+
+    /**
+     * @Given /^(this channel) has (\d+) days set as the lowest price for discounted products checking period$/
+     */
+    public function thisChannelHasDaysSetAsTheLowestPriceForDiscountedProductsCheckingPeriod(
+        ChannelInterface $channel,
+        int $days,
+    ): void {
+        $channel->setLowestPriceForDiscountedProductsCheckingPeriod($days);
+
+        $this->channelManager->flush();
+    }
 }

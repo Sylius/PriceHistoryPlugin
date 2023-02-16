@@ -42,6 +42,7 @@ final class ManagingChannelsContext implements Context
 
     /**
      * @When I save my changes
+     * @When I try to save my changes
      */
     public function iSaveMyChanges(): void
     {
@@ -98,6 +99,14 @@ final class ManagingChannelsContext implements Context
     }
 
     /**
+     * @When I make it available in :locale
+     */
+    public function iMakeItAvailableInLocale(LocaleInterface $locale): void
+    {
+        $this->client->addRequestData('locales', [$this->iriConverter->getIriFromItem($locale)]);
+    }
+
+    /**
      * @When I choose :locale as a default locale
      */
     public function iChooseAsADefaultLocale(LocaleInterface $locale): void
@@ -115,6 +124,7 @@ final class ManagingChannelsContext implements Context
 
     /**
      * @When I add it
+     * @When I try to add it
      */
     public function iAddIt(): void
     {
@@ -130,6 +140,14 @@ final class ManagingChannelsContext implements Context
     }
 
     /**
+     * @When /^I specify (-?\d+) days as the lowest price for discounted products checking period$/
+     */
+    public function iSpecifyDaysAsTheLowestPriceForDiscountedProductsCheckingPeriod(int $days): void
+    {
+        $this->client->addRequestData('lowestPriceForDiscountedProductsCheckingPeriod', $days);
+    }
+
+    /**
      * @Then /^the ("[^"]+" channel) should have the lowest price of discounted products prior to the current discount (enabled|disabled)$/
      */
     public function theChannelShouldHaveTheLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountEnabledOrDisabled(
@@ -142,5 +160,31 @@ final class ManagingChannelsContext implements Context
         );
 
         Assert::same($lowestPriceForDiscountedProductsVisible, $visible === 'enabled');
+    }
+
+    /**
+     * @Then /^the "[^"]+" channel should have the lowest price for discounted products checking period set to (\d+) days$/
+     * @Then its lowest price for discounted products checking period should be set to :days days
+     */
+    public function theChannelShouldHaveTheLowestPriceForDiscountedProductsCheckingPeriodSetToDays(int $days): void
+    {
+        $lowestPriceForDiscountedProductsCheckingPeriod = $this->responseChecker->getValue(
+            $this->client->getLastResponse(),
+            'lowestPriceForDiscountedProductsCheckingPeriod',
+        );
+
+        Assert::same($lowestPriceForDiscountedProductsCheckingPeriod, $days);
+    }
+
+    /**
+     * @Then I should be notified that the lowest price for discounted products checking period must be greater than 0
+     */
+    public function iShouldBeNotifiedThatTheLowestPriceForDiscountedProductsCheckingPeriodMustBeGreaterThanZero(): void
+    {
+        Assert::true($this->responseChecker->hasViolationWithMessage(
+            $this->client->getLastResponse(),
+            'Value must be greater than 0',
+            'lowestPriceForDiscountedProductsCheckingPeriod',
+        ));
     }
 }

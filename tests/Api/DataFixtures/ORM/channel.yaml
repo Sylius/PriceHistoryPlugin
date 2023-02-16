@@ -4,6 +4,7 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         name: 'US Channel'
         hostname: 'us.localhost'
         baseCurrency: '@currency_usd'
+        locales: ['@locale_en']
         defaultLocale: '@locale_en'
         enabled: true
         taxCalculationStrategy: 'order_items_based'
@@ -13,10 +14,12 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         name: 'EU Channel'
         hostname: 'eu.localhost'
         baseCurrency: '@currency_usd'
+        locales: ['@locale_en']
         defaultLocale: '@locale_en'
         enabled: true
         taxCalculationStrategy: 'order_items_based'
         lowestPriceForDiscountedProductsVisible: true
+        lowestPriceForDiscountedProductsCheckingPeriod: 25
 
 Sylius\Component\Currency\Model\Currency:
     currency_usd:

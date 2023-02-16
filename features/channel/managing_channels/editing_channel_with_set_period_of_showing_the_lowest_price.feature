@@ -9,22 +9,22 @@ Feature: Specifying the lowest price for discounted products checking period whi
         And this channel has 15 days set as the lowest price for discounted products checking period
         And I am logged in as an administrator
 
-    @todo
+    @api
     Scenario: Changing the lowest price for discounted products checking period
-        When I want to modify a channel "US Channel"
+        When I want to modify a channel "EU Channel"
         And I specify 30 days as the lowest price for discounted products checking period
         And I save my changes
         Then I should be notified that it has been successfully edited
         And its lowest price for discounted products checking period should be set to 30 days
 
-    @todo
+    @api
     Scenario: Being prevented from changing the lowest price for discounted products checking period to zero
         When I want to modify a channel "EU Channel"
         And I specify 0 days as the lowest price for discounted products checking period
         And I try to save my changes
         Then I should be notified that the lowest price for discounted products checking period must be greater than 0
 
-    @todo
+    @api
     Scenario: Being prevented from changing the lowest price for discounted products checking period to a negative value
         When I want to modify a channel "EU Channel"
         And I specify -10 days as the lowest price for discounted products checking period
