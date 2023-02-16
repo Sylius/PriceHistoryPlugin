@@ -26,7 +26,7 @@ use Sylius\PriceHistoryPlugin\Application\Logger\PriceChangeLoggerInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Sylius\PriceHistoryPlugin\Infrastructure\EventListener\ChannelPricingChangeListener;
 
-class ChannelPricingChangeListenerSpec extends ObjectBehavior
+final class ChannelPricingChangeListenerSpec extends ObjectBehavior
 {
     function let(PriceChangeLoggerInterface $priceChangeLogger): void
     {

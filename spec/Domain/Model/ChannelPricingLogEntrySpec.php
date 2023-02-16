@@ -17,7 +17,7 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 
-class ChannelPricingLogEntrySpec extends ObjectBehavior
+final class ChannelPricingLogEntrySpec extends ObjectBehavior
 {
     function let(ChannelPricingInterface $channelPricing): void
     {
