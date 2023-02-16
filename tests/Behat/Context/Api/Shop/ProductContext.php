@@ -31,20 +31,26 @@ final class ProductContext implements Context
      */
     public function iShouldNotSeeInformationAboutItsLowestPrice(): void
     {
-        $variant = $this->responseChecker->getResponseContent($this->client->getLastResponse());
+        $product = $this->responseChecker->getResponseContent($this->client->getLastResponse());
+        $variant = $this->responseChecker->getResponseContent(
+            $this->client->showByIri((string) $product['defaultVariant']),
+        );
 
-        Assert::keyExists($variant, 'lowestPriceOfLastThirtyDays');
-        Assert::same($variant['lowestPriceOfLastThirtyDays'], null);
+        Assert::keyExists($variant, 'lowestPriceBeforeDiscount');
+        Assert::same($variant['lowestPriceBeforeDiscount'], null);
     }
 
     /**
-     * @Then /^I should see ("[^"]+") as this product's lowest price from 30 days before the discount$/
+     * @Then /^I should see ("[^"]+") as its lowest price before the discount$/
      */
-    public function iShouldSeeAsThisProductsLowestPriceFromDaysBeforeTheDiscount(int $lowestPrice): void
+    public function iShouldSeeAsItsLowestPriceBeforeTheDiscount(int $lowestPriceBeforeDiscount): void
     {
-        $variant = $this->responseChecker->getResponseContent($this->client->getLastResponse());
+        $product = $this->responseChecker->getResponseContent($this->client->getLastResponse());
+        $variant = $this->responseChecker->getResponseContent(
+            $this->client->showByIri((string) $product['defaultVariant']),
+        );
 
-        Assert::keyExists($variant, 'lowestPriceOfLastThirtyDays');
-        Assert::same($variant['lowestPriceOfLastThirtyDays'], $lowestPrice);
+        Assert::keyExists($variant, 'lowestPriceBeforeDiscount');
+        Assert::same($variant['lowestPriceBeforeDiscount'], $lowestPriceBeforeDiscount);
     }
 }
