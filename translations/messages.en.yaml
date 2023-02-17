@@ -5,7 +5,9 @@ sylius_price_history:
     form:
         channel:
             lowest_price_for_discounted_products_visible: 'Show the lowest price of discounted products prior to the current discount?'
+            period_for_which_the_lowest_price_is_calculated: 'Period for which the lowest price is calculated'
     ui:
         channel_pricing_history: 'Channel pricing history'
+        days: 'Days'
         price_history: 'Price history'
         show_history_for_channel_pricing: 'Show history for channel pricing'

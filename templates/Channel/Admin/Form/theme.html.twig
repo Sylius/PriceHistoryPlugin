@@ -1,0 +1,10 @@
+{% extends '@SyliusAdmin/Form/theme.html.twig' %}
+
+{% block _sylius_channel_lowestPriceForDiscountedProductsCheckingPeriod_widget %}
+    <div class="ui right labeled input">
+        {{ form_widget(form) }}
+        <div class="ui label">
+            {{ "sylius_price_history.ui.days"|trans }}
+        </div>
+    </div>
+{% endblock %}

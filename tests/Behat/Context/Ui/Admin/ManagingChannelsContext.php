@@ -15,7 +15,9 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Context\Ui\Admin\ManagingChannelsContext as BaseManagingChannelsContext;
+use Sylius\Behat\Page\Admin\Channel\UpdatePageInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
+use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\DiscountedProductsCheckingPeriodInputElementInterface;
 use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\LowestPriceFlagElementInterface;
 use Webmozart\Assert\Assert;
 
@@ -24,6 +26,8 @@ final class ManagingChannelsContext implements Context
     public function __construct(
         private BaseManagingChannelsContext $managingChannelsContext,
         private LowestPriceFlagElementInterface $lowestPriceFlagElement,
+        private DiscountedProductsCheckingPeriodInputElementInterface $discountedProductsCheckingPeriodInputElement,
+        private UpdatePageInterface $updatePage,
     ) {
     }
 
@@ -33,6 +37,25 @@ final class ManagingChannelsContext implements Context
     public function iEnableShowingTheLowestPriceOfDiscountedProducts(string $visible): void
     {
         $this->lowestPriceFlagElement->$visible();
+    }
+
+    /**
+     * @When /^I specify (-?\d+) days as the lowest price for discounted products checking period$/
+     */
+    public function iSpecifyDaysAsTheLowestPriceForDiscountedProductsCheckingPeriod(int $days): void
+    {
+        $this->discountedProductsCheckingPeriodInputElement->specifyPeriod($days);
+    }
+
+    /**
+     * @Then I should be notified that the lowest price for discounted products checking period must be greater than 0
+     */
+    public function iShouldBeNotifiedThatTheLowestPriceForDiscountedProductsCheckingPeriodMustBeGreaterThanZero(): void
+    {
+        Assert::same(
+            'Value must be greater than 0',
+            $this->updatePage->getValidationMessage('discounted_products_checking_period'),
+        );
     }
 
     /**
@@ -48,5 +71,16 @@ final class ManagingChannelsContext implements Context
             'enabled' === $visible,
             $this->lowestPriceFlagElement->isEnabled(),
         );
+    }
+
+    /**
+     * @Then /^the "[^"]+" channel should have the lowest price for discounted products checking period set to (\d+) days$/
+     * @Then its lowest price for discounted products checking period should be set to :days days
+     */
+    public function theChannelShouldHaveTheLowestPriceForDiscountedProductsCheckingPeriodSetToDays(int $days): void
+    {
+        $lowestPriceForDiscountedProductsCheckingPeriod = $this->discountedProductsCheckingPeriodInputElement->getPeriod();
+
+        Assert::same($days, $lowestPriceForDiscountedProductsCheckingPeriod);
     }
 }
