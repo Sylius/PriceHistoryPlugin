@@ -5,3 +5,4 @@ sylius_price_history:
     channel:
         lowest_price_for_discounted_products_checking_period:
             greater_than: 'Value must be greater than {{ compared_value }}'
+            less_than: 'Value must be less than {{ compared_value }}'

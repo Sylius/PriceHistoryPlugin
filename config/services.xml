@@ -21,6 +21,9 @@
 
     <parameters>
         <parameter key="sylius_price_history.expired_logs_removal_batch_size">100</parameter>
+        <parameter key="sylius_price_history.channel.validation_groups" type="collection">
+            <parameter>sylius</parameter>
+        </parameter>
     </parameters>
 
     <services>

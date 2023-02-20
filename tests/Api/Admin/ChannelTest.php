@@ -152,6 +152,38 @@ final class ChannelTest extends JsonApiTestCase
         );
     }
 
+    /**
+     * @test
+     * @dataProvider getInvalidPeriod
+     */
+    public function it_does_not_create_a_channel_with_invalid_lowest_price_for_discounted_products_checking_period(
+        mixed $invalidPeriod,
+    ): void {
+        $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'currency.yaml', 'locale.yaml']);
+
+        $this->client->request(
+            method: 'POST',
+            uri: '/api/v2/admin/channels',
+            server: $this->getLoggedHeader(),
+            content: json_encode([
+                'name' => 'Web Store',
+                'code' => 'WEB',
+                'baseCurrency' => '/api/v2/admin/currencies/USD',
+                'locales' => ['/api/v2/admin/locales/en_US'],
+                'defaultLocale' => '/api/v2/admin/locales/en_US',
+                'taxCalculationStrategy' => 'order_items_based',
+                'lowestPriceForDiscountedProductsCheckingPeriod' => $invalidPeriod,
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertResponseCode($response, Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->assertStringContainsString(
+            $this->getTypeBasedPeriodValidationMessage($invalidPeriod),
+            $response->getContent(),
+        );
+    }
+
     /** @test */
     public function it_updates_a_channel_with_enabled_lowest_price_for_discounted_products_visible_field(): void
     {
@@ -253,6 +285,40 @@ final class ChannelTest extends JsonApiTestCase
         );
     }
 
+    /**
+     * @test
+     * @dataProvider getInvalidPeriod
+     */
+    public function it_does_not_update_the_lowest_price_for_discounted_products_checking_period_field_if_the_value_is_invalid(
+        mixed $invalidPeriod,
+    ): void {
+        $fixtures = $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'channel.yaml']);
+
+        $this->client->request(
+            method: 'PUT',
+            uri: sprintf('/api/v2/admin/channels/%s', $fixtures['eu_channel']->getCode()),
+            server: $this->getLoggedHeader(),
+            content: json_encode([
+                'lowestPriceForDiscountedProductsCheckingPeriod' => $invalidPeriod,
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertResponseCode($response, Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->assertStringContainsString(
+            $this->getTypeBasedPeriodValidationMessage($invalidPeriod),
+            $response->getContent(),
+        );
+    }
+
+    public function getInvalidPeriod(): iterable
+    {
+        yield [0.1];
+        yield [-0.1];
+        yield ['10'];
+        yield [null];
+    }
+
     private function getLowestPriceVisibleResponseFilename(
         string $httpMethod,
         ?bool $lowestPriceForDiscountedProductsVisible
@@ -279,5 +345,14 @@ final class ChannelTest extends JsonApiTestCase
             $httpMethod,
             $lowestPriceForDiscountedProductsCheckingPeriod ?? 'no',
         );
+    }
+
+    private function getTypeBasedPeriodValidationMessage(mixed $value): string
+    {
+        return match (gettype($value)) {
+            'double', 'string' => 'lowestPriceForDiscountedProductsCheckingPeriod: This value should be of type int',
+            'NULL' => 'lowestPriceForDiscountedProductsCheckingPeriod: This value should not be null',
+            default => throw new \InvalidArgumentException(sprintf('Invalid type "%s"', gettype($value))),
+        };
     }
 }
