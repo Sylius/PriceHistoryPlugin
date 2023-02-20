@@ -187,4 +187,16 @@ final class ManagingChannelsContext implements Context
             'lowestPriceForDiscountedProductsCheckingPeriod',
         ));
     }
+
+    /**
+     * @Then I should be notified that the lowest price for discounted products checking period must be lower
+     */
+    public function iShouldBeNotifiedThatTheLowestPriceForDiscountedProductsCheckingPeriodMustBeLower(): void
+    {
+        Assert::true($this->responseChecker->hasViolationWithMessage(
+            $this->client->getLastResponse(),
+            'Value must be less than 2147483647',
+            'lowestPriceForDiscountedProductsCheckingPeriod',
+        ));
+    }
 }

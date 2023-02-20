@@ -59,6 +59,17 @@ final class ManagingChannelsContext implements Context
     }
 
     /**
+     * @Then I should be notified that the lowest price for discounted products checking period must be lower
+     */
+    public function iShouldBeNotifiedThatTheLowestPriceForDiscountedProductsCheckingPeriodMustBeLower(): void
+    {
+        Assert::same(
+            'Value must be less than 2147483647',
+            $this->updatePage->getValidationMessage('discounted_products_checking_period'),
+        );
+    }
+
+    /**
      * @Then /^the ("[^"]+" channel) should have the lowest price of discounted products prior to the current discount (enabled|disabled)$/
      */
     public function theChannelShouldHaveTheLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountEnabledOrDisabled(

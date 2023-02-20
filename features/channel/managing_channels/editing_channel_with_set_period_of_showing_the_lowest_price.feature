@@ -30,3 +30,10 @@ Feature: Specifying the lowest price for discounted products checking period whi
         And I specify -10 days as the lowest price for discounted products checking period
         And I try to save my changes
         Then I should be notified that the lowest price for discounted products checking period must be greater than 0
+
+    @api @ui
+    Scenario: Being prevented from changing the lowest price for discounted products checking period to a too big value
+        When I want to modify a channel "EU"
+        And I specify 99999999999 days as the lowest price for discounted products checking period
+        And I try to save my changes
+        Then I should be notified that the lowest price for discounted products checking period must be lower
