@@ -10,4 +10,5 @@ imports:
     - suites/ui/channel/managing_channels.yaml
     - suites/ui/product/accessing_price_history.yaml
     - suites/ui/product/managing_product_variants.yaml
+    - suites/ui/product/viewing_products.yaml
     - suites/ui/promotion/managing_catalog_promotions.yaml

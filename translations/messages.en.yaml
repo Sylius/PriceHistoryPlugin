@@ -11,3 +11,4 @@ sylius_price_history:
         days: 'Days'
         price_history: 'Price history'
         show_history_for_channel_pricing: 'Show history for channel pricing'
+        the_lowest_price_days_before_the_discount_was: 'The lowest price of this product from %days% days prior to the current discount was %price%'

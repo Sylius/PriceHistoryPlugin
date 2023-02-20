@@ -16,6 +16,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
 >
     <services>
-        <service id="sylius_price_history.behat.element.product.show.pricing" class="Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Product\ShowPage\PricingElement" parent="sylius.behat.element" />
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Element\Shop\Product\ShowPage\LowestPriceInformationElement" parent="sylius.behat.element" />
     </services>
 </container>
