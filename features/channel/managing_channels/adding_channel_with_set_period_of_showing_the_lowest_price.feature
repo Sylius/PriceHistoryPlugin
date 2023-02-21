@@ -63,3 +63,17 @@ Feature: Specifying the lowest price for discounted products checking period whi
         And I specify -10 days as the lowest price for discounted products checking period
         And I try to add it
         Then I should be notified that the lowest price for discounted products checking period must be greater than 0
+
+    @api @ui
+    Scenario: Being prevented from creating a new channel with a too big lowest price for discounted products checking period
+        When I want to create a new channel
+        And I specify its code as "MOBILE"
+        And I name it "Mobile"
+        And I choose "Euro" as the base currency
+        And I make it available in "English (United States)"
+        And I choose "English (United States)" as a default locale
+        And I select the "Order items based" as tax calculation strategy
+        And I disable showing the lowest price of discounted products
+        And I specify 99999999999 days as the lowest price for discounted products checking period
+        And I try to add it
+        Then I should be notified that the lowest price for discounted products checking period must be lower
