@@ -35,8 +35,7 @@ final class BeforeDenormalizationChannelValidationListener
         $parameters = $request->attributes->all();
 
         if (
-            !isset($parameters['_api_resource_class']) ||
-            !is_a($parameters['_api_resource_class'], ChannelInterface::class, true) ||
+            !is_a($parameters['_api_resource_class'] ?? null, ChannelInterface::class, true) ||
             $request->isMethodSafe() ||
             $request->isMethod(Request::METHOD_DELETE)
         ) {
