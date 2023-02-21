@@ -40,5 +40,18 @@
             <argument type="service" id="event_dispatcher" />
             <argument>%sylius_price_history.expired_logs_removal_batch_size%</argument>
         </service>
+
+        <service
+            id="Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface"
+            class="Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessor"
+        >
+            <argument type="service" id="sylius_price_history.repository.channel_pricing_log_entry" />
+            <argument type="service" id="sylius.repository.channel" />
+        </service>
+
+        <service
+            id="Sylius\PriceHistoryPlugin\Application\Provider\ProductVariantPriceProviderInterface"
+            class="Sylius\PriceHistoryPlugin\Application\Provider\ProductVariantPriceProvider"
+        />
     </services>
 </container>

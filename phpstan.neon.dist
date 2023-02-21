@@ -14,5 +14,4 @@ parameters:
         - 'src/DependencyInjection/Configuration.php'
     ignoreErrors:
         - '/Method Sylius\\PriceHistoryPlugin\\Domain\\Model\\\w+\:\:getId\(\) has no return type specified./'
-        - '/Method Sylius\\PriceHistoryPlugin\\Application\\Factory\\ChannelPricingLogEntryFactory\:\:create\(\) should return Sylius\\PriceHistoryPlugin\\Domain\\Model\\ChannelPricingLogEntryInterface but returns object./'
         - '/Method Sylius\\PriceHistoryPlugin\\Infrastructure\\Doctrine\\ORM\\ChannelPricingLogEntryRepository\:\:findOlderThan\(\) should return array\<Sylius\\PriceHistoryPlugin\\Domain\\Model\\ChannelPricingLogEntryInterface\> but returns mixed./'
