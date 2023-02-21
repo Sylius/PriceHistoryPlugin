@@ -13,7 +13,7 @@
 
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="sylius_price_history.behat.page.admin.channel.update" class="Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel\UpdatePage" parent="sylius.behat.page.admin.crud.update" public="true">
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel\UpdatePage" parent="sylius.behat.page.admin.crud.update" public="true">
             <argument type="string">sylius_admin_channel_update</argument>
         </service>
     </services>
