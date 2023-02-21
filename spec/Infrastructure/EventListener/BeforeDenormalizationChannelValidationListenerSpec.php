@@ -113,7 +113,7 @@ final class BeforeDenormalizationChannelValidationListenerSpec extends ObjectBeh
         $this->onKernelRequest($event);
     }
 
-    function it_does_nothing_when_no_request_content_causes_no_violations(
+    function it_does_not_throw_validation_exception_when_request_content_causes_no_violations(
         ChannelFactoryInterface $channelFactory,
         ValidatorInterface $validator,
         ContextualValidatorInterface $context,
@@ -149,7 +149,7 @@ final class BeforeDenormalizationChannelValidationListenerSpec extends ObjectBeh
         $this->onKernelRequest($event);
     }
 
-    function it_throw_violation_exception_when_at_least_one_property_is_not_valid(
+    function it_throws_violation_exception_when_at_least_one_property_is_not_valid(
         ChannelFactoryInterface $channelFactory,
         ValidatorInterface $validator,
         ContextualValidatorInterface $context,
@@ -199,7 +199,7 @@ final class BeforeDenormalizationChannelValidationListenerSpec extends ObjectBeh
         $this->shouldThrow(ConstraintViolationListAwareExceptionInterface::class)->during('onKernelRequest', [$event]);
     }
 
-    function it_throw_violation_exception_when_all_properties_are_not_valid(
+    function it_throws_violation_exception_when_all_properties_are_not_valid(
         ChannelFactoryInterface $channelFactory,
         ValidatorInterface $validator,
         ContextualValidatorInterface $context,
