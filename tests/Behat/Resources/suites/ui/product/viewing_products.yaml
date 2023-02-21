@@ -18,6 +18,7 @@ default:
                 - sylius.behat.context.setup.product
                 - Sylius\Behat\Context\Setup\CatalogPromotionContext
                 - Sylius\Calendar\Tests\Behat\Context\Setup\CalendarContext
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\CatalogPromotionContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ChannelContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ProductContext
 
