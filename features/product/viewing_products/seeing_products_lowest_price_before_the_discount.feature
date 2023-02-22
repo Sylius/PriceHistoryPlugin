@@ -114,7 +114,7 @@ Feature: Seeing the product's lowest price before the discount
         When I check this product's details
         Then I should see "$20.00" as its lowest price before the discount
 
-    @todo
+    @api
     Scenario: Not seeing the lowest price information on a product that has a discount but showing it is disabled on the channel
         Given the lowest price of discounted products prior to the current discount is disabled on this channel
         And the store has a product "Wyborowa Vodka" priced at "$37.00"

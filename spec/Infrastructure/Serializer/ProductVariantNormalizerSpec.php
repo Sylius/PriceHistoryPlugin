@@ -13,6 +13,7 @@ namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\Serializer;
 
 use phpDocumentor\Reflection\Types\Context;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Bundle\ApiBundle\SectionResolver\AdminApiSection;
 use Sylius\Bundle\ApiBundle\SectionResolver\ShopApiSection;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
@@ -86,6 +87,7 @@ final class ProductVariantNormalizerSpec extends ObjectBehavior
     ): void {
         $this->setNormalizer($normalizer);
 
+        $channel->isLowestPriceForDiscountedProductsVisible()->willReturn(true);
         $context = [ContextKeys::CHANNEL => $channel];
 
         $normalizer
@@ -102,6 +104,31 @@ final class ProductVariantNormalizerSpec extends ObjectBehavior
         $this->normalize($variant, null, $context)->shouldBeLike(['lowestPriceBeforeDiscount' => 3700]);
     }
 
+    function it_adds_null_lowest_price_before_discount_to_variant_data_when_channel_has_showing_turned_off(
+        ProductVariantPriceProviderInterface $priceProvider,
+        NormalizerInterface $normalizer,
+        ChannelInterface $channel,
+        ProductVariantInterface $variant,
+    ): void {
+        $this->setNormalizer($normalizer);
+
+        $channel->isLowestPriceForDiscountedProductsVisible()->willReturn(false);
+        $context = [ContextKeys::CHANNEL => $channel];
+
+        $normalizer
+            ->normalize(
+                $variant,
+                null,
+                array_merge($context, [self::ALREADY_CALLED => true])
+            )
+            ->willReturn([])
+        ;
+
+        $priceProvider->getLowestPriceBeforeDiscount(Argument::cetera())->shouldNotBeCalled();
+
+        $this->normalize($variant, null, $context)->shouldBeLike(['lowestPriceBeforeDiscount' => null]);
+    }
+
     function it_does_not_add_lowest_price_before_discount_to_variant_data_if_missing_channel_configuration_exception_is_thrown(
         ProductVariantPriceProviderInterface $priceProvider,
         NormalizerInterface $normalizer,
@@ -110,6 +137,7 @@ final class ProductVariantNormalizerSpec extends ObjectBehavior
     ): void {
         $this->setNormalizer($normalizer);
 
+        $channel->isLowestPriceForDiscountedProductsVisible()->willReturn(true);
         $context = [ContextKeys::CHANNEL => $channel];
 
         $normalizer

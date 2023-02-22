@@ -48,6 +48,9 @@ final class ProductVariantNormalizer implements NormalizerInterface, NormalizerA
 
         /** @var ChannelInterface $channel */
         $channel = $context[ContextKeys::CHANNEL];
+        if (false === $channel->isLowestPriceForDiscountedProductsVisible()) {
+            return $data + ['lowestPriceBeforeDiscount' => null];
+        }
 
         try {
             $data['lowestPriceBeforeDiscount'] = $this->priceProvider->getLowestPriceBeforeDiscount($object, $channel);
@@ -59,7 +62,7 @@ final class ProductVariantNormalizer implements NormalizerInterface, NormalizerA
 
     public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool
     {
-        if (isset($context[self::ALREADY_CALLED]) || !array_key_exists(ContextKeys::CHANNEL, $context)) {
+        if (isset($context[self::ALREADY_CALLED]) || !isset($context[ContextKeys::CHANNEL])) {
             return false;
         }
 
