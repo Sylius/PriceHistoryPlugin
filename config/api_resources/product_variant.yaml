@@ -1,0 +1,12 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+# TODO: Remove this file when support for Sylius 1.11 is dropped.
+'%sylius.model.product_variant.class%':
+    collectionOperations:
+        admin_post:
+            method: POST
+            path: /admin/product-variants
+            validation_groups: ['sylius']
+            normalization_context:
+                groups: ['admin:product_variant:read']
