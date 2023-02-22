@@ -15,11 +15,15 @@ namespace Sylius\PriceHistoryPlugin\Domain\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
-trait LowestPriceForDiscountedProductsCheckingPeriodTrait
+trait LowestPriceForDiscountedProductsAwareTrait
 {
     /** @ORM\Column(name="lowest_price_for_discounted_products_checking_period", type="integer", nullable=false, options={"default": 30}) */
     #[ORM\Column(name: 'lowest_price_for_discounted_products_checking_period', type: 'integer', nullable: false, options: ['default' => 30])]
     protected int $lowestPriceForDiscountedProductsCheckingPeriod = 30;
+
+    /** @ORM\Column(name="lowest_price_for_discounted_products_visible", type="boolean", nullable=false, options={"default": true}) */
+    #[ORM\Column(name: 'lowest_price_for_discounted_products_visible', type: 'boolean', nullable: false, options: ['default' => true])]
+    protected bool $lowestPriceForDiscountedProductsVisible = true;
 
     public function getLowestPriceForDiscountedProductsCheckingPeriod(): int
     {
@@ -29,5 +33,15 @@ trait LowestPriceForDiscountedProductsCheckingPeriodTrait
     public function setLowestPriceForDiscountedProductsCheckingPeriod(int $periodInDays): void
     {
         $this->lowestPriceForDiscountedProductsCheckingPeriod = $periodInDays;
+    }
+
+    public function isLowestPriceForDiscountedProductsVisible(): bool
+    {
+        return $this->lowestPriceForDiscountedProductsVisible;
+    }
+
+    public function setLowestPriceForDiscountedProductsVisible(bool $visible = true): void
+    {
+        $this->lowestPriceForDiscountedProductsVisible = $visible;
     }
 }
