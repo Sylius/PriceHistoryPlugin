@@ -22,6 +22,7 @@
     "shippingAddressInCheckoutRequired": false,
     "lowestPriceForDiscountedProductsVisible": true,
     "lowestPriceForDiscountedProductsCheckingPeriod": "@integer@",
+    "taxonsExcludedFromShowingLowestPrice": [],
     "shopBillingData": null,
     "menuTaxon": null,
     "description": null,

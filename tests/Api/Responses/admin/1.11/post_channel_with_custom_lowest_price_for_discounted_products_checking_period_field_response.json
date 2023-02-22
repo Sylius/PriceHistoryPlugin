@@ -21,6 +21,7 @@
     "accountVerificationRequired": true,
     "lowestPriceForDiscountedProductsVisible": @boolean@,
     "lowestPriceForDiscountedProductsCheckingPeriod": 10,
+    "taxonsExcludedFromShowingLowestPrice": [],
     "shopBillingData": null,
     "menuTaxon": null,
     "description": null,
