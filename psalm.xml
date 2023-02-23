@@ -22,7 +22,7 @@
 
         <InvalidStringClass>
             <errorLevel type="info">
-                <file name="src/Application/Factory/ChannelPricingLogEntryFactory.php" />
+                <file name="src/Domain/Factory/ChannelPricingLogEntryFactory.php" />
             </errorLevel>
         </InvalidStringClass>
 

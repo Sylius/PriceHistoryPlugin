@@ -16,7 +16,7 @@ namespace Sylius\PriceHistoryPlugin\Application\Logger;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Calendar\Provider\DateTimeProviderInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\PriceHistoryPlugin\Application\Factory\ChannelPricingLogEntryFactoryInterface;
+use Sylius\PriceHistoryPlugin\Domain\Factory\ChannelPricingLogEntryFactoryInterface;
 use Webmozart\Assert\Assert;
 
 final class PriceChangeLogger implements PriceChangeLoggerInterface

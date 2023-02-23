@@ -18,8 +18,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Calendar\Provider\DateTimeProviderInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\PriceHistoryPlugin\Application\Factory\ChannelPricingLogEntryFactoryInterface;
 use Sylius\PriceHistoryPlugin\Application\Logger\PriceChangeLoggerInterface;
+use Sylius\PriceHistoryPlugin\Domain\Factory\ChannelPricingLogEntryFactoryInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 
 final class PriceChangeLoggerSpec extends ObjectBehavior

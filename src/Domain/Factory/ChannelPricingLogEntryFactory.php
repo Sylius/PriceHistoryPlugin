@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Application\Factory;
+namespace Sylius\PriceHistoryPlugin\Domain\Factory;
 
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Resource\Exception\UnsupportedMethodException;
