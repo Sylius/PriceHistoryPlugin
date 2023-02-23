@@ -17,3 +17,25 @@
             validation_groups: ['sylius']
             denormalization_context:
                 groups: ['admin:channel:update']
+        admin_exclude_taxon:
+            method: PUT
+            path: /admin/channels/{code}/exclude-taxon
+            messenger: input
+            input: Sylius\PriceHistoryPlugin\Application\Message\ExcludeTaxonFromShowingLowestPrice
+            denormalization_context:
+                groups: ['admin:channel:exclude-taxon']
+            normalization_context:
+                groups: ['admin:channel:read']
+            openapi_context:
+                summary: Exclude taxon from showing lowest price in channel
+        admin_remove_taxon_exclusion:
+            method: PUT
+            path: /admin/channels/{code}/remove-taxon-exclusion
+            messenger: input
+            input: Sylius\PriceHistoryPlugin\Application\Message\RemoveTaxonExclusionFromShowingLowestPrice
+            denormalization_context:
+                groups: ['admin:channel:exclude-taxon']
+            normalization_context:
+                groups: ['admin:channel:read']
+            openapi_context:
+                summary: Remove taxon exclusion from showing lowest price in channel

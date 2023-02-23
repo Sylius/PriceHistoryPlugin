@@ -21,5 +21,9 @@
             <argument type="service" id="sylius.section_resolver.uri_based_section_resolver" />
             <tag name="serializer.normalizer" priority="128" />
         </service>
+
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\Serializer\ChannelExcludedTaxonsNormalizer">
+            <tag name="serializer.normalizer" priority="128" />
+        </service>
     </services>
 </container>
