@@ -11,12 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Application\Provider;
+namespace Sylius\PriceHistoryPlugin\Application\Calculator;
 
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 
-interface ProductVariantPriceProviderInterface
+interface ProductVariantPriceCalculatorInterface
 {
-    public function getLowestPriceBeforeDiscount(ProductVariantInterface $productVariant, ChannelInterface $channel): ?int;
+    public function calculateLowestPriceBeforeDiscount(ProductVariantInterface $productVariant, array $context): ?int;
 }

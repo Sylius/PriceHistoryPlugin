@@ -17,7 +17,7 @@
 >
     <services>
         <service id="Sylius\PriceHistoryPlugin\Infrastructure\Serializer\ProductVariantNormalizer">
-            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Provider\ProductVariantPriceProviderInterface" />
+            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantPriceCalculatorInterface" />
             <argument type="service" id="sylius.section_resolver.uri_based_section_resolver" />
             <tag name="serializer.normalizer" priority="128" />
         </service>

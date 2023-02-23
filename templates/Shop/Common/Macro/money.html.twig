@@ -1,0 +1,7 @@
+{% extends "@SyliusShop/Common/Macro/money.html.twig" %}
+
+{%- macro calculateLowestPrice(variant) -%}
+    {% from _self import convertAndFormat %}
+
+    {{- convertAndFormat(variant|sylius_price_history_calculate_lowest_price({'channel': sylius.channel})) -}}
+{%- endmacro -%}
