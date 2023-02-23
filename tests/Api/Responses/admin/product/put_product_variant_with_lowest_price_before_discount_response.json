@@ -1,0 +1,40 @@
+{
+    "@context": "\/api\/v2\/contexts\/ProductVariant",
+    "@id": "\/api\/v2\/admin\/product-variants\/MUG_BLUE",
+    "@type": "ProductVariant",
+    "channelPricings": {
+        "HOME": {
+            "@id": "\/api\/v2\/admin\/channel-pricings\/@integer@",
+            "@type": "ChannelPricing",
+            "id": @integer@,
+            "channelCode": "HOME",
+            "price": 3000,
+            "originalPrice": 4000,
+            "minimumPrice": 0,
+            "lowestPriceBeforeDiscount": 1000
+        },
+        "FASHION": {
+            "@id": "\/api\/v2\/admin\/channel-pricings\/@integer@",
+            "@type": "ChannelPricing",
+            "id": @integer@,
+            "channelCode": "FASHION",
+            "price": 4000,
+            "originalPrice": 5000,
+            "minimumPrice": 0,
+            "lowestPriceBeforeDiscount": 2000
+        }
+    },
+    "id": @integer@,
+    "code": "MUG_BLUE",
+    "product": "\/api\/v2\/admin\/products\/MUG",
+    "optionValues": [],
+    "translations": {
+        "en_US": {
+            "@id": "\/api\/v2\/admin\/product-variant-translation\/@integer@",
+            "@type": "ProductVariantTranslation",
+            "id": @integer@,
+            "name": "Blue Mug",
+            "locale": "en_US"
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "@context":"\/api\/v2\/contexts\/ProductVariant",
+    "@id":"\/api\/v2\/admin\/product-variants\/MUG_GREEN",
+    "@type":"ProductVariant",
+    "code":"MUG_GREEN",
+    "product":"\/api\/v2\/admin\/products\/MUG",
+    "channelPricings": {
+        "HOME": {
+            "@id": "\/api\/v2\/admin\/channel-pricings\/@integer@",
+            "@type": "ChannelPricing",
+            "id": @integer@,
+            "channelCode": "HOME",
+            "price": 3000,
+            "originalPrice": 4000,
+            "minimumPrice": 0,
+            "lowestPriceBeforeDiscount": null
+        },
+        "FASHION": {
+            "@id": "\/api\/v2\/admin\/channel-pricings\/@integer@",
+            "@type": "ChannelPricing",
+            "id": @integer@,
+            "channelCode": "FASHION",
+            "price": 4000,
+            "originalPrice": 5000,
+            "minimumPrice": 0,
+            "lowestPriceBeforeDiscount": null
+        }
+    },
+    "id": @integer@,
+    "optionValues": [],
+    "translations": []
+}
