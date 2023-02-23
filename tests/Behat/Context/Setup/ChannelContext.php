@@ -34,7 +34,7 @@ final class ChannelContext implements Context
     }
 
     /**
-     * @Given /^(this channel) has (\d+) days set as the lowest price for discounted products checking period$/
+     * @Given /^(this channel) has (\d+) day(?:|s) set as the lowest price for discounted products checking period$/
      */
     public function thisChannelHasDaysSetAsTheLowestPriceForDiscountedProductsCheckingPeriod(
         ChannelInterface $channel,
