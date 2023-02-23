@@ -11,25 +11,40 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\EntityListener;
+namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\EventSubscriber;
 
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 
-final class ChannelPricingChangeListenerSpec extends ObjectBehavior
+final class ChannelPricingLogEntryEventSubscriberSpec extends ObjectBehavior
 {
     function let(ProductLowestPriceBeforeDiscountProcessorInterface $lowestPriceProcessor): void
     {
         $this->beConstructedWith($lowestPriceProcessor);
     }
 
+    function it_does_nothing_when_object_is_not_channel_pricing_log_entry(
+        LifecycleEventArgs $event,
+        ChannelPricingInterface $channelPricing
+    ): void {
+        $event->getObject()->willReturn($channelPricing);
+
+        $this->postPersist($event);
+    }
+
     function it_processes_lowest_price_for_channel_pricing(
         ProductLowestPriceBeforeDiscountProcessorInterface $lowestPriceProcessor,
         ChannelPricingInterface $channelPricing,
+        ChannelPricingLogEntryInterface $channelPricingLogEntry,
+        LifecycleEventArgs $event
     ): void {
+        $event->getObject()->willReturn($channelPricingLogEntry);
+        $channelPricingLogEntry->getChannelPricing()->willReturn($channelPricing);
         $lowestPriceProcessor->process($channelPricing)->shouldBeCalled();
 
-        $this->postUpdate($channelPricing);
+        $this->postPersist($event);
     }
 }

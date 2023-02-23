@@ -50,6 +50,10 @@ final class ProductLowestPriceBeforeDiscountProcessor implements ProductLowestPr
         /** @var ChannelInterface $channel */
         $channel = $this->channelRepository->findOneByCode($channelCode);
 
+        if (!$channel instanceof ChannelInterface) {
+            return;
+        }
+
         $lowestPriceInPeriod = $this->findLowestPriceInPeriod(
             $latestLogEntry,
             $channel->getLowestPriceForDiscountedProductsCheckingPeriod(),

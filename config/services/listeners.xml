@@ -21,14 +21,6 @@
             <tag name="doctrine.event_listener" event="onFlush" lazy="true" />
         </service>
 
-        <service
-            id="sylius_price_history.entity_listener.channel_pricing_change"
-            class="Sylius\PriceHistoryPlugin\Infrastructure\EntityListener\ChannelPricingChangeListener"
-        >
-            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface" />
-            <tag name="doctrine.orm.entity_listener" event="postUpdate" entity="Sylius\Component\Core\Model\ChannelPricing" />
-        </service>
-
         <service id="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\BeforeDenormalizationChannelValidationListener">
             <argument type="service" id="validator" />
             <argument type="service" id="sylius.custom_factory.channel" />
