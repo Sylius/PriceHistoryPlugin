@@ -19,3 +19,8 @@ sylius_ui:
                 content:
                     template: '@SyliusPriceHistoryPlugin/Admin/Product/Show/_pricing.html.twig'
                     priority: 10
+                    
+        sylius.shop.product.show.right_sidebar:
+            blocks:
+                price_widget:
+                    template: "@SyliusPriceHistoryPlugin/Shop/Product/Show/_priceWidget.html.twig"

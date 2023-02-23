@@ -1,0 +1,29 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+default:
+    suites:
+        ui_viewing_products:
+            contexts:
+                - sylius.behat.context.hook.doctrine_orm
+                - Sylius\Calendar\Tests\Behat\Context\Hook\CalendarContext
+
+                - sylius.behat.context.transform.channel
+                - sylius.behat.context.transform.lexical
+                - sylius.behat.context.transform.product
+                - sylius.behat.context.transform.product_variant
+                - sylius.behat.context.transform.shared_storage
+
+                - sylius.behat.context.setup.channel
+                - sylius.behat.context.setup.product
+                - Sylius\Behat\Context\Setup\CatalogPromotionContext
+                - Sylius\Calendar\Tests\Behat\Context\Setup\CalendarContext
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ChannelContext
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ProductContext
+
+                - sylius.behat.context.ui.shop.product
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Shop\ProductContext
+
+            filters:
+                tags: "@viewing_products&&@ui"
+            javascript: false
