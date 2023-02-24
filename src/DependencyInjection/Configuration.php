@@ -15,7 +15,7 @@ namespace Sylius\PriceHistoryPlugin\DependencyInjection;
 
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Sylius\Bundle\ResourceBundle\Form\Type\DefaultResourceType;
-use Sylius\PriceHistoryPlugin\Application\Factory\ChannelPricingLogEntryFactory;
+use Sylius\PriceHistoryPlugin\Domain\Factory\ChannelPricingLogEntryFactory;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntry;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM\ChannelPricingLogEntryRepository;

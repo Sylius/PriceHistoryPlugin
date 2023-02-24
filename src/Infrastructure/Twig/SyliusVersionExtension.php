@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Application\Twig;
+namespace Sylius\PriceHistoryPlugin\Infrastructure\Twig;
 
 use Sylius\Bundle\CoreBundle\Application\Kernel;
 use Twig\Extension\AbstractExtension;

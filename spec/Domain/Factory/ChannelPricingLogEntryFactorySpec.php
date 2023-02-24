@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\PriceHistoryPlugin\Application\Factory;
+namespace spec\Sylius\PriceHistoryPlugin\Domain\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
