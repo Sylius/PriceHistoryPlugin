@@ -26,8 +26,8 @@ final class PriceExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('sylius_price_history_has_lowest_price', [$this->helper, 'hasLowestPriceBeforeDiscount']),
-            new TwigFilter('sylius_price_history_calculate_lowest_price', [$this->helper, 'getLowestPriceBeforeDiscount']),
+            new TwigFilter('sylius_has_lowest_price', [$this->helper, 'hasLowestPriceBeforeDiscount']),
+            new TwigFilter('sylius_calculate_lowest_price', [$this->helper, 'getLowestPriceBeforeDiscount']),
         ];
     }
 }

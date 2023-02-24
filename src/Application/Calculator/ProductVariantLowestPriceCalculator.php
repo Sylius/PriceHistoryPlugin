@@ -19,7 +19,7 @@ use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
 use Webmozart\Assert\Assert;
 
-final class ProductVariantPriceCalculator implements ProductVariantPriceCalculatorInterface
+final class ProductVariantLowestPriceCalculator implements ProductVariantLowestPriceCalculatorInterface
 {
     public function calculateLowestPriceBeforeDiscount(ProductVariantInterface $productVariant, array $context): ?int
     {
@@ -33,7 +33,7 @@ final class ProductVariantPriceCalculator implements ProductVariantPriceCalculat
             throw MissingChannelConfigurationException::createForProductVariantChannelPricing($productVariant, $channel);
         }
 
-        if (false === $channel->isLowestPriceForDiscountedProductsVisible()) {
+        if (!$channel->isLowestPriceForDiscountedProductsVisible()) {
             return null;
         }
 

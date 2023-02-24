@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Sylius\PriceHistoryPlugin\Application\Templating\Helper;
 
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantPriceCalculatorInterface;
+use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface;
 use Symfony\Component\Templating\Helper\Helper;
 use Webmozart\Assert\Assert;
 
 class PriceHelper extends Helper
 {
-    public function __construct(protected ProductVariantPriceCalculatorInterface $productVariantPriceCalculator)
+    public function __construct(protected ProductVariantLowestPriceCalculatorInterface $productVariantPriceCalculator)
     {
     }
 

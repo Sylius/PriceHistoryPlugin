@@ -15,7 +15,7 @@ namespace Sylius\PriceHistoryPlugin\Application\Calculator;
 
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-interface ProductVariantPriceCalculatorInterface
+interface ProductVariantLowestPriceCalculatorInterface
 {
     public function calculateLowestPriceBeforeDiscount(ProductVariantInterface $productVariant, array $context): ?int;
 }

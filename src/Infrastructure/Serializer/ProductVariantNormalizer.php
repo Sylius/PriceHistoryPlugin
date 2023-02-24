@@ -18,7 +18,7 @@ use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Sylius\Bundle\CoreBundle\SectionResolver\SectionProviderInterface;
 use Sylius\Component\Core\Exception\MissingChannelConfigurationException;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantPriceCalculatorInterface;
+use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -32,7 +32,7 @@ final class ProductVariantNormalizer implements NormalizerInterface, NormalizerA
     private const ALREADY_CALLED = 'sylius_price_history_product_variant_normalizer_already_called';
 
     public function __construct(
-        private ProductVariantPriceCalculatorInterface $priceCalculator,
+        private ProductVariantLowestPriceCalculatorInterface $priceCalculator,
         private SectionProviderInterface $uriBasedSectionContext,
     ) {
     }

@@ -19,7 +19,7 @@ use Sylius\Bundle\CoreBundle\SectionResolver\SectionProviderInterface;
 use Sylius\Component\Core\Exception\MissingChannelConfigurationException;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantPriceCalculatorInterface;
+use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -27,7 +27,7 @@ final class ProductVariantNormalizerSpec extends ObjectBehavior
 {
     private const ALREADY_CALLED = 'sylius_price_history_product_variant_normalizer_already_called';
 
-    function let(ProductVariantPriceCalculatorInterface $priceProvider, SectionProviderInterface $sectionProvider): void
+    function let(ProductVariantLowestPriceCalculatorInterface $priceProvider, SectionProviderInterface $sectionProvider): void
     {
         $this->beConstructedWith($priceProvider, $sectionProvider);
     }
@@ -78,7 +78,7 @@ final class ProductVariantNormalizerSpec extends ObjectBehavior
     }
 
     function it_adds_lowest_price_before_discount_to_variant_data(
-        ProductVariantPriceCalculatorInterface $priceProvider,
+        ProductVariantLowestPriceCalculatorInterface $priceProvider,
         NormalizerInterface $normalizer,
         ChannelInterface $channel,
         ProductVariantInterface $variant,
@@ -102,7 +102,7 @@ final class ProductVariantNormalizerSpec extends ObjectBehavior
     }
 
     function it_does_not_add_lowest_price_before_discount_to_variant_data_if_missing_channel_configuration_exception_is_thrown(
-        ProductVariantPriceCalculatorInterface $priceProvider,
+        ProductVariantLowestPriceCalculatorInterface $priceProvider,
         NormalizerInterface $normalizer,
         ChannelInterface $channel,
         ProductVariantInterface $variant,

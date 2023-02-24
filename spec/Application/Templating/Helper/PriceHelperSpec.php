@@ -15,14 +15,14 @@ namespace spec\Sylius\PriceHistoryPlugin\Application\Templating\Helper;
 
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantPriceCalculatorInterface;
+use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface;
 use Sylius\PriceHistoryPlugin\Application\Templating\Helper\PriceHelper;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 final class PriceHelperSpec extends ObjectBehavior
 {
-    function let(ProductVariantPriceCalculatorInterface $productVariantPriceCalculator): void
+    function let(ProductVariantLowestPriceCalculatorInterface $productVariantPriceCalculator): void
     {
         $this->beConstructedWith($productVariantPriceCalculator);
     }
@@ -43,7 +43,7 @@ final class PriceHelperSpec extends ObjectBehavior
     function it_returns_lowest_price_before_discount(
         ProductVariantInterface $productVariant,
         ChannelInterface $channel,
-        ProductVariantPriceCalculatorInterface $productVariantPriceCalculator
+        ProductVariantLowestPriceCalculatorInterface $productVariantPriceCalculator
     ): void {
         $productVariantPriceCalculator
             ->calculateLowestPriceBeforeDiscount($productVariant, ['channel' => $channel])
@@ -59,7 +59,7 @@ final class PriceHelperSpec extends ObjectBehavior
     function it_returns_null_when_lowest_price_before_discount_is_unavailable(
         ProductVariantInterface $productVariant,
         ChannelInterface $channel,
-        ProductVariantPriceCalculatorInterface $productVariantPriceCalculator
+        ProductVariantLowestPriceCalculatorInterface $productVariantPriceCalculator
     ): void {
         $productVariantPriceCalculator
             ->calculateLowestPriceBeforeDiscount($productVariant, ['channel' => $channel])
@@ -83,7 +83,7 @@ final class PriceHelperSpec extends ObjectBehavior
     function it_returns_true_if_lowest_price_before_discount_is_available(
         ProductVariantInterface $productVariant,
         ChannelInterface $channel,
-        ProductVariantPriceCalculatorInterface $productVariantPriceCalculator
+        ProductVariantLowestPriceCalculatorInterface $productVariantPriceCalculator
     ): void {
         $productVariantPriceCalculator
             ->calculateLowestPriceBeforeDiscount($productVariant, ['channel' => $channel])
@@ -99,7 +99,7 @@ final class PriceHelperSpec extends ObjectBehavior
     function it_returns_false_if_lowest_price_before_discount_is_unavailable(
         ProductVariantInterface $productVariant,
         ChannelInterface $channel,
-        ProductVariantPriceCalculatorInterface $productVariantPriceCalculator
+        ProductVariantLowestPriceCalculatorInterface $productVariantPriceCalculator
     ): void {
         $productVariantPriceCalculator
             ->calculateLowestPriceBeforeDiscount($productVariant, ['channel' => $channel])

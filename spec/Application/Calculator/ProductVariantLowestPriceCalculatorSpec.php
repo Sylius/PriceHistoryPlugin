@@ -16,15 +16,15 @@ namespace spec\Sylius\PriceHistoryPlugin\Application\Calculator;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Exception\MissingChannelConfigurationException;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantPriceCalculatorInterface;
+use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
 
-final class ProductVariantPriceCalculatorSpec extends ObjectBehavior
+final class ProductVariantLowestPriceCalculatorSpec extends ObjectBehavior
 {
     function it_implements_product_variant_price_provider_interface(): void
     {
-        $this->shouldImplement(ProductVariantPriceCalculatorInterface::class);
+        $this->shouldImplement(ProductVariantLowestPriceCalculatorInterface::class);
     }
 
     function it_returns_the_lowest_price_before_discount(

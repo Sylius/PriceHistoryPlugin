@@ -50,8 +50,8 @@
         </service>
 
         <service
-            id="Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantPriceCalculatorInterface"
-            class="Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantPriceCalculator"
+            id="Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface"
+            class="Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculator"
         />
     </services>
 </container>
