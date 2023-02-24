@@ -53,3 +53,4 @@ default:
         FriendsOfBehat\SuiteSettingsExtension:
             paths:
                 - "features"
+                - "vendor/sylius/sylius/features/product/managing_products/adding_product_with_only_original_price.feature"

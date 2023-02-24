@@ -70,6 +70,6 @@ final class ChannelPricingChangeListener
 
     private function supports(object $model): bool
     {
-        return $model instanceof ChannelPricingInterface;
+        return $model instanceof ChannelPricingInterface && null !== $model->getPrice();
     }
 }
