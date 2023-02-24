@@ -99,6 +99,52 @@ final class ChannelPricingChangeListenerSpec extends ObjectBehavior
         $this->onFlush($eventArgs);
     }
 
+    function it_does_not_log_price_change_if_price_is_null(
+        PriceChangeLoggerInterface $priceChangeLogger,
+        OnFlushEventArgs $eventArgs,
+        EntityManagerInterface $entityManager,
+        ChannelPricingInterface $newChannelPricing,
+        ChannelPricingInterface $updatedChannelPricing,
+    ): void {
+        $eventArgs->getObjectManager()->willReturn($entityManager);
+
+        $newChannelPricing->getPrice()->willReturn(null);
+        $updatedChannelPricing->getPrice()->willReturn(null);
+
+        /** @var UnitOfWork|MockInterface $unitOfWork */
+        $unitOfWork = Mockery::mock(UnitOfWork::class);
+
+        $unitOfWork
+            ->shouldReceive('getEntityChangeSet')
+            ->withArgs([$updatedChannelPricing->getWrappedObject()])
+            ->andReturn([
+                'price' => [1000, 2000],
+                'originalPrice' => [null, 3000],
+            ])
+            ->once()
+        ;
+
+        $unitOfWork
+            ->shouldReceive('getScheduledEntityUpdates')
+            ->withNoArgs()
+            ->andReturn([$updatedChannelPricing->getWrappedObject()])
+        ;
+
+        $unitOfWork
+            ->shouldReceive('getScheduledEntityInsertions')
+            ->withNoArgs()
+            ->andReturn([$newChannelPricing->getWrappedObject()])
+        ;
+
+        $unitOfWork->shouldReceive('computeChangeSets')->withNoArgs()->once();
+
+        $entityManager->getUnitOfWork()->willReturn($unitOfWork);
+
+        $priceChangeLogger->log(Argument::any())->shouldNotBeCalled();
+
+        $this->onFlush($eventArgs);
+    }
+
     function it_does_not_log_price_change_if_price_and_original_price_have_not_changed(
         PriceChangeLoggerInterface $priceChangeLogger,
         OnFlushEventArgs $eventArgs,
@@ -107,8 +153,7 @@ final class ChannelPricingChangeListenerSpec extends ObjectBehavior
     ): void {
         $eventArgs->getObjectManager()->willReturn($entityManager);
 
-        $updatedChannelPricing->getPrice()->shouldNotBeCalled();
-        $updatedChannelPricing->getOriginalPrice()->shouldNotBeCalled();
+        $updatedChannelPricing->getPrice()->willReturn(2000);
 
         /** @var UnitOfWork|MockInterface $unitOfWork */
         $unitOfWork = Mockery::mock(UnitOfWork::class);
