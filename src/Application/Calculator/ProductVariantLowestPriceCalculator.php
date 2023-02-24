@@ -11,22 +11,30 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Application\Provider;
+namespace Sylius\PriceHistoryPlugin\Application\Calculator;
 
 use Sylius\Component\Core\Exception\MissingChannelConfigurationException;
-use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
+use Webmozart\Assert\Assert;
 
-final class ProductVariantPriceProvider implements ProductVariantPriceProviderInterface
+final class ProductVariantLowestPriceCalculator implements ProductVariantLowestPriceCalculatorInterface
 {
-    public function getLowestPriceBeforeDiscount(ProductVariantInterface $productVariant, ChannelInterface $channel): ?int
+    public function calculateLowestPriceBeforeDiscount(ProductVariantInterface $productVariant, array $context): ?int
     {
+        Assert::keyExists($context, 'channel');
+        $channel = $context['channel'];
+        Assert::isInstanceOf($channel, ChannelInterface::class);
         /** @var ChannelPricingInterface|null $channelPricing */
         $channelPricing = $productVariant->getChannelPricingForChannel($channel);
 
         if (null === $channelPricing) {
             throw MissingChannelConfigurationException::createForProductVariantChannelPricing($productVariant, $channel);
+        }
+
+        if (!$channel->isLowestPriceForDiscountedProductsVisible()) {
+            return null;
         }
 
         return $channelPricing->getLowestPriceBeforeDiscount();

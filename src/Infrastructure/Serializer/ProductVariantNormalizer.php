@@ -18,7 +18,7 @@ use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Sylius\Bundle\CoreBundle\SectionResolver\SectionProviderInterface;
 use Sylius\Component\Core\Exception\MissingChannelConfigurationException;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\PriceHistoryPlugin\Application\Provider\ProductVariantPriceProviderInterface;
+use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -32,7 +32,7 @@ final class ProductVariantNormalizer implements NormalizerInterface, NormalizerA
     private const ALREADY_CALLED = 'sylius_price_history_product_variant_normalizer_already_called';
 
     public function __construct(
-        private ProductVariantPriceProviderInterface $priceProvider,
+        private ProductVariantLowestPriceCalculatorInterface $priceCalculator,
         private SectionProviderInterface $uriBasedSectionContext,
     ) {
     }
@@ -50,7 +50,10 @@ final class ProductVariantNormalizer implements NormalizerInterface, NormalizerA
         $channel = $context[ContextKeys::CHANNEL];
 
         try {
-            $data['lowestPriceBeforeDiscount'] = $this->priceProvider->getLowestPriceBeforeDiscount($object, $channel);
+            $data['lowestPriceBeforeDiscount'] = $this->priceCalculator->calculateLowestPriceBeforeDiscount(
+                $object,
+                ['channel' => $channel],
+            );
         } catch (MissingChannelConfigurationException) {
         }
 
@@ -59,7 +62,7 @@ final class ProductVariantNormalizer implements NormalizerInterface, NormalizerA
 
     public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool
     {
-        if (isset($context[self::ALREADY_CALLED]) || !array_key_exists(ContextKeys::CHANNEL, $context)) {
+        if (isset($context[self::ALREADY_CALLED]) || !isset($context[ContextKeys::CHANNEL])) {
             return false;
         }
 
