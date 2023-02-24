@@ -15,12 +15,14 @@ namespace Sylius\PriceHistoryPlugin\Infrastructure\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Sylius\PriceHistoryPlugin\Infrastructure\EventListener\EntityChange\OnEntityChangeInterface;
+use Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\EntityObserverInterface;
+use Webmozart\Assert\Assert;
 
-final class OnFlushEntityChangeListener
+final class OnFlushEntityObserverListener
 {
-    public function __construct(private iterable $onEntityChange)
+    public function __construct(private iterable $entityObservers)
     {
+        Assert::allImplementsInterface($this->entityObservers, EntityObserverInterface::class);
     }
 
     public function onFlush(OnFlushEventArgs $eventArgs): void
@@ -33,23 +35,26 @@ final class OnFlushEntityChangeListener
             $unitOfWork->getScheduledEntityUpdates(),
         );
 
-        foreach ($scheduledEntities as $entity) {
-            /** @var OnEntityChangeInterface $onEntityChange */
-            foreach ($this->onEntityChange as $onEntityChange) {
-                $supportedEntity = $onEntityChange->getSupportedEntity();
+        $atLeastOneEntityChanged = false;
 
+        foreach ($scheduledEntities as $entity) {
+            /** @var EntityObserverInterface $entityObserver */
+            foreach ($this->entityObservers as $entityObserver) {
                 if (
-                    !$entity instanceof $supportedEntity ||
-                    !$this->isEntityChanged($unitOfWork, $entity, $onEntityChange->getSupportedFields())
+                    !$entityObserver->supports($entity) ||
+                    !$this->isEntityChanged($unitOfWork, $entity, $entityObserver->observedFields())
                 ) {
                     continue;
                 }
 
-                $onEntityChange->onChange($entity);
+                $atLeastOneEntityChanged = true;
+                $entityObserver->onChange($entity);
             }
         }
 
-        $unitOfWork->computeChangeSets();
+        if ($atLeastOneEntityChanged) {
+            $unitOfWork->computeChangeSets();
+        }
     }
 
     private function isEntityChanged(UnitOfWork $unitOfWork, object $entity, array $supportedFields): bool

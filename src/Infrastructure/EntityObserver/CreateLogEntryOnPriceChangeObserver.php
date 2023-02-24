@@ -11,31 +11,31 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Infrastructure\EventListener\EntityChange;
+namespace Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver;
 
 use Sylius\PriceHistoryPlugin\Application\Logger\PriceChangeLoggerInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
+use Webmozart\Assert\Assert;
 
-final class CreateLogEntryOnPriceChange implements OnEntityChangeInterface
+final class CreateLogEntryOnPriceChangeObserver implements EntityObserverInterface
 {
     public function __construct(private PriceChangeLoggerInterface $priceChangeLogger)
     {
     }
 
-    /**
-     * @param ChannelPricingInterface $entity
-     */
     public function onChange(object $entity): void
     {
+        Assert::isInstanceOf($entity, ChannelPricingInterface::class);
+
         $this->priceChangeLogger->log($entity);
     }
 
-    public function getSupportedEntity(): string
+    public function supports(object $entity): bool
     {
-        return ChannelPricingInterface::class;
+        return $entity instanceof ChannelPricingInterface && null !== $entity->getPrice();
     }
 
-    public function getSupportedFields(): array
+    public function observedFields(): array
     {
         return ['price', 'originalPrice'];
     }

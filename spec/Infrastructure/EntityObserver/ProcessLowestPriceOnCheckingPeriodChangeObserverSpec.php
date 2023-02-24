@@ -1,15 +1,17 @@
 <?php
 
-namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\EventListener\EntityChange;
+namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
-use Sylius\PriceHistoryPlugin\Infrastructure\EventListener\EntityChange\OnEntityChangeInterface;
+use Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\EntityObserverInterface;
 
-final class ProcessLowestPriceOnCheckingPeriodChangeSpec extends ObjectBehavior
+final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectBehavior
 {
     function let(
         ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
@@ -20,17 +22,20 @@ final class ProcessLowestPriceOnCheckingPeriodChangeSpec extends ObjectBehavior
 
     function it_implements_on_entity_change_interface(): void
     {
-        $this->shouldImplement(OnEntityChangeInterface::class);
+        $this->shouldImplement(EntityObserverInterface::class);
     }
 
-    function it_supports_channel_pricing_interface(): void
-    {
-        $this->getSupportedEntity()->shouldReturn(ChannelInterface::class);
+    function it_supports_channel_pricing_interface_only(
+        ChannelInterface $channel,
+        OrderInterface $order,
+    ): void {
+        $this->supports($channel)->shouldReturn(true);
+        $this->supports($order)->shouldReturn(false);
     }
 
     function it_supports_lowest_price_for_discounted_products_checking_period_field(): void
     {
-        $this->getSupportedFields()->shouldReturn(['lowestPriceForDiscountedProductsCheckingPeriod']);
+        $this->observedFields()->shouldReturn(['lowestPriceForDiscountedProductsCheckingPeriod']);
     }
 
     function it_processes_product_lowest_price_for_each_channel_pricing_within_channel(
@@ -51,5 +56,18 @@ final class ProcessLowestPriceOnCheckingPeriodChangeSpec extends ObjectBehavior
         $productLowestPriceBeforeDiscountProcessor->process($secondChannelPricing)->shouldBeCalled();
 
         $this->onChange($channel);
+    }
+
+    function it_throws_an_exception_if_entity_is_not_channel(
+        ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
+        RepositoryInterface $channelPricingRepository,
+        OrderInterface $order,
+    ): void {
+        $channelPricingRepository->findBy(Argument::any())->shouldNotBeCalled();
+
+        $productLowestPriceBeforeDiscountProcessor->process(Argument::any())->shouldNotBeCalled();
+        $productLowestPriceBeforeDiscountProcessor->process(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('onChange', [$order]);
     }
 }

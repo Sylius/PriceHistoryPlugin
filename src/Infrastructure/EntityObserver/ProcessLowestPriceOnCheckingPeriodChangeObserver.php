@@ -11,13 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Infrastructure\EventListener\EntityChange;
+namespace Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver;
 
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
+use Webmozart\Assert\Assert;
 
-final class ProcessLowestPriceOnCheckingPeriodChange implements OnEntityChangeInterface
+final class ProcessLowestPriceOnCheckingPeriodChangeObserver implements EntityObserverInterface
 {
     public function __construct(
         private ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
@@ -25,11 +27,11 @@ final class ProcessLowestPriceOnCheckingPeriodChange implements OnEntityChangeIn
     ) {
     }
 
-    /**
-     * @param ChannelInterface $entity
-     */
     public function onChange(object $entity): void
     {
+        Assert::isInstanceOf($entity, ChannelInterface::class);
+
+        /** @var ChannelPricingInterface[] $channelPricings */
         $channelPricings = $this->channelPricingRepository->findBy(['channelCode' => $entity->getCode()]);
 
         foreach ($channelPricings as $channelPricing) {
@@ -37,12 +39,12 @@ final class ProcessLowestPriceOnCheckingPeriodChange implements OnEntityChangeIn
         }
     }
 
-    public function getSupportedEntity(): string
+    public function supports(object $entity): bool
     {
-        return ChannelInterface::class;
+        return $entity instanceof ChannelInterface;
     }
 
-    public function getSupportedFields(): array
+    public function observedFields(): array
     {
         return ['lowestPriceForDiscountedProductsCheckingPeriod'];
     }

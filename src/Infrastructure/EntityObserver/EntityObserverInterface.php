@@ -11,13 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Sylius\PriceHistoryPlugin\Infrastructure\EventListener\EntityChange;
+namespace Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver;
 
-interface OnEntityChangeInterface
+interface EntityObserverInterface
 {
     public function onChange(object $entity): void;
 
-    public function getSupportedEntity(): string;
+    public function supports(object $entity): bool;
 
-    public function getSupportedFields(): array;
+    /**
+     * @return string[]
+     */
+    public function observedFields(): array;
 }
