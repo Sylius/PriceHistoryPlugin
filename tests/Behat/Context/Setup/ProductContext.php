@@ -105,14 +105,27 @@ final class ProductContext implements Context
     ): void {
         $channelPricing = $this->getChannelPricingFromProduct($product);
 
-        Assert::notSame(
-            $channelPricing->getOriginalPrice(),
-            $price,
-            'This is not a discount as the original price is the same as the current price.',
-        );
+        $channelPricing->setPrice($price);
+        $channelPricing->setOriginalPrice($originalPrice);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^(this variant)'s price changed to ("[^"]+") and original price changed to ("[^"]+")$/
+     */
+    public function thisVariantsPriceChangedToAndOriginalPriceChangedTo(
+        ProductVariantInterface $productVariant,
+        int $price,
+        int $originalPrice,
+    ): void {
+        $channelPricing = $this->getChannelPricingFromVariant($productVariant);
 
         $channelPricing->setPrice($price);
         $channelPricing->setOriginalPrice($originalPrice);
+
+        /** @var ProductInterface $product */
+        $product = $productVariant->getProduct();
 
         $this->saveProduct($product);
     }
@@ -187,7 +200,12 @@ final class ProductContext implements Context
         $variant = $this->defaultVariantResolver->getVariant($product);
         Assert::notNull($variant);
 
-        $channelPricing = $variant->getChannelPricings()->first();
+        return $this->getChannelPricingFromVariant($variant);
+    }
+
+    private function getChannelPricingFromVariant(ProductVariantInterface $productVariant): ChannelPricingInterface
+    {
+        $channelPricing = $productVariant->getChannelPricings()->first();
         Assert::isInstanceOf($channelPricing, ChannelPricingInterface::class);
 
         return $channelPricing;

@@ -15,11 +15,15 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
 use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Product\ShowPage\PricingElementInterface;
+use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Product\ShowPage\VariantsElementInterface;
+use Webmozart\Assert\Assert;
 
 final class ProductShowPageContext implements Context
 {
-    public function __construct(private PricingElementInterface $pricingElement)
-    {
+    public function __construct(
+        private PricingElementInterface $pricingElement,
+        private VariantsElementInterface $variantsElement,
+    ) {
     }
 
     /**
@@ -38,5 +42,52 @@ final class ProductShowPageContext implements Context
     {
         $pricingRow = $this->pricingElement->getVariantPricingRowForChannel($variantName, $channelName);
         $pricingRow->clickLink('Show');
+    }
+
+    /**
+     * @Then I should see :lowestPriceBeforeDiscount as its lowest price before the discount in :channelName channel
+     */
+    public function iShouldSeeAsItsLowestPriceBeforeTheDiscountInChannel(
+        string $lowestPriceBeforeDiscount,
+        string $channelName,
+    ): void {
+        Assert::same($this->pricingElement->getLowestPriceBeforeDiscountForChannel($channelName), $lowestPriceBeforeDiscount);
+    }
+
+    /**
+     * @Then I should not see the lowest price before the discount in :channelName channel
+     */
+    public function iShouldNotSeeTheLowestPriceBeforeTheDiscountInChannel(string $channelName): void
+    {
+        Assert::same($this->pricingElement->getLowestPriceBeforeDiscountForChannel($channelName), '-');
+    }
+
+    /**
+     * @Then I should see the lowest price before the discount of :lowestPriceBeforeDiscount for :variantName variant in :channelName channel
+     */
+    public function iShouldSeeVariantWithTheLowestPriceBeforeTheDiscountOfInChannel(
+        string $lowestPriceBeforeDiscount,
+        string $variantName,
+        string $channelName,
+    ): void {
+        Assert::true($this->variantsElement->hasProductVariantWithLowestPriceBeforeDiscountInChannel(
+            $variantName,
+            $lowestPriceBeforeDiscount,
+            $channelName,
+        ));
+    }
+
+    /**
+     * @Then I should not see the lowest price before the discount for :variantName variant in :channelName channel
+     */
+    public function iShouldNotSeeTheLowestPriceBeforeTheDiscountForVariantInChannel(
+        string $variantName,
+        string $channelName,
+    ): void {
+        Assert::true($this->variantsElement->hasProductVariantWithLowestPriceBeforeDiscountInChannel(
+            $variantName,
+            '-',
+            $channelName,
+        ));
     }
 }
