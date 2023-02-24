@@ -27,7 +27,7 @@ interface ChannelPricingLogEntryRepositoryInterface extends RepositoryInterface
     public function findLatestOneByChannelPricing(ChannelPricingInterface $channelPricing): ?ChannelPricingLogEntryInterface;
 
     public function findLowestPriceInPeriod(
-        int $channelPricingLogEntryId,
+        int $latestChannelPricingLogEntryId,
         ChannelPricingInterface $channelPricing,
         \DateTimeInterface $startDate,
     ): ?int;

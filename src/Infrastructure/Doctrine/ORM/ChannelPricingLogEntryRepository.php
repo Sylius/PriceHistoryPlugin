@@ -62,7 +62,30 @@ class ChannelPricingLogEntryRepository extends EntityRepository implements Chann
     }
 
     public function findLowestPriceInPeriod(
-        int $channelPricingLogEntryId,
+        int $latestChannelPricingLogEntryId,
+        ChannelPricingInterface $channelPricing,
+        \DateTimeInterface $startDate,
+    ): ?int {
+        $lowestPriceSetInPeriod = $this->findLowestPriceSetInPeriod($latestChannelPricingLogEntryId, $channelPricing, $startDate);
+        $latestPriceSetBeyondPeriod = $this->findLatestPriceSetBeyondPeriod($channelPricing, $startDate);
+
+        if (null === $lowestPriceSetInPeriod) {
+            return $latestPriceSetBeyondPeriod;
+        }
+
+        if (null === $latestPriceSetBeyondPeriod) {
+            return $lowestPriceSetInPeriod;
+        }
+
+        if ($latestPriceSetBeyondPeriod < $lowestPriceSetInPeriod) {
+            return $latestPriceSetBeyondPeriod;
+        }
+
+        return $lowestPriceSetInPeriod;
+    }
+
+    private function findLowestPriceSetInPeriod(
+        int $latestChannelPricingLogEntryId,
         ChannelPricingInterface $channelPricing,
         \DateTimeInterface $startDate,
     ): ?int {
@@ -73,21 +96,17 @@ class ChannelPricingLogEntryRepository extends EntityRepository implements Chann
             ->andWhere('o.channelPricing = :channelPricing')
             ->setParameter('startDate', $startDate)
             ->setParameter('channelPricing', $channelPricing)
-            ->setParameter('channelPricingLogEntryId', $channelPricingLogEntryId)
+            ->setParameter('channelPricingLogEntryId', $latestChannelPricingLogEntryId)
             ->orderBy('o.price', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
 
-        if ($channelPricingLogEntry === null) {
-            return $this->findLatestPriceBeyondPeriod($channelPricing, $startDate);
-        }
-
-        return $channelPricingLogEntry->getPrice();
+        return $channelPricingLogEntry?->getPrice();
     }
 
-    private function findLatestPriceBeyondPeriod(
+    private function findLatestPriceSetBeyondPeriod(
         ChannelPricingInterface $channelPricing,
         \DateTimeInterface $startDate,
     ): ?int {
