@@ -26,14 +26,14 @@ final class LowestPriceInformationElement extends Element implements LowestPrice
 
     public function isThereInformationAboutProductLowestPrice(): bool
     {
-        return $this->hasElement('lowest_price_information_element');
+        return $this->hasElement('lowest_price_information_element') && $this->getElement('lowest_price_information_element')->isVisible();
     }
 
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
-            'lowest_price_information_element' => '[data-test-product-lowest_price-before-the_discount]',
-            'lowest_price_information_element_with_price' => '[data-test-product-lowest_price-before-the_discount="%lowestPriceBeforeDiscount%"]',
+            'lowest_price_information_element' => '#product-lowest-price-before-the-discount:contains("The lowest price of this product from")',
+            'lowest_price_information_element_with_price' => '#product-lowest-price-before-the-discount:contains("%lowestPriceBeforeDiscount%")',
         ]);
     }
 }

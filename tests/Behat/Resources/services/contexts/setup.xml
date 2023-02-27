@@ -31,10 +31,12 @@
         <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ProductContext" public="true">
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.product" />
+            <argument type="service" id="sylius.generator.product_variant" />
             <argument type="service" id="sylius.product_variant_resolver.default" />
             <argument type="service" id="sylius.event_bus" />
             <argument type="service" id="sylius.factory.product_variant" />
             <argument type="service" id="sylius.factory.channel_pricing" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
         <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\PriceHistoryContext" public="true">

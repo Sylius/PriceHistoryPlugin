@@ -14,13 +14,16 @@ declare(strict_types=1);
 namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Event\ProductUpdated;
 use Sylius\Component\Core\Formatter\StringInflector;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Product\Generator\ProductVariantGeneratorInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -31,11 +34,49 @@ final class ProductContext implements Context
     public function __construct(
         private SharedStorageInterface $sharedStorage,
         private ProductRepositoryInterface $productRepository,
+        private ProductVariantGeneratorInterface $productVariantGenerator,
         private ProductVariantResolverInterface $defaultVariantResolver,
         private MessageBusInterface $eventBus,
         private FactoryInterface $productVariantFactory,
         private FactoryInterface $channelPricingFactory,
+        private ObjectManager $objectManager,
     ) {
+    }
+
+    /**
+     * @Given /^(this product) has all possible variants priced at ("[^"]+") with indexed names$/
+     */
+    public function thisProductHasAllPossibleVariantsPricedAtWithIndexedNames(
+        ProductInterface $product,
+        int $price,
+    ) {
+        try {
+            foreach ($product->getVariants() as $productVariant) {
+                $product->removeVariant($productVariant);
+            }
+
+            $this->productVariantGenerator->generate($product);
+        } catch (\InvalidArgumentException) {
+            /** @var ProductVariantInterface $productVariant */
+            $productVariant = $this->productVariantFactory->createNew();
+
+            $product->addVariant($productVariant);
+        }
+
+        $i = 0;
+        /** @var ProductVariantInterface $productVariant */
+        foreach ($product->getVariants() as $productVariant) {
+            $productVariant->setCode(sprintf('%s-variant-%d', $product->getCode(), $i));
+            $productVariant->setName(sprintf('%s variant %d', $product->getName(), $i));
+
+            foreach ($product->getChannels() as $channel) {
+                $productVariant->addChannelPricing($this->createChannelPricingForChannel($price, $channel));
+            }
+
+            ++$i;
+        }
+
+        $this->objectManager->flush();
     }
 
     /**
@@ -164,5 +205,15 @@ final class ProductContext implements Context
         $this->eventBus->dispatch(new ProductUpdated($product->getCode()));
         $this->sharedStorage->set('product', $product);
         $this->sharedStorage->set('variant', $product->getVariants()->first());
+    }
+
+    private function createChannelPricingForChannel(int $price, ChannelInterface $channel = null): ChannelPricingInterface
+    {
+        /** @var ChannelPricingInterface $channelPricing */
+        $channelPricing = $this->channelPricingFactory->createNew();
+        $channelPricing->setPrice($price);
+        $channelPricing->setChannelCode($channel->getCode());
+
+        return $channelPricing;
     }
 }
