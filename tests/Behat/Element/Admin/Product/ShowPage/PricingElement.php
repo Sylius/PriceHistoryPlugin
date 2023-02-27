@@ -18,6 +18,24 @@ use FriendsOfBehat\PageObjectExtension\Element\Element;
 
 final class PricingElement extends Element implements PricingElementInterface
 {
+    public function getLowestPriceBeforeDiscountForChannel(string $channelName): string
+    {
+        $channelPriceRow = $this->getChannelPriceRow($channelName);
+
+        if (null === $channelPriceRow) {
+            throw new \InvalidArgumentException(sprintf('Channel "%s" does not exist', $channelName));
+        }
+
+        $priceForChannel = $channelPriceRow->find('css', 'td:nth-child(4)');
+
+        return $priceForChannel->getText();
+    }
+
+    public function getSimpleProductPricingRowForChannel(string $channelName): NodeElement
+    {
+        return $this->getElement('simple_product_pricing_row', ['%channelName%' => $channelName]);
+    }
+
     public function getVariantPricingRowForChannel(string $variantName, string $channelName): NodeElement
     {
         return $this->getElement('variant_pricing_row', [
@@ -26,16 +44,16 @@ final class PricingElement extends Element implements PricingElementInterface
         ]);
     }
 
-    public function getSimpleProductPricingRowForChannel(string $channelName): NodeElement
-    {
-        return $this->getElement('simple_product_pricing_row', ['%channelName%' => $channelName]);
-    }
-
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
             'simple_product_pricing_row' => '#pricing tr:contains("%channelName%")',
             'variant_pricing_row' => 'tr:contains("%variantName%") + tr:contains("%channelName%")',
         ]);
+    }
+
+    private function getChannelPriceRow(string $channelName): ?NodeElement
+    {
+        return $this->getDocument()->find('css', sprintf('#pricing tr:contains("%s")', $channelName));
     }
 }

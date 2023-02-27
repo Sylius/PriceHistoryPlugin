@@ -11,6 +11,7 @@
                 <td class="gray text"><strong>{{ 'sylius.ui.channels'|trans }}</strong></td>
                 <td class="gray text"><strong>{{ 'sylius.ui.price'|trans }}</strong></td>
                 <td class="gray text"><strong>{{ 'sylius.ui.original_price'|trans }}</strong></td>
+                <th><strong class="gray text">{{ 'sylius_price_history.ui.the_lowest_price_before_the_discount'|trans }}</strong></th>
                 {% if is_sylius_equal_or_above_version(11200) %}
                     <td class="gray text"><strong>{{ 'sylius.ui.discounted_by'|trans }}</strong></td>
                 {% endif %}
@@ -22,13 +23,9 @@
                     <td class="five wide gray text">
                         <strong>{{ channelPricing.channelCode|sylius_channel_name }}</strong>
                     </td>
-                    {% set channelCode = channelPricing.channelCode %}
-                    <td>{{ money.format(channelPricing.price, currencies[channelCode]) }}</td>
-                    {% if channelPricing.originalPrice != null %}
-                        <td>{{ money.format(channelPricing.originalPrice, currencies[channelCode]) }}</td>
-                    {% else %}
-                        <td><span class="gray text">-</span></td>
-                    {% endif %}
+                    <td>{{ money.format(channelPricing.price, product.channels.first.baseCurrency) }}</td>
+                    <td>{{ channelPricing.originalPrice ? money.format(channelPricing.originalPrice, product.channels.first.baseCurrency) : '-' }}</td>
+                    <td>{{ channelPricing.lowestPriceBeforeDiscount ? money.format(channelPricing.lowestPriceBeforeDiscount, product.channels.first.baseCurrency) : '-' }}</td>
                     {% if is_sylius_equal_or_above_version(11200) %}
                         {% include '@SyliusAdmin/Product/Show/_appliedPromotions.html.twig' %}
                     {% endif %}

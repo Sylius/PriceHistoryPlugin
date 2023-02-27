@@ -13,7 +13,10 @@ default:
                 - sylius.behat.context.transform.product
                 - sylius.behat.context.transform.product_variant
                 - sylius.behat.context.transform.shared_storage
+                - Sylius\Behat\Context\Transform\CatalogPromotionContext
 
+                - sylius.behat.context.setup.admin_security
+                - sylius.behat.context.setup.admin_user
                 - sylius.behat.context.setup.channel
                 - sylius.behat.context.setup.product
                 - Sylius\Behat\Context\Setup\CatalogPromotionContext
@@ -23,7 +26,9 @@ default:
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\PriceHistoryContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ProductContext
 
+                - sylius.behat.context.ui.admin.product_showpage
                 - sylius.behat.context.ui.shop.product
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin\ProductShowPageContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Shop\ProductContext
 
             filters:
