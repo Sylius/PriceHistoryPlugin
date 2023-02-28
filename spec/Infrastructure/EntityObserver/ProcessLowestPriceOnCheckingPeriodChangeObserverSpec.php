@@ -17,7 +17,7 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectB
         ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
         RepositoryInterface $channelPricingRepository,
     ): void {
-        $this->beConstructedWith($productLowestPriceBeforeDiscountProcessor, $channelPricingRepository);
+        $this->beConstructedWith($productLowestPriceBeforeDiscountProcessor, $channelPricingRepository, 2);
     }
 
     function it_implements_on_entity_change_interface(): void
@@ -44,16 +44,42 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectB
         ChannelInterface $channel,
         ChannelPricingInterface $firstChannelPricing,
         ChannelPricingInterface $secondChannelPricing,
+        ChannelPricingInterface $thirdChannelPricing,
+        ChannelPricingInterface $fourthChannelPricing,
+        ChannelPricingInterface $fifthChannelPricing,
     ): void {
         $channel->getCode()->willReturn('WEB');
 
-        $channelPricingRepository->findBy(['channelCode' => 'WEB'])->willReturn([
-            $firstChannelPricing->getWrappedObject(),
-            $secondChannelPricing->getWrappedObject(),
-        ]);
+        $batches = [
+            [
+                $firstChannelPricing->getWrappedObject(),
+                $secondChannelPricing->getWrappedObject(),
+            ],
+            [
+                $thirdChannelPricing->getWrappedObject(),
+                $fourthChannelPricing->getWrappedObject(),
+            ],
+            [
+                $fifthChannelPricing->getWrappedObject(),
+            ],
+            [],
+        ];
+
+        $batchSize = 2;
+
+        foreach ($batches as $key => $batch) {
+            $channelPricingRepository
+                ->findBy(['channelCode' => 'WEB'], ['id' => 'ASC'], 2, $key * $batchSize)
+                ->willReturn($batch)
+                ->shouldBeCalled()
+            ;
+        }
 
         $productLowestPriceBeforeDiscountProcessor->process($firstChannelPricing)->shouldBeCalled();
         $productLowestPriceBeforeDiscountProcessor->process($secondChannelPricing)->shouldBeCalled();
+        $productLowestPriceBeforeDiscountProcessor->process($thirdChannelPricing)->shouldBeCalled();
+        $productLowestPriceBeforeDiscountProcessor->process($fourthChannelPricing)->shouldBeCalled();
+        $productLowestPriceBeforeDiscountProcessor->process($fifthChannelPricing)->shouldBeCalled();
 
         $this->onChange($channel);
     }

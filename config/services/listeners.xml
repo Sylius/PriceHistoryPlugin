@@ -24,6 +24,7 @@
         <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPriceOnCheckingPeriodChangeObserver">
             <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface" />
             <argument type="service" id="sylius.repository.channel_pricing" />
+            <argument>%sylius_price_history.batch_size%</argument>
             <tag name="sylius_price_history.entity_observer" />
         </service>
 

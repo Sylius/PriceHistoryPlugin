@@ -24,6 +24,7 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserver implements EntityOb
     public function __construct(
         private ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
         private RepositoryInterface $channelPricingRepository,
+        private int $batchSize,
     ) {
     }
 
@@ -31,12 +32,24 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserver implements EntityOb
     {
         Assert::isInstanceOf($entity, ChannelInterface::class);
 
-        /** @var ChannelPricingInterface[] $channelPricings */
-        $channelPricings = $this->channelPricingRepository->findBy(['channelCode' => $entity->getCode()]);
+        $limit = $this->batchSize;
+        $offset = 0;
 
-        foreach ($channelPricings as $channelPricing) {
-            $this->productLowestPriceBeforeDiscountProcessor->process($channelPricing);
-        }
+        do {
+            /** @var ChannelPricingInterface[] $channelPricings */
+            $channelPricings = $this->channelPricingRepository->findBy(
+                ['channelCode' => $entity->getCode()],
+                ['id' => 'ASC'],
+                $limit,
+                $offset,
+            );
+
+            foreach ($channelPricings as $channelPricing) {
+                $this->productLowestPriceBeforeDiscountProcessor->process($channelPricing);
+            }
+
+            $offset += $limit;
+        } while ([] !== $channelPricings);
     }
 
     public function supports(object $entity): bool

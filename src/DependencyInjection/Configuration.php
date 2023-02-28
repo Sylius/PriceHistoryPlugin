@@ -33,6 +33,19 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('sylius_price_history');
         $rootNode = $treeBuilder->getRootNode();
 
+        $rootNode
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->integerNode('batch_size')
+                    ->defaultValue(100)
+                    ->validate()
+                        ->ifTrue(fn (int $batchSize): bool => $batchSize <= 0)
+                        ->thenInvalid('Expected value bigger than 0, but got %s.')
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
         $this->addResourcesSection($rootNode);
 
         return $treeBuilder;

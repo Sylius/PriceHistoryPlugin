@@ -25,6 +25,9 @@ final class SyliusPriceHistoryExtensionTest extends AbstractExtensionTestCase
     {
         $this->configureContainer();
 
+        $this->container->registerExtension(new DoctrineMigrationsExtension());
+        $this->container->registerExtension(new SyliusLabsDoctrineMigrationsExtraExtension());
+
         $this->load();
 
         $doctrineMigrationsExtensionConfig = $this->container->getExtensionConfig('doctrine_migrations');
@@ -102,6 +105,26 @@ final class SyliusPriceHistoryExtensionTest extends AbstractExtensionTestCase
         ]);
     }
 
+    /** @test */
+    public function it_loads_batch_size_parameter_value_properly(): void
+    {
+        $this->configureContainer();
+
+        $this->load(['batch_size' => 200]);
+
+        $this->assertContainerBuilderHasParameter('sylius_price_history.batch_size', 200);
+    }
+
+    /** @test */
+    public function it_loads_default_batch_size_properly(): void
+    {
+        $this->configureContainer();
+
+        $this->load();
+
+        $this->assertContainerBuilderHasParameter('sylius_price_history.batch_size', 100);
+    }
+
     protected function getContainerExtensions(): array
     {
         return [new SyliusPriceHistoryExtension()];
@@ -113,8 +136,5 @@ final class SyliusPriceHistoryExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.debug', true);
         $this->container->setParameter('kernel.bundles', []);
         $this->container->setParameter('kernel.bundles_metadata', ['SyliusPriceHistoryPlugin' => ['path' => __DIR__ . '../../']]);
-
-        $this->container->registerExtension(new DoctrineMigrationsExtension());
-        $this->container->registerExtension(new SyliusLabsDoctrineMigrationsExtraExtension());
     }
 }
