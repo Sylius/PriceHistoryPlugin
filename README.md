@@ -6,6 +6,67 @@
 
 <h1 align="center">Price History Plugin</h1>
 
-<p align="center">Implementation of "Directive (EU) 2019/2161 of the European Parliament and of the Council",
-also known as the "Omnibus Directive".</p>
 
+<p align="center"><a href="https://sylius.com/plugins/" target="_blank"><img src="https://sylius.com/assets/badge-official-sylius-plugin.png" width="200"></a></p>
+
+⚙️ Installation
+===============
+
+This guide covers installation process using recipes and Rector.
+
+Prerequisites
+-------------
+
+You need to have installed both SyliusRecipes and SyliusRector. You can find how to install them here:
+- [Sylius/SyliusRecipes](https://github.com/Sylius/SyliusRecipes)
+- [Sylius/SyliusRector](https://github.com/Sylius/SyliusRector)
+
+1. Run:
+
+    ```bash
+    composer require sylius/price-history-plugin --no-scripts
+    ```
+
+2. Update `<project_root>/rector.php`
+
+    ```diff
+   + use Sylius\SyliusRector\Set\SyliusPriceHistory;
+   
+    return static function (RectorConfig $rectorConfig): void {
+        // ...
+    +    $rectorConfig->sets([SyliusPriceHistory::PRICE_HISTORY_PLUGIN]);
+    };
+
+3. Run:
+
+    ```bash
+    vendor/bin/rector
+    ```
+
+4. Ensure you have modified resource configured in `config/packages/_sylius.yaml`:
+
+    ```yaml
+    sylius_customer:
+        resources:
+            customer:
+                classes:
+                    model: App\Entity\Customer\Customer
+    sylius_core:
+        resources:
+            channel_pricing:
+                classes:
+                    model: App\Entity\Channel\ChannelPricing
+    ```
+
+5. Execute migrations:
+
+    ```bash
+    bin/console doctrine:migrations:migrate
+    ```
+
+6. Rebuild the cache to display all new translations correctly:
+
+    ```bash
+    bin/console cache:clear
+    bin/console cache:warmup
+   ```
