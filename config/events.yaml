@@ -24,3 +24,11 @@ sylius_ui:
             blocks:
                 price_widget:
                     template: "@SyliusPriceHistoryPlugin/Shop/Product/Show/_priceWidget.html.twig"
+                variant_selection:
+                    template: "@SyliusPriceHistoryPlugin/Shop/Product/Show/_variantSelection.html.twig"
+                    
+        sylius.shop.layout.javascripts:
+            blocks:
+                price_history_javascript:
+                    template: "@SyliusPriceHistoryPlugin/Shop/Product/Show/_javascripts.html.twig"
+                    priority: 10
