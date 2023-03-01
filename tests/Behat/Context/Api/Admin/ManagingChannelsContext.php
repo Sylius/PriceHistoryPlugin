@@ -21,7 +21,7 @@ use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Currency\Model\CurrencyInterface;
 use Sylius\Component\Locale\Model\LocaleInterface;
-use Sylius\Component\Taxonomy\Repository\TaxonRepositoryInterface;
+use Sylius\Component\Resource\Model\ResourceInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius1_11\Behat\Client\ApiClientInterface;
 use Webmozart\Assert\Assert;
@@ -169,7 +169,7 @@ final class ManagingChannelsContext implements Context
      * @When I remove the :taxon taxon from the list of taxons excluded from showing the lowest price of discounted products
      */
     public function iRemoveTheTaxonFromTheListOfTaxonsExcludedFromShowingTheLowestPriceOfDiscountedProducts(
-        TaxonInterface $taxon
+        TaxonInterface $taxon,
     ): void {
         $currentTaxons = (array) $this->responseChecker->getValue(
             $this->client->getLastResponse(),
@@ -239,28 +239,38 @@ final class ManagingChannelsContext implements Context
      * @Then this channel should have :taxon taxon excluded from displaying the lowest price of discounted products
      */
     public function thisChannelShouldHaveTaxonExcludedFromDisplayingTheLowestPriceOfDiscountedProducts(
-        TaxonInterface $taxon
+        TaxonInterface $taxon,
     ): void {
-        $response = $this->client->getLastResponse();
         $excludedTaxons = $this->responseChecker->getValue(
             $this->client->getLastResponse(),
             'taxonsExcludedFromShowingLowestPrice',
         );
 
-        Assert::true(in_array($this->iriConverter->getIriFromItem($taxon), $excludedTaxons, true));
+        Assert::true($this->isResourceAdminIriInArray($taxon, $excludedTaxons));
     }
 
     /**
      * @Then this channel should not have :taxon taxon excluded from displaying the lowest price of discounted products
      */
     public function thisChannelShouldNotHaveTaxonExcludedFromDisplayingTheLowestPriceOfDiscountedProducts(
-        TaxonInterface $taxon
+        TaxonInterface $taxon,
     ): void {
         $excludedTaxons = (array) $this->responseChecker->getValue(
             $this->client->getLastResponse(),
             'taxonsExcludedFromShowingLowestPrice',
         );
 
-        Assert::false(in_array($this->iriConverter->getIriFromItem($taxon), $excludedTaxons, true));
+        Assert::false($this->isResourceAdminIriInArray($taxon, $excludedTaxons));
+    }
+
+    private function isResourceAdminIriInArray(ResourceInterface $resource, array $iris): bool
+    {
+        if (method_exists($this->iriConverter, 'getIriFromItemInSection')) {
+            $iri = $this->iriConverter->getIriFromItemInSection($resource, 'admin');
+        } else {
+            $iri = $this->iriConverter->getIriFromItem($resource);
+        }
+
+        return in_array($iri, $iris, true);
     }
 }

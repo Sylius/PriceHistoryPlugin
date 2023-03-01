@@ -35,7 +35,7 @@ final class ChannelExcludedTaxonsNormalizer implements NormalizerInterface, Norm
         Assert::isArray($data);
 
         return $data + [
-            'taxonsExcludedFromShowingLowestPrice'=> $object->getTaxonsExcludedFromShowingLowestPrice()->getValues(),
+            'taxonsExcludedFromShowingLowestPrice' => $object->getTaxonsExcludedFromShowingLowestPrice()->getValues(),
         ];
     }
 

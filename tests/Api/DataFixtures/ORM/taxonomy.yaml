@@ -1,0 +1,102 @@
+Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
+    us_channel:
+        code: "US"
+        name: "US Channel"
+        baseCurrency: "@dollar"
+        defaultLocale: "@locale_en_us"
+        locales: ["@locale_en_us"]
+        color: "black"
+        menuTaxon: '@category_taxon'
+        enabled: true
+        taxCalculationStrategy: "order_items_based"
+
+Sylius\Component\Currency\Model\Currency:
+    dollar:
+        code: USD
+
+Sylius\Component\Locale\Model\Locale:
+    locale_en_us:
+        code: en_US
+
+Sylius\Component\Core\Model\Taxon:
+    category_taxon:
+        code: "CATEGORY"
+        currentLocale: "en_US"
+        translations: ["@en_us_category_translation"]
+        children: ["@mug_taxon", "@hat_taxon", "@t_shirt_taxon"]
+    mug_taxon:
+        code: "MUG"
+        currentLocale: "en_US"
+        translations: ["@en_us_mug_taxon_translation"]
+        parent: "@category_taxon"
+        position: 0
+    hat_taxon:
+        code: "HAT"
+        currentLocale: "en_US"
+        translations: ["@en_us_hat_translation"]
+        parent: "@category_taxon"
+        position: 1
+    t_shirt_taxon:
+        code: "T_SHIRTS"
+        currentLocale: "en_US"
+        translations: ["@en_us_t_shirt_taxon_translation"]
+        children: ["@men_t_shirt_taxon", "@women_t_shirt_taxon"]
+        parent: "@category_taxon"
+        position: 2
+    men_t_shirt_taxon:
+        code: "MEN_T_SHIRTS"
+        currentLocale: "en_US"
+        translations: ["@en_us_men_t_shirt_translation"]
+        parent: "@t_shirt_taxon"
+    women_t_shirt_taxon:
+        code: "WOMEN_T_SHIRTS"
+        currentLocale: "en_US"
+        translations: ["@en_us_women_t_shirt_translation"]
+        parent: "@t_shirt_taxon"
+    brand_taxon:
+        code: "BRAND"
+        currentLocale: "en_US"
+        translations: ["@en_us_brand_translation"]
+
+Sylius\Component\Taxonomy\Model\TaxonTranslation:
+    en_us_category_translation:
+        slug: "categories"
+        locale: "en_US"
+        name: "Categories"
+        description: "Some description Lorem ipsum dolor sit amet."
+        translatable: "@category_taxon"
+    en_us_mug_taxon_translation:
+        slug: "categories/mugs"
+        locale: "en_US"
+        name: "Mugs"
+        description: "Some description Lorem ipsum dolor sit amet."
+        translatable: "@mug_taxon"
+    en_us_hat_translation:
+        slug: "categories/hats"
+        locale: "en_US"
+        name: "Hats"
+        description: "Some description Lorem ipsum dolor sit amet."
+        translatable: "@hat_taxon"
+    en_us_t_shirt_taxon_translation:
+        slug: "categories/t-shirts"
+        locale: "en_US"
+        name: "T-Shirts"
+        description: "Some description Lorem ipsum dolor sit amet."
+        translatable: "@t_shirt_taxon"
+    en_us_men_t_shirt_translation:
+        slug: "categories/t-shirts/men-t-shirts"
+        locale: "en_US"
+        name: "Men T-Shirts"
+        description: "Some description Lorem ipsum dolor sit amet."
+        translatable: "@men_t_shirt_taxon"
+    en_us_women_t_shirt_translation:
+        slug: "categories/t-shirts/women-t-shirts"
+        locale: "en_US"
+        name: "Women T-Shirts"
+        description: "Some description Lorem ipsum dolor sit amet."
+        translatable: "@women_t_shirt_taxon"
+    en_us_brand_translation:
+        slug: "brands"
+        locale: "en_US"
+        name: "Brands"
+        description: "Some description Lorem ipsum dolor sit amet."

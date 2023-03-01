@@ -25,5 +25,10 @@
         <service id="Sylius\PriceHistoryPlugin\Infrastructure\Serializer\ChannelExcludedTaxonsNormalizer">
             <tag name="serializer.normalizer" priority="128" />
         </service>
+
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\Serializer\ChannelExcludedTaxonsDenormalizer">
+            <argument type="service" id="api_platform.iri_converter.legacy" />
+            <tag name="serializer.normalizer" priority="64" />
+        </service>
     </services>
 </container>
