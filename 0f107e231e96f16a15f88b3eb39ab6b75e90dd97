@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coldic3 at 2023-02-27T21:49:34Z
+
+@Rafikooo Thanks for pointing it out. I didn't catch it.
+I should definitely use batch processing because now memory usage is unpredictable as it depends on the number of variants in the channel.
+The second thing to discuss is making it async. IMO it is highly possible to get a timeout exception.
+
+---------------------------------------------------------------------------
+
+by GSadee at 2023-03-01T14:27:42Z
+
+Thanks, Kevin! :tada:
