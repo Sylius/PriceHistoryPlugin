@@ -35,6 +35,9 @@ final class SyliusPriceHistoryExtension extends AbstractResourceExtension implem
 
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->getConfiguration([], $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter('sylius_price_history.batch_size', $config['batch_size']);
 
         $this->processConfiguration($configuration, $configs);
     }

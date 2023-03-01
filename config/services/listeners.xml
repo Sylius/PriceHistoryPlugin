@@ -16,8 +16,20 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
 >
     <services>
-        <service id="sylius_price_history.listener.channel_pricing_change" class="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\ChannelPricingChangeListener">
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\CreateLogEntryOnPriceChangeObserver">
             <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Logger\PriceChangeLoggerInterface" />
+            <tag name="sylius_price_history.entity_observer" />
+        </service>
+
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPriceOnCheckingPeriodChangeObserver">
+            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface" />
+            <argument type="service" id="sylius.repository.channel_pricing" />
+            <argument>%sylius_price_history.batch_size%</argument>
+            <tag name="sylius_price_history.entity_observer" />
+        </service>
+
+        <service id="sylius_price_history.listener.channel_pricing_change" class="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\OnFlushEntityObserverListener">
+            <argument type="tagged_iterator" tag="sylius_price_history.entity_observer" />
             <tag name="doctrine.event_listener" event="onFlush" lazy="true" />
         </service>
 
