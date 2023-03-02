@@ -29,6 +29,7 @@ final class Version20230126131430 extends AbstractMigration
 
         $this->addSql('CREATE TABLE sylius_price_history_channel_pricing_log_entry (id INT AUTO_INCREMENT NOT NULL, channel_pricing_id INT NOT NULL, price INT NOT NULL, original_price INT DEFAULT NULL, logged_at DATETIME NOT NULL, INDEX IDX_B3F5AAC23EADFFE5 (channel_pricing_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE sylius_price_history_channel_pricing_log_entry ADD CONSTRAINT FK_B3F5AAC23EADFFE5 FOREIGN KEY (channel_pricing_id) REFERENCES sylius_channel_pricing (id) ON DELETE CASCADE');
+        $this->addSql('INSERT INTO `sylius_price_history_channel_pricing_log_entry` (`channel_pricing_id`, `price`, `original_price`, `logged_at`) SELECT `id`, `price`, `original_price`, NOW() FROM `sylius_channel_pricing`');
     }
 
     public function down(Schema $schema): void
