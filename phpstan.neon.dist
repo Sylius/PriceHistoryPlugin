@@ -12,6 +12,7 @@ parameters:
         - src
     excludePaths:
         - 'src/DependencyInjection/Configuration.php'
+        - 'src/Infrastructure/Migrations'
     ignoreErrors:
         - '/Method Sylius\\PriceHistoryPlugin\\Domain\\Model\\\w+\:\:getId\(\) has no return type specified./'
         - '/Method Sylius\\PriceHistoryPlugin\\Infrastructure\\Doctrine\\ORM\\ChannelPricingLogEntryRepository\:\:findOlderThan\(\) should return array\<Sylius\\PriceHistoryPlugin\\Domain\\Model\\ChannelPricingLogEntryInterface\> but returns mixed./'
