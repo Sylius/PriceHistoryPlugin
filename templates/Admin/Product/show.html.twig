@@ -4,7 +4,7 @@
 
 {% block content %}
     {% if product.variants|length == 1 %}
-        {% include "@SyliusAdmin/Product/Show/_simpleProduct.html.twig" %}
+        {% include "@SyliusPriceHistoryPlugin/Admin/Product/Show/_simpleProduct.html.twig" %}
     {% else %}
         {% include "@SyliusAdmin/Product/Show/_configurableProduct.html.twig" %}
     {% endif %}
