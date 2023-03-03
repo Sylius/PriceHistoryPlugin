@@ -311,6 +311,77 @@ final class ChannelTest extends JsonApiTestCase
         );
     }
 
+    /** @test */
+    public function it_creates_a_channel_with_taxons_excluded_from_showing_lowest_price(): void
+    {
+        $fixtures = $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'taxonomy.yaml']);
+
+        $this->client->request(
+            method: 'POST',
+            uri: '/api/v2/admin/channels',
+            server: $this->getLoggedHeader(),
+            content: json_encode([
+                'name' => 'Web Store',
+                'code' => 'WEB',
+                'baseCurrency' => '/api/v2/admin/currencies/USD',
+                'locales' => ['/api/v2/admin/locales/en_US'],
+                'defaultLocale' => '/api/v2/admin/locales/en_US',
+                'taxCalculationStrategy' => 'order_items_based',
+                'taxonsExcludedFromShowingLowestPrice' => [
+                    sprintf('/api/v2/admin/taxons/%s', $fixtures['hat_taxon']->getCode()),
+                    sprintf('/api/v2/admin/taxons/%s', $fixtures['mug_taxon']->getCode()),
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->assertResponse(
+            $this->client->getResponse(),
+            $this->getExcludedTaxonsResponseFilename('post'),
+            Response::HTTP_CREATED,
+        );
+    }
+
+    /** @test */
+    public function it_updates_a_channel_with_taxons_excluded_from_showing_lowest_price(): void
+    {
+        $fixtures = $this->loadFixturesFromFiles(['authentication/api_administrator.yaml', 'taxonomy.yaml']);
+
+        $this->client->request(
+            method: 'POST',
+            uri: '/api/v2/admin/channels',
+            server: $this->getLoggedHeader(),
+            content: json_encode([
+                'name' => 'Web Store',
+                'code' => 'WEB',
+                'baseCurrency' => '/api/v2/admin/currencies/USD',
+                'locales' => ['/api/v2/admin/locales/en_US'],
+                'defaultLocale' => '/api/v2/admin/locales/en_US',
+                'taxCalculationStrategy' => 'order_items_based',
+                'taxonsExcludedFromShowingLowestPrice' => [
+                    sprintf('/api/v2/admin/taxons/%s', $fixtures['hat_taxon']->getCode()),
+                    sprintf('/api/v2/admin/taxons/%s', $fixtures['mug_taxon']->getCode()),
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->client->request(
+            method: 'PUT',
+            uri: '/api/v2/admin/channels/WEB',
+            server: $this->getLoggedHeader(),
+            content: json_encode([
+                'taxonsExcludedFromShowingLowestPrice' => [
+                    sprintf('/api/v2/admin/taxons/%s', $fixtures['brand_taxon']->getCode()),
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->assertResponse(
+            $this->client->getResponse(),
+            $this->getExcludedTaxonsResponseFilename('put'),
+            Response::HTTP_OK,
+        );
+    }
+
     public function getInvalidPeriod(): iterable
     {
         yield [0.1];
@@ -344,6 +415,17 @@ final class ChannelTest extends JsonApiTestCase
             Kernel::MINOR_VERSION,
             $httpMethod,
             $lowestPriceForDiscountedProductsCheckingPeriod ?? 'no',
+        );
+    }
+
+    private function getExcludedTaxonsResponseFilename(
+        string $httpMethod
+    ): string {
+        return sprintf(
+            'admin/%s.%s/%s_channel_with_taxons_excluded_from_showing_lowest_price_response',
+            Kernel::MAJOR_VERSION,
+            Kernel::MINOR_VERSION,
+            $httpMethod,
         );
     }
 

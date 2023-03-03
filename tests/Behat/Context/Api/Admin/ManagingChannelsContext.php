@@ -16,9 +16,12 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin;
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Client\ResponseCheckerInterface;
+use Sylius\Behat\Context\Transform\TaxonContext;
 use Sylius\Component\Core\Formatter\StringInflector;
+use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Currency\Model\CurrencyInterface;
 use Sylius\Component\Locale\Model\LocaleInterface;
+use Sylius\Component\Resource\Model\ResourceInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius1_11\Behat\Client\ApiClientInterface;
 use Webmozart\Assert\Assert;
@@ -29,6 +32,7 @@ final class ManagingChannelsContext implements Context
         private ApiClientInterface $client,
         private ResponseCheckerInterface $responseChecker,
         private IriConverterInterface $iriConverter,
+        private TaxonContext $taxonContext,
     ) {
     }
 
@@ -148,6 +152,37 @@ final class ManagingChannelsContext implements Context
     }
 
     /**
+     * @When I exclude the :taxonName taxon from showing the lowest price of discounted products
+     * @When I exclude the :firstTaxon and :secondTaxon taxons from showing the lowest price of discounted products
+     */
+    public function iExcludeTheTaxonFromShowingTheLowestPriceOfDiscountedProducts(string ...$taxonNames): void
+    {
+        $taxons = [];
+        foreach ($taxonNames as $taxonName) {
+            $taxons[] = $this->iriConverter->getIriFromItem($this->taxonContext->getTaxonByName($taxonName));
+        }
+
+        $this->client->addRequestData('taxonsExcludedFromShowingLowestPrice', $taxons);
+    }
+
+    /**
+     * @When I remove the :taxon taxon from the list of taxons excluded from showing the lowest price of discounted products
+     */
+    public function iRemoveTheTaxonFromTheListOfTaxonsExcludedFromShowingTheLowestPriceOfDiscountedProducts(
+        TaxonInterface $taxon,
+    ): void {
+        $currentTaxons = (array) $this->responseChecker->getValue(
+            $this->client->getLastResponse(),
+            'taxonsExcludedFromShowingLowestPrice',
+        );
+        $excludedTaxonIri = $this->iriConverter->getIriFromItem($taxon);
+
+        $taxons = array_filter($currentTaxons, fn (string $taxonIri) => $taxonIri !== $excludedTaxonIri);
+
+        $this->client->addRequestData('lowestPriceForDiscountedProductsExcludedTaxons', $taxons);
+    }
+
+    /**
      * @Then /^the ("[^"]+" channel) should have the lowest price of discounted products prior to the current discount (enabled|disabled)$/
      */
     public function theChannelShouldHaveTheLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountEnabledOrDisabled(
@@ -198,5 +233,44 @@ final class ManagingChannelsContext implements Context
             'Value must be less than 2147483647',
             'lowestPriceForDiscountedProductsCheckingPeriod',
         ));
+    }
+
+    /**
+     * @Then this channel should have :taxon taxon excluded from displaying the lowest price of discounted products
+     */
+    public function thisChannelShouldHaveTaxonExcludedFromDisplayingTheLowestPriceOfDiscountedProducts(
+        TaxonInterface $taxon,
+    ): void {
+        $excludedTaxons = $this->responseChecker->getValue(
+            $this->client->getLastResponse(),
+            'taxonsExcludedFromShowingLowestPrice',
+        );
+
+        Assert::true($this->isResourceAdminIriInArray($taxon, $excludedTaxons));
+    }
+
+    /**
+     * @Then this channel should not have :taxon taxon excluded from displaying the lowest price of discounted products
+     */
+    public function thisChannelShouldNotHaveTaxonExcludedFromDisplayingTheLowestPriceOfDiscountedProducts(
+        TaxonInterface $taxon,
+    ): void {
+        $excludedTaxons = (array) $this->responseChecker->getValue(
+            $this->client->getLastResponse(),
+            'taxonsExcludedFromShowingLowestPrice',
+        );
+
+        Assert::false($this->isResourceAdminIriInArray($taxon, $excludedTaxons));
+    }
+
+    private function isResourceAdminIriInArray(ResourceInterface $resource, array $iris): bool
+    {
+        if (method_exists($this->iriConverter, 'getIriFromItemInSection')) {
+            $iri = $this->iriConverter->getIriFromItemInSection($resource, 'admin');
+        } else {
+            $iri = $this->iriConverter->getIriFromItem($resource);
+        }
+
+        return in_array($iri, $iris, true);
     }
 }

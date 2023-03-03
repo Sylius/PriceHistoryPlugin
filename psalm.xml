@@ -28,6 +28,7 @@
 
         <PropertyNotSetInConstructor>
             <errorLevel type="info">
+                <file name="src/Infrastructure/Serializer/ChannelExcludedTaxonsDenormalizer.php" />
                 <file name="src/Infrastructure/Serializer/ProductVariantNormalizer.php" />
                 <file name="src/Infrastructure/Cli/Command/ClearPriceHistoryCommand.php" />
             </errorLevel>
