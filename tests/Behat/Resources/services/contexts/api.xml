@@ -27,7 +27,6 @@
             <argument type="service" id="sylius.behat.api_platform_client.admin.channel" />
             <argument type="service" id="Sylius\Behat\Client\ResponseCheckerInterface" />
             <argument type="service" id="api_platform.iri_converter" />
-            <argument type="service" id="sylius.behat.context.transform.taxon" />
         </service>
 
         <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ManagingProductVariantsContext" public="true">
