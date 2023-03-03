@@ -15,6 +15,7 @@ namespace Sylius\PriceHistoryPlugin\Domain\Repository;
 
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 
 interface ChannelPricingLogEntryRepositoryInterface extends RepositoryInterface
@@ -24,11 +25,10 @@ interface ChannelPricingLogEntryRepositoryInterface extends RepositoryInterface
      */
     public function findOlderThan(\DateTimeInterface $date, ?int $limit = null): array;
 
-    public function findLatestOneByChannelPricing(ChannelPricingInterface $channelPricing): ?ChannelPricingLogEntryInterface;
+    public function bulkUpdateLowestPricesBeforeDiscount(ChannelInterface $channel): void;
 
-    public function findLowestPriceInPeriod(
-        int $latestChannelPricingLogEntryId,
+    public function findLowestPricesBeforeDiscount(
         ChannelPricingInterface $channelPricing,
-        \DateTimeInterface $startDate,
+        int $lowestPriceForDiscountedProductsCheckingPeriod,
     ): ?int;
 }

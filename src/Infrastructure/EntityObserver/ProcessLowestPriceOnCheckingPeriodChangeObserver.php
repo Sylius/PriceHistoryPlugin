@@ -13,43 +13,21 @@ declare(strict_types=1);
 
 namespace Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver;
 
-use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
-use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
+use Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM\ChannelPricingLogEntryRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class ProcessLowestPriceOnCheckingPeriodChangeObserver implements EntityObserverInterface
 {
-    public function __construct(
-        private ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
-        private RepositoryInterface $channelPricingRepository,
-        private int $batchSize,
-    ) {
+    public function __construct(private ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntryRepository)
+    {
     }
 
     public function onChange(object $entity): void
     {
         Assert::isInstanceOf($entity, ChannelInterface::class);
 
-        $limit = $this->batchSize;
-        $offset = 0;
-
-        do {
-            /** @var ChannelPricingInterface[] $channelPricings */
-            $channelPricings = $this->channelPricingRepository->findBy(
-                ['channelCode' => $entity->getCode()],
-                ['id' => 'ASC'],
-                $limit,
-                $offset,
-            );
-
-            foreach ($channelPricings as $channelPricing) {
-                $this->productLowestPriceBeforeDiscountProcessor->process($channelPricing);
-            }
-
-            $offset += $limit;
-        } while ([] !== $channelPricings);
+        $this->channelPricingLogEntryRepository->bulkUpdateLowestPricesBeforeDiscount($entity);
     }
 
     public function supports(object $entity): bool
