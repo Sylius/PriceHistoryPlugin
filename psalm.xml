@@ -34,6 +34,18 @@
             </errorLevel>
         </PropertyNotSetInConstructor>
 
+        <PossiblyInvalidArgument>
+            <errorLevel type="info">
+                <file name="src/Infrastructure/Form/Extension/ChannelTypeExtension.php" />
+            </errorLevel>
+        </PossiblyInvalidArgument>
+
+        <MoreSpecificImplementedParamType>
+            <errorLevel type="info">
+                <file name="src/Infrastructure/Form/Extension/ChannelTypeExtension.php" />
+            </errorLevel>
+        </MoreSpecificImplementedParamType>
+
         <DeprecatedClass>
             <errorLevel type="info">
                 <referencedClass name="Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface" /> <!-- deprecated in Symfony 6.1, probably a bug in psalm, as this is referenced as DeprecatedClass, not an interface -->

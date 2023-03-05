@@ -16,8 +16,10 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Ui\Admin;
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Context\Ui\Admin\ManagingChannelsContext as BaseManagingChannelsContext;
 use Sylius\Behat\Page\Admin\Channel\UpdatePageInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\DiscountedProductsCheckingPeriodInputElementInterface;
+use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\ExcludeTaxonsFromShowingLowestPriceInputElementInterface;
 use Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\LowestPriceFlagElementInterface;
 use Webmozart\Assert\Assert;
 
@@ -27,8 +29,27 @@ final class ManagingChannelsContext implements Context
         private BaseManagingChannelsContext $managingChannelsContext,
         private LowestPriceFlagElementInterface $lowestPriceFlagElement,
         private DiscountedProductsCheckingPeriodInputElementInterface $discountedProductsCheckingPeriodInputElement,
+        private ExcludeTaxonsFromShowingLowestPriceInputElementInterface $excludeTaxonsFromShowingLowestPriceInputElement,
         private UpdatePageInterface $updatePage,
     ) {
+    }
+
+    /**
+     * @When /^I exclude the ("([^"]+)" and "([^"]+)" taxons) from showing the lowest price of discounted products$/
+     */
+    public function iExcludeTheTaxonsFromShowingTheLowestPriceOfDiscountedProducts(array $taxons): void
+    {
+        foreach ($taxons as $taxon) {
+            $this->excludeTaxonsFromShowingLowestPriceInputElement->excludeTaxon($taxon);
+        }
+    }
+
+    /**
+     * @When /^I exclude the ("([^"]+)" taxon) from showing the lowest price of discounted products$/
+     */
+    public function iExcludeTheTaxonFromShowingTheLowestPriceOfDiscountedProducts(TaxonInterface $taxon): void
+    {
+        $this->excludeTaxonsFromShowingLowestPriceInputElement->excludeTaxon($taxon);
     }
 
     /**
@@ -45,6 +66,18 @@ final class ManagingChannelsContext implements Context
     public function iSpecifyDaysAsTheLowestPriceForDiscountedProductsCheckingPeriod(int $days): void
     {
         $this->discountedProductsCheckingPeriodInputElement->specifyPeriod($days);
+    }
+
+    /**
+     * @Then this channel should have :taxon taxon excluded from displaying the lowest price of discounted products
+     */
+    public function thisChannelShouldHaveTaxonExcludedFromDisplayingTheLowestPriceOfDiscountedProducts(
+        TaxonInterface $taxon,
+    ): void {
+        Assert::true(
+            $this->excludeTaxonsFromShowingLowestPriceInputElement->hasTaxonExcluded($taxon),
+            sprintf('Taxon %s should be excluded from displaying the lowest price of discounted products', $taxon->getCode()),
+        );
     }
 
     /**

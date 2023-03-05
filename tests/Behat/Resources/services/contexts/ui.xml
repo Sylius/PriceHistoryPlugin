@@ -25,6 +25,7 @@
             <argument type="service" id="sylius.behat.context.ui.admin.managing_channels" />
             <argument type="service" id="Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\LowestPriceFlagElement" />
             <argument type="service" id="Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\DiscountedProductsCheckingPeriodInputElement" />
+            <argument type="service" id="Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel\ExcludeTaxonsFromShowingLowestPriceInputElement" />
             <argument type="service" id="Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel\UpdatePage" />
         </service>
 

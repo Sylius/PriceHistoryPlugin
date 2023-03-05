@@ -17,6 +17,9 @@
 >
     <services>
         <service id="Sylius\PriceHistoryPlugin\Infrastructure\Form\Extension\ChannelTypeExtension" public="true">
+            <argument type="service">
+                <service class="\Symfony\Component\Form\Extension\Core\DataMapper\DataMapper" />
+            </argument>
             <tag name="form.type_extension" extended-type="Sylius\Bundle\ChannelBundle\Form\Type\ChannelType" />
         </service>
     </services>
