@@ -34,12 +34,6 @@
             </errorLevel>
         </PropertyNotSetInConstructor>
 
-        <PossiblyInvalidArgument>
-            <errorLevel type="info">
-                <file name="src/Infrastructure/Form/Extension/ChannelTypeExtension.php" />
-            </errorLevel>
-        </PossiblyInvalidArgument>
-
         <MoreSpecificImplementedParamType>
             <errorLevel type="info">
                 <file name="src/Infrastructure/Form/Extension/ChannelTypeExtension.php" />
