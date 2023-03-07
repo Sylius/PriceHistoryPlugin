@@ -6,7 +6,7 @@ sylius_ui:
         sylius.admin.channel.form.second_column_content:
             blocks:
                 price_history_configuration:
-                    template: '@SyliusPriceHistoryPlugin/Channel/Admin/Form/_additionalConfiguration.html.twig'
+                    template: '@SyliusPriceHistoryPlugin/Admin/Channel/Form/_additionalConfiguration.html.twig'
                     priority: 5
         sylius.admin.configurable_product.show.variant_content:
             blocks:
