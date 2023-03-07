@@ -73,7 +73,7 @@ final class ChannelExcludedTaxonsDenormalizerSpec extends ObjectBehavior
 
         $denormalizer->denormalize($data, 'string', null, [self::ALREADY_CALLED => true])->willReturn($channel);
 
-        $channel->removeTaxonExcludedFromShowingLowestPrice(Argument::any())->shouldNotBeCalled();
+        $channel->clearTaxonsExcludedFromShowingLowestPrice()->shouldBeCalled();
 
         $iriConverter->getItemFromIri('/api/v2/taxons/first-new-taxon')->shouldBeCalledTimes(1)->willReturn($firstTaxon);
         $iriConverter->getItemFromIri('/api/v2/taxons/second-new-taxon')->shouldBeCalledTimes(1)->willReturn($secondTaxon);
@@ -102,8 +102,7 @@ final class ChannelExcludedTaxonsDenormalizerSpec extends ObjectBehavior
             $secondTaxon->getWrappedObject(),
         ]));
 
-        $channel->removeTaxonExcludedFromShowingLowestPrice($firstTaxon)->shouldBeCalledTimes(1);
-        $channel->removeTaxonExcludedFromShowingLowestPrice($secondTaxon)->shouldBeCalledTimes(1);
+        $channel->clearTaxonsExcludedFromShowingLowestPrice()->shouldBeCalled();
 
         $iriConverter->getItemFromIri(Argument::cetera())->shouldNotBeCalled();
 
@@ -135,8 +134,7 @@ final class ChannelExcludedTaxonsDenormalizerSpec extends ObjectBehavior
             $secondCurrentTaxon->getWrappedObject(),
         ]));
 
-        $channel->removeTaxonExcludedFromShowingLowestPrice($firstCurrentTaxon)->shouldBeCalledTimes(1);
-        $channel->removeTaxonExcludedFromShowingLowestPrice($secondCurrentTaxon)->shouldBeCalledTimes(1);
+        $channel->clearTaxonsExcludedFromShowingLowestPrice()->shouldBeCalled();
 
         $iriConverter->getItemFromIri('/api/v2/taxons/first-new-taxon')->shouldBeCalledTimes(1)->willReturn($firstNewTaxon);
         $iriConverter->getItemFromIri('/api/v2/taxons/second-new-taxon')->shouldBeCalledTimes(1)->willReturn($secondNewTaxon);
