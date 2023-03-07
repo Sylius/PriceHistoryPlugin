@@ -37,7 +37,7 @@ final class ManagingChannelsContext implements Context
     /**
      * @When /^I exclude the ("([^"]+)" and "([^"]+)" taxons) from showing the lowest price of discounted products$/
      */
-    public function iExcludeTheTaxonsFromShowingTheLowestPriceOfDiscountedProducts(array $taxons): void
+    public function iExcludeTheTaxonsFromShowingTheLowestPriceOfDiscountedProducts(iterable $taxons): void
     {
         foreach ($taxons as $taxon) {
             $this->excludeTaxonsFromShowingLowestPriceInputElement->excludeTaxon($taxon);
@@ -45,11 +45,19 @@ final class ManagingChannelsContext implements Context
     }
 
     /**
-     * @When /^I exclude the ("([^"]+)" taxon) from showing the lowest price of discounted products$/
+     * @When I exclude the :taxon taxon from showing the lowest price of discounted products
      */
     public function iExcludeTheTaxonFromShowingTheLowestPriceOfDiscountedProducts(TaxonInterface $taxon): void
     {
         $this->excludeTaxonsFromShowingLowestPriceInputElement->excludeTaxon($taxon);
+    }
+
+    /**
+     * @When I remove the :taxon taxon from excluded taxons from showing the lowest price of discounted products
+     */
+    public function iRemoveTheTaxonFromExcludedTaxonsFromShowingTheLowestPriceOfDiscountedProducts(TaxonInterface $taxon): void
+    {
+        $this->excludeTaxonsFromShowingLowestPriceInputElement->removeExcludedTaxon($taxon);
     }
 
     /**
@@ -76,7 +84,32 @@ final class ManagingChannelsContext implements Context
     ): void {
         Assert::true(
             $this->excludeTaxonsFromShowingLowestPriceInputElement->hasTaxonExcluded($taxon),
-            sprintf('Taxon %s should be excluded from displaying the lowest price of discounted products', $taxon->getCode()),
+            sprintf('The taxon with code %s should be excluded from displaying the lowest price of discounted products', $taxon->getCode()),
+        );
+    }
+
+    /**
+     * @Then /^this channel should have ("([^"]+)" and "([^"]+)" taxons) excluded from displaying the lowest price of discounted products$/
+     */
+    public function thisChannelShouldHaveTaxonsExcludedFromDisplayingTheLowestPriceOfDiscountedProducts(iterable $taxons): void
+    {
+        foreach ($taxons as $taxon) {
+            Assert::true(
+                $this->excludeTaxonsFromShowingLowestPriceInputElement->hasTaxonExcluded($taxon),
+                sprintf('The taxon with code %s should be excluded from displaying the lowest price of discounted products', $taxon->getCode()),
+            );
+        }
+    }
+
+    /**
+     * @Then this channel should not have :taxon taxon excluded from displaying the lowest price of discounted products
+     */
+    public function thisChannelShouldNotHaveTaxonExcludedFromDisplayingTheLowestPriceOfDiscountedProducts(
+        TaxonInterface $taxon,
+    ): void {
+        Assert::false(
+            $this->excludeTaxonsFromShowingLowestPriceInputElement->hasTaxonExcluded($taxon),
+            sprintf('The taxon with code %s should be not be excluded from displaying the lowest price of discounted products', $taxon->getCode()),
         );
     }
 

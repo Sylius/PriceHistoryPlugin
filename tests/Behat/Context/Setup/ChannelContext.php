@@ -15,6 +15,7 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 
 final class ChannelContext implements Context
@@ -51,5 +52,20 @@ final class ChannelContext implements Context
     public function theLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountIsDisabledOnThisChannel(ChannelInterface $channel)
     {
         $channel->setLowestPriceForDiscountedProductsVisible(false);
+    }
+
+    /**
+     * @Given /^the (channel "[^"]+") has ("([^"]+)" and "([^"]+)" taxons) excluded from showing the lowest price of discounted products$/
+     */
+    public function theTaxonAndTaxonAreExcludedFromShowingTheLowestPriceOfDiscountedProductsOnThisChannel(
+        ChannelInterface $channel,
+        iterable $taxons,
+    ): void {
+        /** @var TaxonInterface $taxon */
+        foreach ($taxons as $taxon) {
+            $channel->addTaxonExcludedFromShowingLowestPrice($taxon);
+        }
+
+        $this->channelManager->flush();
     }
 }

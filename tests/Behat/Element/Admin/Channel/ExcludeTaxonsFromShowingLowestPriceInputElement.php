@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Tests\Sylius\PriceHistoryPlugin\Behat\Element\Admin\Channel;
 
 use FriendsOfBehat\PageObjectExtension\Element\Element;
-use Sylius\Behat\Service\AutocompleteHelper;
 use Sylius\Component\Core\Model\TaxonInterface;
+use Tests\Sylius\PriceHistoryPlugin\Behat\Service\AutocompleteHelper;
 
 class ExcludeTaxonsFromShowingLowestPriceInputElement extends Element implements ExcludeTaxonsFromShowingLowestPriceInputElementInterface
 {
@@ -28,9 +28,9 @@ class ExcludeTaxonsFromShowingLowestPriceInputElement extends Element implements
 
     public function removeExcludedTaxon(TaxonInterface $taxon): void
     {
-        $excludedTaxons = $this->getElement('taxons_excluded_from_showing_lowest_price')->getValue();
+        $excludeTaxonElement = $this->getElement('taxons_excluded_from_showing_lowest_price')->getParent();
 
-        AutocompleteHelper::removeValue($this->getSession(), $excludedTaxons, $taxon->getName());
+        AutocompleteHelper::removeValue($this->getSession(), $excludeTaxonElement, $taxon->getName());
     }
 
     public function hasTaxonExcluded(TaxonInterface $taxon): bool

@@ -23,5 +23,14 @@ Feature: Excluding chosen taxons from displaying the lowest price of discounted 
         And I exclude the "T-Shirts" and "Caps" taxons from showing the lowest price of discounted products
         And I save my changes
         Then I should be notified that it has been successfully edited
-        And this channel should have "T-Shirts" taxon excluded from displaying the lowest price of discounted products
+        And this channel should have "T-Shirts" and "Caps" taxons excluded from displaying the lowest price of discounted products
+
+    @no-api @ui @javascript
+    Scenario: Removing excluded taxon from displaying the lowest price of discounted products
+        Given the channel "Poland" has "T-Shirts" and "Caps" taxons excluded from showing the lowest price of discounted products
+        When I want to modify this channel
+        And I remove the "T-Shirts" taxon from excluded taxons from showing the lowest price of discounted products
+        And I save my changes
+        Then I should be notified that it has been successfully edited
         And this channel should have "Caps" taxon excluded from displaying the lowest price of discounted products
+        And this channel should not have "T-Shirts" taxon excluded from displaying the lowest price of discounted products
