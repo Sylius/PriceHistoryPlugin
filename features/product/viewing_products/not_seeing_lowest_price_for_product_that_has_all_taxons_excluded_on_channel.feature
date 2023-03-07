@@ -18,19 +18,19 @@ Feature: Not seeing the lowest price for a product that has all taxons excluded 
         And this product's price changed to "$15.00" and original price changed to "$23.00"
         And the "T-Shirts" taxon is excluded from showing the lowest price of discounted products in the "United States" channel
 
-    @todo
+    @api @ui
     Scenario: Not seeing the lowest price for a product that has all taxons excluded on the channel
         When I browse products from taxon "T-Shirts"
         And I view product "T-Shirt Banana"
         Then I should not see information about its lowest price
 
-    @todo
+    @api @ui
     Scenario: Seeing the lowest price for a product that has not all taxons excluded on the channel
         When I browse products from taxon "T-Shirts"
         And I view product "T-Shirt PHP"
         Then I should see "$23.00" as its lowest price before the discount
 
-    @todo
+    @api @ui
     Scenario: Not seeing the lowest price for a not discounted product that has all taxons excluded on the channel
         When I browse products from taxon "T-Shirts"
         And I view product "T-Shirt Watermelon"
