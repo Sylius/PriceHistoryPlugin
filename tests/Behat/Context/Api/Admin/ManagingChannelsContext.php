@@ -16,7 +16,6 @@ namespace Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin;
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Client\ResponseCheckerInterface;
-use Sylius\Behat\Context\Transform\TaxonContext;
 use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Currency\Model\CurrencyInterface;
@@ -32,7 +31,6 @@ final class ManagingChannelsContext implements Context
         private ApiClientInterface $client,
         private ResponseCheckerInterface $responseChecker,
         private IriConverterInterface $iriConverter,
-        private TaxonContext $taxonContext,
     ) {
     }
 
@@ -152,17 +150,24 @@ final class ManagingChannelsContext implements Context
     }
 
     /**
-     * @When I exclude the :taxonName taxon from showing the lowest price of discounted products
-     * @When I exclude the :firstTaxon and :secondTaxon taxons from showing the lowest price of discounted products
+     * @When I exclude the :taxon taxon from showing the lowest price of discounted products
      */
-    public function iExcludeTheTaxonFromShowingTheLowestPriceOfDiscountedProducts(string ...$taxonNames): void
+    public function iExcludeTheTaxonFromShowingTheLowestPriceOfDiscountedProducts(TaxonInterface $taxon): void
     {
-        $taxons = [];
-        foreach ($taxonNames as $taxonName) {
-            $taxons[] = $this->iriConverter->getIriFromItem($this->taxonContext->getTaxonByName($taxonName));
+        $this->iExcludeTheTaxonsFromShowingTheLowestPriceOfDiscountedProducts([$taxon]);
+    }
+
+    /**
+     * @When /^I exclude the ("[^"]+" and "[^"]+" taxons) from showing the lowest price of discounted products$/
+     */
+    public function iExcludeTheTaxonsFromShowingTheLowestPriceOfDiscountedProducts(iterable $taxons): void
+    {
+        $taxonsIris = [];
+        foreach ($taxons as $taxon) {
+            $taxonsIris[] = $this->iriConverter->getIriFromItem($taxon);
         }
 
-        $this->client->addRequestData('taxonsExcludedFromShowingLowestPrice', $taxons);
+        $this->client->addRequestData('taxonsExcludedFromShowingLowestPrice', $taxonsIris);
     }
 
     /**

@@ -15,6 +15,7 @@ default:
                 - sylius.behat.context.transform.shared_storage
                 - sylius.behat.context.transform.taxon
                 - sylius.behat.context.transform.zone
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Transform\TaxonContext
 
                 - sylius.behat.context.setup.admin_api_security
                 - sylius.behat.context.setup.channel
