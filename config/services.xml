@@ -52,6 +52,13 @@
         <service
             id="Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface"
             class="Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculator"
+        >
+            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Checker\ProductVariantLowestPriceDisplayCheckerInterface" />
+        </service>
+
+        <service
+            id="Sylius\PriceHistoryPlugin\Application\Checker\ProductVariantLowestPriceDisplayCheckerInterface"
+            class="Sylius\PriceHistoryPlugin\Application\Checker\ProductVariantLowestPriceDisplayChecker"
         />
     </services>
 </container>
