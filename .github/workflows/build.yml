@@ -18,7 +18,7 @@ jobs:
     tests:
         runs-on: ubuntu-latest
 
-        name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, MySQL ${{ matrix.mysql }}"
+        name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, ${{ matrix.database }} ${{ matrix.database_version }}"
 
         strategy:
             fail-fast: false
@@ -27,7 +27,29 @@ jobs:
                 symfony: ["^5.4", "^6.0"]
                 sylius: ["~1.11.14", "~1.12.4"]
                 node: ["18.x"]
-                mysql: ["5.7", "8.0"]
+                database: ["mysql"]
+                database_version: ["5.7", "8.0"]
+                database_connection_string: ["mysql://root:root@127.0.0.1/sylius_price_history?charset=utf8mb4"]
+                
+                include:
+                    -
+                        php: "8.0"
+                        symfony: "^5.4"
+                        sylius: "~1.11.14"
+                        node: "18.x"
+                        database: "postgresql"
+                        database_version: "13.9"
+                        database_connection_string: "pgsql://postgres:postgres@127.0.0.1/sylius_price_history?charset=utf8"
+
+                    -
+                        php: "8.1"
+                        symfony: "^6.0"
+                        sylius: "~1.12.4"
+                        node: "18.x"
+                        database: "postgresql"
+                        database_version: "14.6"
+                        database_connection_string: "pgsql://postgres:postgres@127.0.0.1/sylius_price_history?charset=utf8"
+                    
 
                 exclude:
                     -
@@ -36,7 +58,8 @@ jobs:
 
         env:
             APP_ENV: test
-            DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=${{ matrix.mysql }}"
+            DATABASE_URL: "${{ matrix.database_connection_string }}&serverVersion=${{ matrix.database_version }}"
+            APPLICATION_DIR: "tests/Application"
 
         steps:
             -
@@ -52,14 +75,19 @@ jobs:
                     coverage: none
 
             -
-                name: Build test application
-                uses: SyliusLabs/BuildTestAppAction@v1.3
+                name: Build application
+                uses: jakubtobiasz/SyliusBuildTestAppAction@v2.0
                 with:
-                    sylius-version: "${{ matrix.sylius }}"
-                    symfony-version: "${{ matrix.symfony }}"
-                    mysql-version: "${{ matrix.mysql }}"
-                    node-version: "${{ matrix.node }}"
-                    plugin-build: "yes"
+                    e2e: "yes"
+                    e2e_js: "yes"
+                    database: ${{ matrix.database }}
+                    database_version: ${{ matrix.database_version }}
+                    php_version: ${{ matrix.php }}
+                    symfony_version: ${{ matrix.symfony }}
+                    sylius_version: ${{ matrix.sylius }}
+                    node_version: ${{ matrix.node }}
+                env:
+                    application_dir: ${{ env.APPLICATION_DIR }}
 
             -
                 name: Run ECS
