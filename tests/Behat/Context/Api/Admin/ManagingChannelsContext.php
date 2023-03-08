@@ -255,6 +255,22 @@ final class ManagingChannelsContext implements Context
     }
 
     /**
+     * @Then /^this channel should have ("([^"]+)" and "([^"]+)" taxons) excluded from displaying the lowest price of discounted products$/
+     */
+    public function thisChannelShouldHaveTaxonsExcludedFromDisplayingTheLowestPriceOfDiscountedProducts(
+        iterable $taxons,
+    ): void {
+        $excludedTaxons = $this->responseChecker->getValue(
+            $this->client->getLastResponse(),
+            'taxonsExcludedFromShowingLowestPrice',
+        );
+
+        foreach ($taxons as $taxon) {
+            Assert::true($this->isResourceAdminIriInArray($taxon, $excludedTaxons));
+        }
+    }
+
+    /**
      * @Then this channel should not have :taxon taxon excluded from displaying the lowest price of discounted products
      */
     public function thisChannelShouldNotHaveTaxonExcludedFromDisplayingTheLowestPriceOfDiscountedProducts(

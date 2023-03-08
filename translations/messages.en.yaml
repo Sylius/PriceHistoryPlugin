@@ -11,4 +11,5 @@ sylius_price_history:
         days: 'Days'
         price_history: 'Price history'
         show_history_for_channel_pricing: 'Show history for channel pricing'
+        taxons_for_which_the_lowest_price_is_not_displayed: 'Taxons for which the lowest price is not displayed'
         the_lowest_price_before_the_discount: 'Lowest price before discount'

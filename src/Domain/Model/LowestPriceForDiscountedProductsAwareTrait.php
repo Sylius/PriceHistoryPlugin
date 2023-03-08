@@ -93,4 +93,9 @@ trait LowestPriceForDiscountedProductsAwareTrait
             $this->taxonsExcludedFromShowingLowestPrice->removeElement($taxon);
         }
     }
+
+    public function clearTaxonsExcludedFromShowingLowestPrice(): void
+    {
+        $this->taxonsExcludedFromShowingLowestPrice->clear();
+    }
 }

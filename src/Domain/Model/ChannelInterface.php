@@ -34,4 +34,6 @@ interface ChannelInterface extends BaseChannelInterface
     public function addTaxonExcludedFromShowingLowestPrice(TaxonInterface $taxon): void;
 
     public function removeTaxonExcludedFromShowingLowestPrice(TaxonInterface $taxon): void;
+
+    public function clearTaxonsExcludedFromShowingLowestPrice(): void;
 }

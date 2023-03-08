@@ -48,10 +48,7 @@ final class ChannelExcludedTaxonsDenormalizer implements ContextAwareDenormalize
         $channel = $this->denormalizer->denormalize($data, $type, $format, $context);
         Assert::isInstanceOf($channel, ChannelInterface::class);
 
-        /** @var TaxonInterface $taxon */
-        foreach ($channel->getTaxonsExcludedFromShowingLowestPrice() as $taxon) {
-            $channel->removeTaxonExcludedFromShowingLowestPrice($taxon);
-        }
+        $channel->clearTaxonsExcludedFromShowingLowestPrice();
 
         foreach ($data['taxonsExcludedFromShowingLowestPrice'] ?? [] as $excludedTaxonIri) {
             /** @var TaxonInterface $taxon */
