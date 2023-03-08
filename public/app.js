@@ -21,7 +21,7 @@ function handleProductOptionChanges() {
 
     if (lowestPriceBeforeTheDiscount !== undefined) {
       $('#product-lowest-price-before-the-discount').html(lowestPriceBeforeTheDiscount);
-      $('#product-lowest-price-before-the-discount').css('display', 'inline');
+      $('#product-lowest-price-before-the-discount').css({'white-space': 'nowrap', 'display': 'inline'});
     } else {
       $('#product-lowest-price-before-the-discount').css('display', 'none');
     }
@@ -39,7 +39,7 @@ function handleProductVariantChanges() {
 
     if (lowestPriceBeforeTheDiscount !== undefined) {
       $('#product-lowest-price-before-the-discount').html(lowestPriceBeforeTheDiscount);
-      $('#product-lowest-price-before-the-discount').css('display', 'inline');
+      $('#product-lowest-price-before-the-discount').css({'white-space': 'nowrap', 'display': 'inline'});
     } else {
       $('#product-lowest-price-before-the-discount').css('display', 'none');
     }
