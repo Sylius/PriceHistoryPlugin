@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sylius\PriceHistoryPlugin\Application\Checker;
 
-use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
@@ -45,7 +44,9 @@ final class ProductVariantLowestPriceDisplayChecker implements ProductVariantLow
             return false;
         }
 
-        $excludedTaxonsWithChildren = $this->getExcludedTaxonsWithChildren($channel->getTaxonsExcludedFromShowingLowestPrice());
+        $excludedTaxonsWithChildren = $this->getExcludedTaxonsWithChildren(
+            $channel->getTaxonsExcludedFromShowingLowestPrice()->toArray(),
+        );
 
         return 0 === count(array_udiff(
             $taxons->toArray(),
@@ -54,19 +55,24 @@ final class ProductVariantLowestPriceDisplayChecker implements ProductVariantLow
         ));
     }
 
-    private function getExcludedTaxonsWithChildren(Collection $excludedTaxons): array
+    private function getExcludedTaxonsWithChildren(array $excludedTaxons): array
     {
-        $excludedTaxonsWithChildren = $excludedTaxons->toArray();
+        $excludedTaxonsWithChildren = $excludedTaxons;
 
         /** @var TaxonInterface $excludedTaxon */
         foreach ($excludedTaxons as $excludedTaxon) {
             $children = $excludedTaxon->getChildren();
-            $excludedTaxonsWithChildren = array_merge($excludedTaxonsWithChildren, $children->toArray());
             if ($children->count() > 0) {
-                $excludedTaxonsWithChildren = array_merge($excludedTaxonsWithChildren, $this->getExcludedTaxonsWithChildren($children));
+                $childrenToExclude = array_udiff(
+                    $children->toArray(),
+                    $excludedTaxonsWithChildren,
+                    fn (TaxonInterface $firstTaxon, TaxonInterface $secondTaxon): int => $firstTaxon->getCode() <=> $secondTaxon->getCode(),
+                );
+                $excludedTaxonsWithChildren = array_merge($excludedTaxonsWithChildren, $childrenToExclude);
+                $excludedTaxonsWithChildren = array_merge($excludedTaxonsWithChildren, $this->getExcludedTaxonsWithChildren($childrenToExclude));
             }
         }
 
-        return array_unique($excludedTaxonsWithChildren, \SORT_REGULAR);
+        return $excludedTaxonsWithChildren;
     }
 }
