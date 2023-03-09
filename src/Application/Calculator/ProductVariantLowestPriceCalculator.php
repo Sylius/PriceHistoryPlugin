@@ -38,7 +38,7 @@ final class ProductVariantLowestPriceCalculator implements ProductVariantLowestP
             throw MissingChannelConfigurationException::createForProductVariantChannelPricing($productVariant, $channel);
         }
 
-        if (!$this->productVariantLowestPriceDisplayChecker->displayLowestPrice($productVariant, $context)) {
+        if (!$this->productVariantLowestPriceDisplayChecker->isLowestPriceDisplayable($productVariant, $context)) {
             return null;
         }
 

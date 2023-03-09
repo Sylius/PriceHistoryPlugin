@@ -34,7 +34,7 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
     ): void {
         $channel->isLowestPriceForDiscountedProductsVisible()->willReturn(false);
 
-        $this->displayLowestPrice($productVariant, ['channel' => $channel])->shouldReturn(false);
+        $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(false);
     }
 
     function it_returns_true_if_the_product_variant_has_no_taxons_assigned(
@@ -46,7 +46,7 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
         $productVariant->getProduct()->willReturn($product);
         $product->getTaxons()->willReturn(new ArrayCollection());
 
-        $this->displayLowestPrice($productVariant, ['channel' => $channel])->shouldReturn(true);
+        $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(true);
     }
 
     function it_returns_false_if_all_product_variants_taxons_are_excluded_from_showing_lowest_price_in_channel(
@@ -73,7 +73,7 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
             ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject(), $secondTaxon->getWrappedObject()]))
         ;
 
-        $this->displayLowestPrice($productVariant, ['channel' => $channel])->shouldReturn(false);
+        $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(false);
     }
 
     function it_returns_false_if_parents_of_all_product_variants_taxons_are_excluded_from_showing_lowest_price_in_channel(
@@ -106,7 +106,7 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
             ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject(), $secondTaxon->getWrappedObject()]))
         ;
 
-        $this->displayLowestPrice($productVariant, ['channel' => $channel])->shouldReturn(false);
+        $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(false);
     }
 
     function it_returns_true_if_not_all_product_variants_taxons_are_excluded_from_showing_lowest_price_in_channel(
@@ -133,7 +133,7 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
             ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject()]))
         ;
 
-        $this->displayLowestPrice($productVariant, ['channel' => $channel])->shouldReturn(true);
+        $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(true);
     }
 
     function it_throws_an_exception_if_there_is_no_channel_passed_in_context(
@@ -141,7 +141,7 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
     ): void {
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('displayLowestPrice', [$productVariant, []])
+            ->during('isLowestPriceDisplayable', [$productVariant, []])
         ;
     }
 
@@ -150,7 +150,7 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
     ): void {
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('displayLowestPrice', [$productVariant, ['channel' => new \stdClass()]])
+            ->during('isLowestPriceDisplayable', [$productVariant, ['channel' => new \stdClass()]])
         ;
     }
 }

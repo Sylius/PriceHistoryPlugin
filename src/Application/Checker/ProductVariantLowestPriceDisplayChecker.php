@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 
 final class ProductVariantLowestPriceDisplayChecker implements ProductVariantLowestPriceDisplayCheckerInterface
 {
-    public function displayLowestPrice(ProductVariantInterface $productVariant, array $context): bool
+    public function isLowestPriceDisplayable(ProductVariantInterface $productVariant, array $context): bool
     {
         Assert::keyExists($context, 'channel');
         $channel = $context['channel'];

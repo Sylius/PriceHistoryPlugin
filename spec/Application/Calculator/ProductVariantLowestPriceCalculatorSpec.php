@@ -40,7 +40,7 @@ final class ProductVariantLowestPriceCalculatorSpec extends ObjectBehavior
         ProductVariantInterface $productVariant,
     ): void {
         $productVariant->getChannelPricingForChannel($channel)->willReturn($channelPricing);
-        $productVariantLowestPriceDisplayChecker->displayLowestPrice($productVariant, ['channel' => $channel])->willReturn(true);
+        $productVariantLowestPriceDisplayChecker->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->willReturn(true);
 
         $channelPricing->getLowestPriceBeforeDiscount()->willReturn(2100);
 
@@ -54,7 +54,7 @@ final class ProductVariantLowestPriceCalculatorSpec extends ObjectBehavior
         ProductVariantInterface $productVariant,
     ): void {
         $productVariant->getChannelPricingForChannel($channel)->willReturn($channelPricing);
-        $productVariantLowestPriceDisplayChecker->displayLowestPrice($productVariant, ['channel' => $channel])->willReturn(false);
+        $productVariantLowestPriceDisplayChecker->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->willReturn(false);
 
         $channelPricing->getLowestPriceBeforeDiscount()->shouldNotBeCalled();
 
