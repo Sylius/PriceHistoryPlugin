@@ -60,11 +60,46 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
         $productVariant->getProduct()->willReturn($product);
 
         $firstTaxon->getCode()->willReturn('first_taxon');
+        $firstTaxon->getChildren()->willReturn(new ArrayCollection());
         $secondTaxon->getCode()->willReturn('second_taxon');
+        $secondTaxon->getChildren()->willReturn(new ArrayCollection());
 
         $product
             ->getTaxons()
             ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject(), $secondTaxon->getWrappedObject()]))
+        ;
+        $channel
+            ->getTaxonsExcludedFromShowingLowestPrice()
+            ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject(), $secondTaxon->getWrappedObject()]))
+        ;
+
+        $this->displayLowestPrice($productVariant, ['channel' => $channel])->shouldReturn(false);
+    }
+
+    function it_returns_false_if_parents_of_all_product_variants_taxons_are_excluded_from_showing_lowest_price_in_channel(
+        ChannelInterface $channel,
+        ProductVariantInterface $productVariant,
+        ProductInterface $product,
+        TaxonInterface $firstTaxon,
+        TaxonInterface $secondTaxon,
+        TaxonInterface $firstTaxonChild,
+        TaxonInterface $childOfFirstTaxonChild,
+    ): void {
+        $channel->isLowestPriceForDiscountedProductsVisible()->willReturn(true);
+        $productVariant->getProduct()->willReturn($product);
+
+        $firstTaxon->getCode()->willReturn('first_taxon');
+        $firstTaxon->getChildren()->willReturn(new ArrayCollection([$firstTaxonChild->getWrappedObject()]));
+        $firstTaxonChild->getCode()->willReturn('first_taxon_child');
+        $firstTaxonChild->getChildren()->willReturn(new ArrayCollection([$childOfFirstTaxonChild->getWrappedObject()]));
+        $childOfFirstTaxonChild->getCode()->willReturn('child_of_first_taxon_child');
+        $childOfFirstTaxonChild->getChildren()->willReturn(new ArrayCollection());
+        $secondTaxon->getCode()->willReturn('second_taxon');
+        $secondTaxon->getChildren()->willReturn(new ArrayCollection());
+
+        $product
+            ->getTaxons()
+            ->willReturn(new ArrayCollection([$childOfFirstTaxonChild->getWrappedObject(), $secondTaxon->getWrappedObject()]))
         ;
         $channel
             ->getTaxonsExcludedFromShowingLowestPrice()
@@ -85,7 +120,9 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
         $productVariant->getProduct()->willReturn($product);
 
         $firstTaxon->getCode()->willReturn('first_taxon');
+        $firstTaxon->getChildren()->willReturn(new ArrayCollection());
         $secondTaxon->getCode()->willReturn('second_taxon');
+        $secondTaxon->getChildren()->willReturn(new ArrayCollection());
 
         $product
             ->getTaxons()
