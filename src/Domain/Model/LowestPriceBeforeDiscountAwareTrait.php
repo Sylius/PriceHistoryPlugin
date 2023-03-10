@@ -17,8 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait LowestPriceBeforeDiscountAwareTrait
 {
-    /** @ORM\Column(type="integer", nullable=true) */
-    #[ORM\Column(type: 'integer', nullable: true)]
+    /** @ORM\Column(name="lowest_price_before_discount", type="integer", nullable=true) */
+    #[ORM\Column(name: 'lowest_price_before_discount', type: 'integer', nullable: true)]
     protected ?int $lowestPriceBeforeDiscount = null;
 
     public function getLowestPriceBeforeDiscount(): ?int
