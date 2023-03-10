@@ -13,7 +13,7 @@
 ===============
 
 We encourage you to use the installation instructions based on Rector and Recipes as it is more convenient and faster.
-The traditional installation guide is available [here](traditional-installation-guide.md).
+The legacy installation guide is available [here](docs/legacy-installation-guide.md).
 
 Installation with Recipes and Rector
 ------------------------------------
