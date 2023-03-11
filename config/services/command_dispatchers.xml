@@ -20,7 +20,7 @@
             class="Sylius\PriceHistoryPlugin\Application\CommandDispatcher\BatchedApplyLowestPriceOnChannelPricingsCommandDispatcher"
         >
             <argument type="service" id="sylius.repository.channel_pricing" />
-            <argument type="service" id="sylius.command_bus" />
+            <argument type="service" id="sylius.no_transaction_command_bus" />
             <argument>%sylius_price_history.batch_size%</argument>
         </service>
     </services>
