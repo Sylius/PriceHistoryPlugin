@@ -1,5 +1,5 @@
-Traditional installation
-------------------------
+Legacy installation
+-------------------
 
 1. Run:
 
