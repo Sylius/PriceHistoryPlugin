@@ -16,7 +16,6 @@ namespace Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Webmozart\Assert\Assert;
 
 class ChannelPricingLogEntryRepository extends EntityRepository implements ChannelPricingLogEntryRepositoryInterface
@@ -46,82 +45,85 @@ class ChannelPricingLogEntryRepository extends EntityRepository implements Chann
         return $queryBuilder->getQuery()->getResult();
     }
 
-    public function findLatestOneByChannelPricing(ChannelPricingInterface $channelPricing): ?ChannelPricingLogEntryInterface
+    public function findLowestPriceBeforeDiscount(
+        ChannelPricingInterface $channelPricing,
+        int $lowestPriceForDiscountedProductsCheckingPeriod,
+    ): ?int {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $result = $conn
+            ->prepare($this->getLowestPricesBeforeDiscountQuery())
+            ->executeQuery([
+                'lowestPriceForDiscountedProductsCheckingPeriod' => $lowestPriceForDiscountedProductsCheckingPeriod,
+                'channelPricingId' => $channelPricing->getId(),
+            ])
+            ->fetchOne()
+        ;
+
+        if (null === $result || false === $result) {
+            return null;
+        }
+
+        /** @phpstan-ignore-next-line cast mixed to int */
+        return (int) $result;
+    }
+
+    private function getLowestPricesBeforeDiscountQuery(): string
     {
-        /** @var ChannelPricingLogEntryInterface|null $channelPricingLogEntry */
-        $channelPricingLogEntry = $this->createQueryBuilder('o')
-            ->andWhere('o.channelPricing = :channelPricing')
-            ->setParameter('channelPricing', $channelPricing)
-            ->orderBy('o.id', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-
-        return $channelPricingLogEntry;
-    }
-
-    public function findLowestPriceInPeriod(
-        int $latestChannelPricingLogEntryId,
-        ChannelPricingInterface $channelPricing,
-        \DateTimeInterface $startDate,
-    ): ?int {
-        $lowestPriceSetInPeriod = $this->findLowestPriceSetInPeriod($latestChannelPricingLogEntryId, $channelPricing, $startDate);
-        $latestPriceSetBeyondPeriod = $this->findLatestPriceSetBeyondPeriod($channelPricing, $startDate);
-
-        if (null === $lowestPriceSetInPeriod) {
-            return $latestPriceSetBeyondPeriod;
-        }
-
-        if (null === $latestPriceSetBeyondPeriod) {
-            return $lowestPriceSetInPeriod;
-        }
-
-        if ($latestPriceSetBeyondPeriod < $lowestPriceSetInPeriod) {
-            return $latestPriceSetBeyondPeriod;
-        }
-
-        return $lowestPriceSetInPeriod;
-    }
-
-    private function findLowestPriceSetInPeriod(
-        int $latestChannelPricingLogEntryId,
-        ChannelPricingInterface $channelPricing,
-        \DateTimeInterface $startDate,
-    ): ?int {
-        /** @var ChannelPricingLogEntryInterface|null $channelPricingLogEntry */
-        $channelPricingLogEntry = $this->createQueryBuilder('o')
-            ->andWhere('o.loggedAt >= :startDate')
-            ->andWhere('o.id != :channelPricingLogEntryId')
-            ->andWhere('o.channelPricing = :channelPricing')
-            ->setParameter('startDate', $startDate)
-            ->setParameter('channelPricing', $channelPricing)
-            ->setParameter('channelPricingLogEntryId', $latestChannelPricingLogEntryId)
-            ->orderBy('o.price', 'ASC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-
-        return $channelPricingLogEntry?->getPrice();
-    }
-
-    private function findLatestPriceSetBeyondPeriod(
-        ChannelPricingInterface $channelPricing,
-        \DateTimeInterface $startDate,
-    ): ?int {
-        /** @var ChannelPricingLogEntryInterface|null $channelPricingLogEntry */
-        $channelPricingLogEntry = $this->createQueryBuilder('o')
-            ->andWhere('o.loggedAt < :startDate')
-            ->andWhere('o.channelPricing = :channelPricing')
-            ->setParameter('startDate', $startDate)
-            ->setParameter('channelPricing', $channelPricing)
-            ->orderBy('o.id', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-
-        return $channelPricingLogEntry?->getPrice();
+        return <<<SQL
+SELECT
+    (
+        CASE
+            WHEN lowestPriceSetInPeriod IS NULL THEN latestPriceSetBeyondPeriod
+            WHEN latestPriceSetBeyondPeriod IS NULL THEN lowestPriceSetInPeriod
+            ELSE LEAST(lowestPriceSetInPeriod, latestPriceSetBeyondPeriod)
+        END
+    ) price
+FROM (
+     SELECT
+         (
+             SELECT query.price
+             FROM sylius_price_history_channel_pricing_log_entry query
+             WHERE
+                query.logged_at >= SUBDATE(
+                    (
+                        SELECT o.logged_at
+                        FROM sylius_price_history_channel_pricing_log_entry o
+                        WHERE o.channel_pricing_id = :channelPricingId
+                        ORDER BY o.id DESC
+                        LIMIT 1
+                    ),
+                    :lowestPriceForDiscountedProductsCheckingPeriod
+                )
+                AND query.id != (
+                    SELECT subquery.id FROM sylius_price_history_channel_pricing_log_entry subquery
+                    WHERE subquery.channel_pricing_id = :channelPricingId
+                    ORDER BY subquery.id DESC
+                    LIMIT 1
+                )
+                AND query.channel_pricing_id = :channelPricingId
+             ORDER BY query.price ASC
+             LIMIT 1
+         ) lowestPriceSetInPeriod,
+         (
+             SELECT query.price
+             FROM sylius_price_history_channel_pricing_log_entry query
+             WHERE
+                query.logged_at < SUBDATE(
+                    (
+                        SELECT o.logged_at
+                        FROM sylius_price_history_channel_pricing_log_entry o
+                        WHERE o.channel_pricing_id = :channelPricingId
+                        ORDER BY o.id DESC
+                        LIMIT 1
+                    ),
+                    :lowestPriceForDiscountedProductsCheckingPeriod
+                )
+                AND query.channel_pricing_id = :channelPricingId
+             ORDER BY query.id DESC
+             LIMIT 1
+         ) latestPriceSetBeyondPeriod
+) t
+SQL;
     }
 }

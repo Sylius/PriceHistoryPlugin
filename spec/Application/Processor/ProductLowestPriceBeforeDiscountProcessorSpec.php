@@ -19,7 +19,6 @@ use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
-use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntry;
 use Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM\ChannelPricingLogEntryRepositoryInterface;
 
 final class ProductLowestPriceBeforeDiscountProcessorSpec extends ObjectBehavior
@@ -45,12 +44,10 @@ final class ProductLowestPriceBeforeDiscountProcessorSpec extends ObjectBehavior
         $channelPricing->getOriginalPrice()->willReturn(null);
         $channelPricing->getPrice()->willReturn(2100);
 
-        $channelRepository->findOneByCode(Argument::any())->shouldNotBeCalled();
-        $channelPricingLogEntryRepository->findLatestOneByChannelPricing($channelPricing)->shouldNotBeCalled();
-        $channelPricingLogEntryRepository->findLowestPriceInPeriod(Argument::cetera())->shouldNotBeCalled();
-
-        $channelPricing->getChannelCode()->shouldNotBeCalled();
         $channelPricing->setLowestPriceBeforeDiscount(null)->shouldBeCalled();
+        $channelPricing->getChannelCode()->shouldNotBeCalled();
+        $channelRepository->findOneByCode(Argument::any())->shouldNotBeCalled();
+        $channelPricingLogEntryRepository->findLowestPriceBeforeDiscount($channelPricing)->shouldNotBeCalled();
 
         $this->process($channelPricing);
     }
@@ -63,12 +60,10 @@ final class ProductLowestPriceBeforeDiscountProcessorSpec extends ObjectBehavior
         $channelPricing->getOriginalPrice()->willReturn(2100);
         $channelPricing->getPrice()->willReturn(2100);
 
-        $channelRepository->findOneByCode(Argument::any())->shouldNotBeCalled();
-        $channelPricingLogEntryRepository->findLatestOneByChannelPricing($channelPricing)->shouldNotBeCalled();
-        $channelPricingLogEntryRepository->findLowestPriceInPeriod(Argument::cetera())->shouldNotBeCalled();
-
-        $channelPricing->getChannelCode()->shouldNotBeCalled();
         $channelPricing->setLowestPriceBeforeDiscount(null)->shouldBeCalled();
+        $channelPricing->getChannelCode()->shouldNotBeCalled();
+        $channelRepository->findOneByCode(Argument::any())->shouldNotBeCalled();
+        $channelPricingLogEntryRepository->findLowestPriceBeforeDiscount($channelPricing)->shouldNotBeCalled();
 
         $this->process($channelPricing);
     }
@@ -81,12 +76,10 @@ final class ProductLowestPriceBeforeDiscountProcessorSpec extends ObjectBehavior
         $channelPricing->getOriginalPrice()->willReturn(2100);
         $channelPricing->getPrice()->willReturn(3700);
 
-        $channelRepository->findOneByCode(Argument::any())->shouldNotBeCalled();
-        $channelPricingLogEntryRepository->findLatestOneByChannelPricing($channelPricing)->shouldNotBeCalled();
-        $channelPricingLogEntryRepository->findLowestPriceInPeriod(Argument::cetera())->shouldNotBeCalled();
-
-        $channelPricing->getChannelCode()->shouldNotBeCalled();
         $channelPricing->setLowestPriceBeforeDiscount(null)->shouldBeCalled();
+        $channelPricing->getChannelCode()->shouldNotBeCalled();
+        $channelRepository->findOneByCode(Argument::any())->shouldNotBeCalled();
+        $channelPricingLogEntryRepository->findLowestPriceBeforeDiscount($channelPricing)->shouldNotBeCalled();
 
         $this->process($channelPricing);
     }
@@ -100,11 +93,11 @@ final class ProductLowestPriceBeforeDiscountProcessorSpec extends ObjectBehavior
         $channelPricing->getOriginalPrice()->willReturn(3700);
         $channelPricing->getPrice()->willReturn(2100);
         $channelPricing->getChannelCode()->willReturn('WEB');
-        $channel->getLowestPriceForDiscountedProductsCheckingPeriod()->shouldNotBeCalled();
 
         $channelRepository->findOneByCode('WEB')->willReturn($channel);
-        $channelPricingLogEntryRepository->findLatestOneByChannelPricing($channelPricing)->willReturn(null);
-        $channelPricingLogEntryRepository->findLowestPriceInPeriod(Argument::cetera())->shouldNotBeCalled();
+        $channel->getLowestPriceForDiscountedProductsCheckingPeriod()->willReturn(30);
+
+        $channelPricingLogEntryRepository->findLowestPriceBeforeDiscount($channelPricing, 30)->willReturn(null);
 
         $channelPricing->setLowestPriceBeforeDiscount(null)->shouldBeCalled();
 
@@ -116,29 +109,14 @@ final class ProductLowestPriceBeforeDiscountProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         ChannelInterface $channel,
         ChannelPricingInterface $channelPricing,
-        ChannelPricingLogEntry $latestLogEntry,
     ): void {
         $channelPricing->getOriginalPrice()->willReturn(3700);
         $channelPricing->getPrice()->willReturn(2100);
         $channelPricing->getChannelCode()->willReturn('WEB');
-
         $channelRepository->findOneByCode('WEB')->willReturn($channel);
         $channel->getLowestPriceForDiscountedProductsCheckingPeriod()->willReturn(30);
 
-        $unformattedDate = new \DateTimeImmutable();
-        $latestLogEntry->getLoggedAt()->willReturn($unformattedDate);
-        $loggedAt = new \DateTimeImmutable($unformattedDate->format('Y-m-d H:i:s'));
-        $startDate = $loggedAt->sub(new \DateInterval(sprintf('P%dD', 30)));
-
-        $latestLogEntry->getChannelPricing()->willReturn($channelPricing);
-        $latestLogEntry->getLoggedAt()->willReturn($loggedAt);
-        $latestLogEntry->getId()->willReturn(1234);
-
-        $channelPricingLogEntryRepository->findLatestOneByChannelPricing($channelPricing)->willReturn($latestLogEntry);
-        $channelPricingLogEntryRepository
-            ->findLowestPriceInPeriod(1234, $channelPricing, $startDate)
-            ->willReturn(6900)
-        ;
+        $channelPricingLogEntryRepository->findLowestPriceBeforeDiscount($channelPricing, 30)->willReturn(6900);
 
         $channelPricing->setLowestPriceBeforeDiscount(6900)->shouldBeCalled();
 
