@@ -5,11 +5,8 @@ namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface;
-use Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
-use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
 use Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\EntityObserverInterface;
 
 final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectBehavior
@@ -19,17 +16,33 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectB
         $this->beConstructedWith($commandDispatcher);
     }
 
-    function it_implements_on_entity_change_interface(): void
+    function it_implements_on_entity_observer_interface(): void
     {
         $this->shouldImplement(EntityObserverInterface::class);
     }
 
-    function it_supports_channel_pricing_interface_only(
+    function it_supports_channel_interface_only(
         ChannelInterface $channel,
         OrderInterface $order,
     ): void {
+        $channel->getCode()->willReturn('test');
+
         $this->supports($channel)->shouldReturn(true);
         $this->supports($order)->shouldReturn(false);
+    }
+
+    function it_does_not_support_a_channel_that_is_currently_being_processed(
+        ChannelInterface $channel,
+    ): void {
+        $channel->getCode()->willReturn('test');
+
+        $object = $this->object->getWrappedObject();
+        $objectReflection = new \ReflectionObject($object);
+        $property = $objectReflection->getProperty('channelsCurrentlyProcessed');
+        $property->setAccessible(true);
+        $property->setValue($object, ['test' => true]);
+
+        $this->supports($channel)->shouldReturn(false);
     }
 
     function it_supports_lowest_price_for_discounted_products_checking_period_field(): void

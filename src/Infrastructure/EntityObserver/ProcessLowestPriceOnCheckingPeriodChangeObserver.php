@@ -19,6 +19,8 @@ use Webmozart\Assert\Assert;
 
 final class ProcessLowestPriceOnCheckingPeriodChangeObserver implements EntityObserverInterface
 {
+    private array $channelsCurrentlyProcessed = [];
+
     public function __construct(private ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface $commandDispatcher)
     {
     }
@@ -27,12 +29,16 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserver implements EntityOb
     {
         Assert::isInstanceOf($entity, ChannelInterface::class);
 
+        $this->channelsCurrentlyProcessed = [(string) $entity->getCode() => true];
+
         $this->commandDispatcher->applyWithinChannel($entity);
+
+        unset($this->channelsCurrentlyProcessed[(string) $entity->getCode()]);
     }
 
     public function supports(object $entity): bool
     {
-        return $entity instanceof ChannelInterface;
+        return $entity instanceof ChannelInterface && !isset($this->channelsCurrentlyProcessed[$entity->getCode()]);
     }
 
     public function observedFields(): array
