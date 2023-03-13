@@ -4,3 +4,8 @@
 imports:
     - { resource: '@SyliusPriceHistoryPlugin/config/events.yaml' }
     - { resource: '@SyliusPriceHistoryPlugin/config/grids/*' }
+
+framework:
+    messenger:
+        routing:
+            Sylius\PriceHistoryPlugin\Application\Command\ApplyLowestPriceOnChannelPricings: main
