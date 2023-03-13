@@ -34,10 +34,10 @@ final class ProductVariantLowestPriceDisplayChecker implements ProductVariantLow
         /** @var ProductInterface $product */
         $product = $productVariant->getProduct();
 
-        return !$this->areAllTaxonsOfProductExcluded($product, $channel);
+        return !$this->isAnyTaxonOfProductExcluded($product, $channel);
     }
 
-    private function areAllTaxonsOfProductExcluded(ProductInterface $product, ChannelInterface $channel): bool
+    private function isAnyTaxonOfProductExcluded(ProductInterface $product, ChannelInterface $channel): bool
     {
         $taxons = $product->getTaxons();
         if ($taxons->isEmpty()) {
@@ -48,9 +48,10 @@ final class ProductVariantLowestPriceDisplayChecker implements ProductVariantLow
             $channel->getTaxonsExcludedFromShowingLowestPrice()->toArray(),
         );
 
-        return 0 === count(array_udiff(
+        return 0 < count(array_uintersect(
             $taxons->toArray(),
             $excludedTaxonsWithChildren,
+            /** @phpstan-ignore-next-line  */
             fn (TaxonInterface $firstTaxon, TaxonInterface $secondTaxon): int => $firstTaxon->getCode() <=> $secondTaxon->getCode(),
         ));
     }
