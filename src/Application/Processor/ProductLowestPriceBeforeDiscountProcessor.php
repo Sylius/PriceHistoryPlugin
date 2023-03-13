@@ -16,7 +16,6 @@ namespace Sylius\PriceHistoryPlugin\Application\Processor;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
-use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Sylius\PriceHistoryPlugin\Domain\Repository\ChannelPricingLogEntryRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -36,14 +35,6 @@ final class ProductLowestPriceBeforeDiscountProcessor implements ProductLowestPr
             return;
         }
 
-        $latestLogEntry = $this->channelPricingLogEntryRepository->findLatestOneByChannelPricing($channelPricing);
-
-        if ($latestLogEntry === null) {
-            $channelPricing->setLowestPriceBeforeDiscount(null);
-
-            return;
-        }
-
         $channelCode = $channelPricing->getChannelCode();
         Assert::string($channelCode);
 
@@ -54,12 +45,12 @@ final class ProductLowestPriceBeforeDiscountProcessor implements ProductLowestPr
             return;
         }
 
-        $lowestPriceInPeriod = $this->findLowestPriceInPeriod(
-            $latestLogEntry,
+        $lowestPriceBeforeDiscount = $this->channelPricingLogEntryRepository->findLowestPricesBeforeDiscount(
+            $channelPricing,
             $channel->getLowestPriceForDiscountedProductsCheckingPeriod(),
         );
 
-        $channelPricing->setLowestPriceBeforeDiscount($lowestPriceInPeriod);
+        $channelPricing->setLowestPriceBeforeDiscount($lowestPriceBeforeDiscount);
     }
 
     private function isPromotionApplied(ChannelPricingInterface $channelPricing): bool
@@ -67,21 +58,6 @@ final class ProductLowestPriceBeforeDiscountProcessor implements ProductLowestPr
         return
             $channelPricing->getOriginalPrice() !== null &&
             $channelPricing->getPrice() < $channelPricing->getOriginalPrice()
-        ;
-    }
-
-    private function findLowestPriceInPeriod(
-        ChannelPricingLogEntryInterface $latestLogEntry,
-        int $lowestPriceForDiscountedProductsCheckingPeriod,
-    ): ?int {
-        $loggedAt = new \DateTimeImmutable($latestLogEntry->getLoggedAt()->format('Y-m-d H:i:s'));
-
-        /** @var \DateTimeInterface $startDate */
-        $startDate = $loggedAt->sub(new \DateInterval(sprintf('P%sD', $lowestPriceForDiscountedProductsCheckingPeriod)));
-
-        return $this
-            ->channelPricingLogEntryRepository
-            ->findLowestPriceInPeriod($latestLogEntry->getId(), $latestLogEntry->getChannelPricing(), $startDate)
         ;
     }
 }

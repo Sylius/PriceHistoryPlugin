@@ -9,15 +9,14 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
+use Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM\ChannelPricingLogEntryRepositoryInterface;
 use Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\EntityObserverInterface;
 
 final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectBehavior
 {
-    function let(
-        ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
-        RepositoryInterface $channelPricingRepository,
-    ): void {
-        $this->beConstructedWith($productLowestPriceBeforeDiscountProcessor, $channelPricingRepository, 2);
+    function let(ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntryRepository): void
+    {
+        $this->beConstructedWith($channelPricingLogEntryRepository);
     }
 
     function it_implements_on_entity_change_interface(): void
@@ -39,60 +38,19 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectB
     }
 
     function it_processes_product_lowest_price_for_each_channel_pricing_within_channel(
-        ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
-        RepositoryInterface $channelPricingRepository,
+        ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntryRepository,
         ChannelInterface $channel,
-        ChannelPricingInterface $firstChannelPricing,
-        ChannelPricingInterface $secondChannelPricing,
-        ChannelPricingInterface $thirdChannelPricing,
-        ChannelPricingInterface $fourthChannelPricing,
-        ChannelPricingInterface $fifthChannelPricing,
     ): void {
-        $channel->getCode()->willReturn('WEB');
-
-        $batches = [
-            [
-                $firstChannelPricing->getWrappedObject(),
-                $secondChannelPricing->getWrappedObject(),
-            ],
-            [
-                $thirdChannelPricing->getWrappedObject(),
-                $fourthChannelPricing->getWrappedObject(),
-            ],
-            [
-                $fifthChannelPricing->getWrappedObject(),
-            ],
-            [],
-        ];
-
-        $batchSize = 2;
-
-        foreach ($batches as $key => $batch) {
-            $channelPricingRepository
-                ->findBy(['channelCode' => 'WEB'], ['id' => 'ASC'], 2, $key * $batchSize)
-                ->willReturn($batch)
-                ->shouldBeCalled()
-            ;
-        }
-
-        $productLowestPriceBeforeDiscountProcessor->process($firstChannelPricing)->shouldBeCalled();
-        $productLowestPriceBeforeDiscountProcessor->process($secondChannelPricing)->shouldBeCalled();
-        $productLowestPriceBeforeDiscountProcessor->process($thirdChannelPricing)->shouldBeCalled();
-        $productLowestPriceBeforeDiscountProcessor->process($fourthChannelPricing)->shouldBeCalled();
-        $productLowestPriceBeforeDiscountProcessor->process($fifthChannelPricing)->shouldBeCalled();
+        $channelPricingLogEntryRepository->bulkUpdateLowestPricesBeforeDiscount($channel)->shouldBeCalled();
 
         $this->onChange($channel);
     }
 
     function it_throws_an_exception_if_entity_is_not_channel(
-        ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
-        RepositoryInterface $channelPricingRepository,
+        ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntryRepository,
         OrderInterface $order,
     ): void {
-        $channelPricingRepository->findBy(Argument::any())->shouldNotBeCalled();
-
-        $productLowestPriceBeforeDiscountProcessor->process(Argument::any())->shouldNotBeCalled();
-        $productLowestPriceBeforeDiscountProcessor->process(Argument::any())->shouldNotBeCalled();
+        $channelPricingLogEntryRepository->bulkUpdateLowestPricesBeforeDiscount(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('onChange', [$order]);
     }
