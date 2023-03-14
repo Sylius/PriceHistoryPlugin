@@ -49,7 +49,22 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
         $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(true);
     }
 
-    function it_returns_false_if_all_product_variants_taxons_are_excluded_from_showing_lowest_price_in_channel(
+    function it_returns_true_if_there_is_no_taxons_excluded_showing_lowest_price_in_channel(
+        ChannelInterface $channel,
+        ProductVariantInterface $productVariant,
+        ProductInterface $product,
+        TaxonInterface $taxon,
+    ): void {
+        $channel->isLowestPriceForDiscountedProductsVisible()->willReturn(true);
+        $channel->getTaxonsExcludedFromShowingLowestPrice()->willReturn(new ArrayCollection());
+
+        $productVariant->getProduct()->willReturn($product);
+        $product->getTaxons()->willReturn(new ArrayCollection([$taxon->getWrappedObject()]));
+
+        $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(true);
+    }
+
+    function it_returns_false_if_at_least_one_product_variants_taxon_is_excluded_from_showing_lowest_price_in_channel(
         ChannelInterface $channel,
         ProductVariantInterface $productVariant,
         ProductInterface $product,
@@ -70,13 +85,13 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
         ;
         $channel
             ->getTaxonsExcludedFromShowingLowestPrice()
-            ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject(), $secondTaxon->getWrappedObject()]))
+            ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject()]))
         ;
 
         $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(false);
     }
 
-    function it_returns_false_if_parents_of_all_product_variants_taxons_are_excluded_from_showing_lowest_price_in_channel(
+    function it_returns_false_if_parent_of_at_least_one_product_variants_taxon_is_excluded_from_showing_lowest_price_in_channel(
         ChannelInterface $channel,
         ProductVariantInterface $productVariant,
         ProductInterface $product,
@@ -103,13 +118,13 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
         ;
         $channel
             ->getTaxonsExcludedFromShowingLowestPrice()
-            ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject(), $secondTaxon->getWrappedObject()]))
+            ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject()]))
         ;
 
         $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(false);
     }
 
-    function it_returns_true_if_not_all_product_variants_taxons_are_excluded_from_showing_lowest_price_in_channel(
+    function it_returns_true_if_none_of_the_product_variants_taxons_is_excluded_from_showing_lowest_price_in_channel(
         ChannelInterface $channel,
         ProductVariantInterface $productVariant,
         ProductInterface $product,
@@ -128,10 +143,7 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
             ->getTaxons()
             ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject(), $secondTaxon->getWrappedObject()]))
         ;
-        $channel
-            ->getTaxonsExcludedFromShowingLowestPrice()
-            ->willReturn(new ArrayCollection([$firstTaxon->getWrappedObject()]))
-        ;
+        $channel->getTaxonsExcludedFromShowingLowestPrice()->willReturn(new ArrayCollection([]));
 
         $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(true);
     }

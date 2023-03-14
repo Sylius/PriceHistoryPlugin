@@ -33,46 +33,45 @@ final class ProductVariantLowestPriceDisplayChecker implements ProductVariantLow
 
         /** @var ProductInterface $product */
         $product = $productVariant->getProduct();
-
-        return !$this->areAllTaxonsOfProductExcluded($product, $channel);
-    }
-
-    private function areAllTaxonsOfProductExcluded(ProductInterface $product, ChannelInterface $channel): bool
-    {
         $taxons = $product->getTaxons();
         if ($taxons->isEmpty()) {
-            return false;
+            return true;
         }
 
-        $excludedTaxonsWithChildren = $this->getExcludedTaxonsWithChildren(
-            $channel->getTaxonsExcludedFromShowingLowestPrice()->toArray(),
-        );
+        $excludedTaxons = $channel->getTaxonsExcludedFromShowingLowestPrice();
+        if ($excludedTaxons->isEmpty()) {
+            return true;
+        }
 
-        return 0 === count(array_udiff(
-            $taxons->toArray(),
-            $excludedTaxonsWithChildren,
-            fn (TaxonInterface $firstTaxon, TaxonInterface $secondTaxon): int => $firstTaxon->getCode() <=> $secondTaxon->getCode(),
-        ));
+        return !$this->isAnyTaxonExcluded($taxons->toArray(), $excludedTaxons->toArray());
     }
 
-    private function getExcludedTaxonsWithChildren(array $excludedTaxons): array
+    private function isAnyTaxonExcluded(array $taxons, array $excludedTaxons): bool
     {
-        $excludedTaxonsWithChildren = $excludedTaxons;
+        if ($this->isCommonPart($taxons, $excludedTaxons)) {
+            return true;
+        }
 
         /** @var TaxonInterface $excludedTaxon */
         foreach ($excludedTaxons as $excludedTaxon) {
             $children = $excludedTaxon->getChildren();
-            if ($children->count() > 0) {
-                $childrenToExclude = array_udiff(
-                    $children->toArray(),
-                    $excludedTaxonsWithChildren,
-                    fn (TaxonInterface $firstTaxon, TaxonInterface $secondTaxon): int => $firstTaxon->getCode() <=> $secondTaxon->getCode(),
-                );
-                $excludedTaxonsWithChildren = array_merge($excludedTaxonsWithChildren, $childrenToExclude);
-                $excludedTaxonsWithChildren = array_merge($excludedTaxonsWithChildren, $this->getExcludedTaxonsWithChildren($childrenToExclude));
+            if (!$children->isEmpty()) {
+                if ($this->isAnyTaxonExcluded($taxons, $children->toArray())) {
+                    return true;
+                }
             }
         }
 
-        return $excludedTaxonsWithChildren;
+        return false;
+    }
+
+    private function isCommonPart(array $firstArray, array $secondArray): bool
+    {
+        return 0 < count(array_uintersect(
+            $firstArray,
+            $secondArray,
+            /** @phpstan-ignore-next-line  */
+            fn (TaxonInterface $firstTaxon, TaxonInterface $secondTaxon): int => $firstTaxon->getCode() <=> $secondTaxon->getCode(),
+        ));
     }
 }
