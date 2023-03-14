@@ -49,6 +49,21 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
         $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(true);
     }
 
+    function it_returns_true_if_there_is_no_taxons_excluded_showing_lowest_price_in_channel(
+        ChannelInterface $channel,
+        ProductVariantInterface $productVariant,
+        ProductInterface $product,
+        TaxonInterface $taxon,
+    ): void {
+        $channel->isLowestPriceForDiscountedProductsVisible()->willReturn(true);
+        $channel->getTaxonsExcludedFromShowingLowestPrice()->willReturn(new ArrayCollection());
+
+        $productVariant->getProduct()->willReturn($product);
+        $product->getTaxons()->willReturn(new ArrayCollection([$taxon->getWrappedObject()]));
+
+        $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(true);
+    }
+
     function it_returns_false_if_at_least_one_product_variants_taxon_is_excluded_from_showing_lowest_price_in_channel(
         ChannelInterface $channel,
         ProductVariantInterface $productVariant,
