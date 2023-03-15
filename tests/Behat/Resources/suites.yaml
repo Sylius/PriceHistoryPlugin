@@ -3,12 +3,12 @@
 
 imports:
     - suites/api/channel/managing_channels.yaml
-    - suites/api/product/managing_product_variants.yaml
+    - suites/api/product/viewing_price_history.yaml
+    - suites/api/product/viewing_price_history_after_catalog_promotions.yaml
     - suites/api/product/viewing_products.yaml
-    - suites/api/promotion/managing_catalog_promotions.yaml
-    - suites/domain/managing_price_history.yaml
+    - suites/domain/product/managing_price_history.yaml
     - suites/ui/channel/managing_channels.yaml
     - suites/ui/product/accessing_price_history.yaml
-    - suites/ui/product/managing_product_variants.yaml
+    - suites/ui/product/viewing_price_history.yaml
+    - suites/ui/product/viewing_price_history_after_catalog_promotions.yaml
     - suites/ui/product/viewing_products.yaml
-    - suites/ui/promotion/managing_catalog_promotions.yaml

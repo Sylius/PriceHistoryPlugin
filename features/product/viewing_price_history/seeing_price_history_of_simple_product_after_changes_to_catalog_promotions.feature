@@ -1,4 +1,4 @@
-@managing_catalog_promotions
+@viewing_price_history_after_catalog_promotions
 Feature: Seeing the price history of a simple product after changes to catalog promotions
     In order to be aware of historical simple product prices
     As an Administrator
