@@ -21,7 +21,7 @@ default:
                 - Sylius\Behat\Context\Setup\CatalogPromotionContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\CatalogPromotionContext
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\ProductContext
-                
+
                 - sylius.behat.context.api.admin.managing_catalog_promotions
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ChannelPricingLogEntryContext
 
