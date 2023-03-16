@@ -51,7 +51,7 @@ class ChannelPricingLogEntryRepository extends EntityRepository implements Chann
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = sprintf(
-            'UPDATE sylius_channel_pricing scp SET scp.lowestPriceBeforeDiscount = (%s) WHERE scp.channel_code = :channelCode',
+            'UPDATE sylius_channel_pricing scp SET scp.lowest_price_before_discount = (%s) WHERE scp.channel_code = :channelCode',
             $this->getLowestPricesBeforeDiscountQuery(),
         );
 
