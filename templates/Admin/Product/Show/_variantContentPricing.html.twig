@@ -30,7 +30,7 @@
                         {% include '@SyliusAdmin/Product/Show/_appliedPromotions.html.twig' %}
                     {% endif %}
                     <td>
-                        <a class="ui blue labeled icon button" href="{{ path('sylius_price_history_admin_channel_pricing_log_entry_index', {
+                        <a class="ui blue labeled icon button" href="{{ path('sylius_admin_channel_pricing_log_entry_index', {
                             'productId': product.id,
                             'variantId': variant.id,
                             'channelPricingId': channelPricing.id
