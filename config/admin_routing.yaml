@@ -7,7 +7,7 @@ sylius_admin_channel_pricing_log_entry_index:
             section: admin
             permission: true
             template: '@SyliusAdmin/Crud/index.html.twig'
-            grid: sylius_price_history_admin_channel_pricing_log_entry
+            grid: sylius_admin_channel_pricing_log_entry
             vars:
                 icon: book
                 templates:

@@ -1,6 +1,6 @@
 sylius_grid:
     grids:
-        sylius_price_history_admin_channel_pricing_log_entry:
+        sylius_admin_channel_pricing_log_entry:
             driver:
                 name: doctrine/orm
                 options:
