@@ -32,13 +32,13 @@ trait LowestPriceForDiscountedProductsAwareTrait
      * @var Collection|TaxonInterface[]
      *
      * @ORM\ManyToMany(targetEntity="Sylius\Component\Taxonomy\Model\TaxonInterface")
-     * @ORM\JoinTable(name="sylius_price_history_channel_excluded_taxons",
+     * @ORM\JoinTable(name="sylius_channel_excluded_taxons",
      *     joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="taxon_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     #[ORM\ManyToMany(targetEntity: TaxonInterface::class)]
-    #[ORM\JoinTable(name: 'sylius_price_history_channel_excluded_taxons')]
+    #[ORM\JoinTable(name: 'sylius_channel_excluded_taxons')]
     #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'taxon_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected Collection $taxonsExcludedFromShowingLowestPrice;
