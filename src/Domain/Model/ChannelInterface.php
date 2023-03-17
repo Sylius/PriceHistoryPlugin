@@ -17,5 +17,7 @@ use Sylius\Component\Core\Model\ChannelInterface as BaseChannelInterface;
 
 interface ChannelInterface extends BaseChannelInterface
 {
+    public function setChannelPriceHistoryConfig(ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig): void;
+
     public function getChannelPriceHistoryConfig(): ChannelPriceHistoryConfigInterface;
 }

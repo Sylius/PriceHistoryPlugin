@@ -28,7 +28,13 @@ trait ChannelPriceHistoryConfigAwareTrait
         parent::__construct();
     }
 
-    public function getChannelPriceHistoryConfig(): ChannelPriceHistoryConfig
+    public function setChannelPriceHistoryConfig(ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig): void
+    {
+        $this->channelPriceHistoryConfig = $channelPriceHistoryConfig;
+        $this->channelPriceHistoryConfig->setChannel($this);
+    }
+
+    public function getChannelPriceHistoryConfig(): ChannelPriceHistoryConfigInterface
     {
         return $this->channelPriceHistoryConfig;
     }
