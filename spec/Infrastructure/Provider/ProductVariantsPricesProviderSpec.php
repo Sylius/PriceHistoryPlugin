@@ -24,6 +24,7 @@ use Sylius\Component\Currency\Model\CurrencyInterface;
 use Sylius\Component\Product\Model\ProductOptionValueInterface;
 use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductVariantsPricesProviderSpec extends ObjectBehavior
@@ -32,13 +33,13 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
         ProductVariantLowestPriceCalculatorInterface $productVariantLowestPriceCalculator,
         ProductVariantPricesCalculatorInterface $productVariantPricesCalculator,
         MoneyFormatterInterface $moneyFormatter,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): void {
         $this->beConstructedWith(
             $productVariantLowestPriceCalculator,
             $productVariantPricesCalculator,
             $moneyFormatter,
-            $translator
+            $translator,
         );
     }
 
@@ -50,14 +51,17 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
     function it_provides_only_variants_prices_when_there_is_no_discount(
         ArrayCollection $appliedPromotions,
         ChannelInterface $channel,
+        ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig,
         CurrencyInterface $currency,
         ProductInterface $product,
         ProductOptionValueInterface $optionValue,
         ProductVariantInterface $variant,
         ProductVariantLowestPriceCalculatorInterface $productVariantLowestPriceCalculator,
         ProductVariantPricesCalculatorInterface $productVariantPricesCalculator,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): void {
+        $channel->getChannelPriceHistoryConfig()->willReturn($channelPriceHistoryConfig);
+
         $product->getEnabledVariants()->willReturn(new ArrayCollection([$variant->getWrappedObject()]));
         $variant->getOptionValues()->willReturn(new ArrayCollection([$optionValue->getWrappedObject()]));
         $optionValue->getOptionCode()->willReturn('color');
@@ -72,13 +76,13 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
         $appliedPromotions->isEmpty()->willReturn(true);
         $variant->getAppliedPromotionsForChannel($channel)->willReturn($appliedPromotions);
 
-        $channel->getLowestPriceForDiscountedProductsCheckingPeriod()->willReturn(30);
+        $channelPriceHistoryConfig->getLowestPriceForDiscountedProductsCheckingPeriod()->willReturn(30);
         $translator->trans(
             'sylius.ui.lowest_price_days_before_discount_was',
             [
                 '%days%' => 30,
                 '%price%' => '$20.00',
-            ]
+            ],
         )->shouldNotBeCalled();
 
         $this->provideVariantsPrices($product, $channel)->shouldBeLike([
@@ -92,6 +96,7 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
     function it_provides_lowest_price_information_when_there_is_a_discount(
         ArrayCollection $appliedPromotions,
         ChannelInterface $channel,
+        ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig,
         CurrencyInterface $currency,
         MoneyFormatterInterface $moneyFormatter,
         ProductInterface $product,
@@ -99,8 +104,10 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
         ProductVariantInterface $variant,
         ProductVariantLowestPriceCalculatorInterface $productVariantLowestPriceCalculator,
         ProductVariantPricesCalculatorInterface $productVariantPricesCalculator,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): void {
+        $channel->getChannelPriceHistoryConfig()->willReturn($channelPriceHistoryConfig);
+
         $product->getEnabledVariants()->willReturn(new ArrayCollection([$variant->getWrappedObject()]));
         $variant->getOptionValues()->willReturn(new ArrayCollection([$optionValue->getWrappedObject()]));
         $optionValue->getOptionCode()->willReturn('color');
@@ -115,7 +122,7 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
         $appliedPromotions->isEmpty()->willReturn(true);
         $variant->getAppliedPromotionsForChannel($channel)->willReturn($appliedPromotions);
 
-        $channel->getLowestPriceForDiscountedProductsCheckingPeriod()->willReturn(30);
+        $channelPriceHistoryConfig->getLowestPriceForDiscountedProductsCheckingPeriod()->willReturn(30);
         $moneyFormatter->format(20, 'USD')->willReturn('$20.00');
 
         $translator->trans(
@@ -123,7 +130,7 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
             [
                 '%days%' => 30,
                 '%price%' => '$20.00',
-            ]
+            ],
         )->willReturn('The lowest price of this product from 30 days prior to the current discount was $20.00');
 
         $this->provideVariantsPrices($product, $channel)->shouldBeLike([

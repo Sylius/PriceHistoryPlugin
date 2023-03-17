@@ -54,9 +54,11 @@ final class ProductLowestPriceBeforeDiscountProcessor implements ProductLowestPr
             return;
         }
 
+        $channelPriceHistoryConfig = $channel->getChannelPriceHistoryConfig();
+
         $lowestPriceInPeriod = $this->findLowestPriceInPeriod(
             $latestLogEntry,
-            $channel->getLowestPriceForDiscountedProductsCheckingPeriod(),
+            $channelPriceHistoryConfig->getLowestPriceForDiscountedProductsCheckingPeriod(),
         );
 
         $channelPricing->setLowestPriceBeforeDiscount($lowestPriceInPeriod);

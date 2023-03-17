@@ -19,6 +19,7 @@ use Sylius\Bundle\ChannelBundle\Form\Type\ChannelType;
 use Sylius\Bundle\TaxonomyBundle\Form\Type\TaxonAutocompleteChoiceType;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -59,19 +60,21 @@ final class ChannelTypeExtension extends AbstractTypeExtension implements DataMa
     public function mapFormsToData(\Traversable $forms, mixed &$viewData): void
     {
         Assert::isInstanceOf($channel = $viewData, ChannelInterface::class);
+        /** @var ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig */
+        $channelPriceHistoryConfig = $channel->getChannelPriceHistoryConfig();
 
         /** @var \Traversable $traversableForms */
         $traversableForms = $forms;
         $forms = iterator_to_array($traversableForms);
 
-        $channel->clearTaxonsExcludedFromShowingLowestPrice();
+        $channelPriceHistoryConfig->clearTaxonsExcludedFromShowingLowestPrice();
 
         /** @var Collection $excludedTaxons */
         $excludedTaxons = $forms['taxonsExcludedFromShowingLowestPrice']->getData();
 
         /** @var TaxonInterface $taxon */
         foreach ($excludedTaxons as $taxon) {
-            $channel->addTaxonExcludedFromShowingLowestPrice($taxon);
+            $channelPriceHistoryConfig->addTaxonExcludedFromShowingLowestPrice($taxon);
         }
 
         unset($forms['taxonsExcludedFromShowingLowestPrice']);

@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Paweł Jędrzejewski
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -60,7 +71,7 @@ final class OnFlushEntityObserverListenerSpec extends ObjectBehavior
                     'notes' => ['swam', 'swan'],
                 ]],
             ],
-            true
+            true,
         );
 
         $entityManager->getUnitOfWork()->willReturn($unitOfWork);
@@ -116,7 +127,7 @@ final class OnFlushEntityObserverListenerSpec extends ObjectBehavior
                     'notes' => ['swam', 'swan'],
                 ]],
             ],
-            false
+            false,
         );
 
         $entityManager->getUnitOfWork()->willReturn($unitOfWork);
@@ -169,7 +180,7 @@ final class OnFlushEntityObserverListenerSpec extends ObjectBehavior
             ->withNoArgs()
             ->andReturn(array_map(
                 fn (array $entityWithChanges) => $entityWithChanges[0],
-                $createdEntitiesWithChanges
+                $createdEntitiesWithChanges,
             ))
         ;
 
@@ -178,7 +189,7 @@ final class OnFlushEntityObserverListenerSpec extends ObjectBehavior
             ->withNoArgs()
             ->andReturn(array_map(
                 fn (array $entityWithChanges) => $entityWithChanges[0],
-                $updatedEntitiesWithChanges
+                $updatedEntitiesWithChanges,
             ))
         ;
 

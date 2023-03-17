@@ -16,6 +16,7 @@ namespace Sylius\PriceHistoryPlugin\Infrastructure\Serializer;
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigInterface;
 use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -47,14 +48,16 @@ final class ChannelExcludedTaxonsDenormalizer implements ContextAwareDenormalize
 
         $channel = $this->denormalizer->denormalize($data, $type, $format, $context);
         Assert::isInstanceOf($channel, ChannelInterface::class);
+        /** @var ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig */
+        $channelPriceHistoryConfig = $channel->getChannelPriceHistoryConfig();
 
-        $channel->clearTaxonsExcludedFromShowingLowestPrice();
+        $channelPriceHistoryConfig->clearTaxonsExcludedFromShowingLowestPrice();
 
         foreach ($data['taxonsExcludedFromShowingLowestPrice'] ?? [] as $excludedTaxonIri) {
             /** @var TaxonInterface $taxon */
             $taxon = $this->iriConverter->getItemFromIri($excludedTaxonIri);
 
-            $channel->addTaxonExcludedFromShowingLowestPrice($taxon);
+            $channelPriceHistoryConfig->addTaxonExcludedFromShowingLowestPrice($taxon);
         }
 
         return $channel;

@@ -15,39 +15,42 @@ namespace Sylius\PriceHistoryPlugin\Domain\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Taxonomy\Model\TaxonInterface;
 
-trait LowestPriceForDiscountedProductsAwareTrait
+class ChannelPriceHistoryConfig implements ChannelPriceHistoryConfigInterface
 {
-    /** @ORM\Column(name="lowest_price_for_discounted_products_checking_period", type="integer", nullable=false, options={"default": 30}) */
-    #[ORM\Column(name: 'lowest_price_for_discounted_products_checking_period', type: 'integer', nullable: false, options: ['default' => 30])]
+    /** @var mixed|null */
+    protected $id;
+
+    protected ?ChannelInterface $channel = null;
+
     protected int $lowestPriceForDiscountedProductsCheckingPeriod = 30;
 
-    /** @ORM\Column(name="lowest_price_for_discounted_products_visible", type="boolean", nullable=false, options={"default": true}) */
-    #[ORM\Column(name: 'lowest_price_for_discounted_products_visible', type: 'boolean', nullable: false, options: ['default' => true])]
     protected bool $lowestPriceForDiscountedProductsVisible = true;
 
-    /**
-     * @var Collection|TaxonInterface[]
-     *
-     * @ORM\ManyToMany(targetEntity="Sylius\Component\Taxonomy\Model\TaxonInterface")
-     * @ORM\JoinTable(name="sylius_channel_excluded_taxons",
-     *     joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="taxon_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     */
-    #[ORM\ManyToMany(targetEntity: TaxonInterface::class)]
-    #[ORM\JoinTable(name: 'sylius_channel_excluded_taxons')]
-    #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\InverseJoinColumn(name: 'taxon_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    /** @var Collection<array-key, TaxonInterface> */
     protected Collection $taxonsExcludedFromShowingLowestPrice;
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->taxonsExcludedFromShowingLowestPrice = new ArrayCollection();
+    }
+
+    /** @psalm-suppress MissingReturnType */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getChannel(): ?ChannelInterface
+    {
+        return $this->channel;
+    }
+
+    public function setChannel(?ChannelInterface $channel): void
+    {
+        $this->channel = $channel;
     }
 
     public function getLowestPriceForDiscountedProductsCheckingPeriod(): int
@@ -70,6 +73,7 @@ trait LowestPriceForDiscountedProductsAwareTrait
         $this->lowestPriceForDiscountedProductsVisible = $visible;
     }
 
+    /** @return Collection<array-key, TaxonInterface> */
     public function getTaxonsExcludedFromShowingLowestPrice(): Collection
     {
         return $this->taxonsExcludedFromShowingLowestPrice;

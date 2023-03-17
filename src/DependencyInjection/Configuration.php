@@ -15,7 +15,10 @@ namespace Sylius\PriceHistoryPlugin\DependencyInjection;
 
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Sylius\Bundle\ResourceBundle\Form\Type\DefaultResourceType;
+use Sylius\Component\Resource\Factory\Factory;
 use Sylius\PriceHistoryPlugin\Domain\Factory\ChannelPricingLogEntryFactory;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfig;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntry;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM\ChannelPricingLogEntryRepository;
@@ -70,6 +73,23 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ChannelPricingLogEntryRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(ChannelPricingLogEntryFactory::class)->end()
+                                        ->scalarNode('form')->defaultValue(DefaultResourceType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('channel_price_history_config')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(ChannelPriceHistoryConfig::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(ChannelPriceHistoryConfigInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->end()
                                         ->scalarNode('form')->defaultValue(DefaultResourceType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()

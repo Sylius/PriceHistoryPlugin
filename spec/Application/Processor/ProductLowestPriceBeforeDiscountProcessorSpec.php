@@ -18,6 +18,7 @@ use Prophecy\Argument;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntry;
 use Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM\ChannelPricingLogEntryRepositoryInterface;
@@ -27,8 +28,7 @@ final class ProductLowestPriceBeforeDiscountProcessorSpec extends ObjectBehavior
     function let(
         ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntryRepository,
         ChannelRepositoryInterface $channelRepository,
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($channelPricingLogEntryRepository, $channelRepository);
     }
 
@@ -95,12 +95,15 @@ final class ProductLowestPriceBeforeDiscountProcessorSpec extends ObjectBehavior
         ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntryRepository,
         ChannelRepositoryInterface $channelRepository,
         ChannelInterface $channel,
+        ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig,
         ChannelPricingInterface $channelPricing,
     ): void {
+        $channel->getChannelPriceHistoryConfig()->willReturn($channelPriceHistoryConfig);
+
         $channelPricing->getOriginalPrice()->willReturn(3700);
         $channelPricing->getPrice()->willReturn(2100);
         $channelPricing->getChannelCode()->willReturn('WEB');
-        $channel->getLowestPriceForDiscountedProductsCheckingPeriod()->shouldNotBeCalled();
+        $channelPriceHistoryConfig->getLowestPriceForDiscountedProductsCheckingPeriod()->shouldNotBeCalled();
 
         $channelRepository->findOneByCode('WEB')->willReturn($channel);
         $channelPricingLogEntryRepository->findLatestOneByChannelPricing($channelPricing)->willReturn(null);
@@ -115,15 +118,18 @@ final class ProductLowestPriceBeforeDiscountProcessorSpec extends ObjectBehavior
         ChannelPricingLogEntryRepositoryInterface $channelPricingLogEntryRepository,
         ChannelRepositoryInterface $channelRepository,
         ChannelInterface $channel,
+        ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig,
         ChannelPricingInterface $channelPricing,
         ChannelPricingLogEntry $latestLogEntry,
     ): void {
+        $channel->getChannelPriceHistoryConfig()->willReturn($channelPriceHistoryConfig);
+
         $channelPricing->getOriginalPrice()->willReturn(3700);
         $channelPricing->getPrice()->willReturn(2100);
         $channelPricing->getChannelCode()->willReturn('WEB');
 
         $channelRepository->findOneByCode('WEB')->willReturn($channel);
-        $channel->getLowestPriceForDiscountedProductsCheckingPeriod()->willReturn(30);
+        $channelPriceHistoryConfig->getLowestPriceForDiscountedProductsCheckingPeriod()->willReturn(30);
 
         $unformattedDate = new \DateTimeImmutable();
         $latestLogEntry->getLoggedAt()->willReturn($unformattedDate);
