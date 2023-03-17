@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ChannelExcludedTaxonsDenormalizerSpec extends ObjectBehavior
 {
-    private const ALREADY_CALLED = 'sylius_price_history_channel_excluded_taxons_denormalizer_already_called';
+    private const ALREADY_CALLED = 'sylius_channel_excluded_taxons_denormalizer_already_called';
 
     function let(IriConverterInterface $iriConverter): void
     {
