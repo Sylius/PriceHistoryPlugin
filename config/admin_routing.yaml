@@ -1,4 +1,4 @@
-sylius_price_history_admin_channel_pricing_log_entry_index:
+sylius_admin_channel_pricing_log_entry_index:
     path: products/{productId}/variants/{variantId}/channel-pricing/{channelPricingId}/channel-pricing-log-entries
     methods: [GET]
     defaults:
@@ -7,7 +7,7 @@ sylius_price_history_admin_channel_pricing_log_entry_index:
             section: admin
             permission: true
             template: '@SyliusAdmin/Crud/index.html.twig'
-            grid: sylius_price_history_admin_channel_pricing_log_entry
+            grid: sylius_admin_channel_pricing_log_entry
             vars:
                 icon: book
                 templates:

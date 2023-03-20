@@ -14,7 +14,7 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="sylius_price_history.behat.page.admin.channel_pricing_log_entry.index" class="Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\ChannelPricingLogEntry\IndexPage" parent="sylius.behat.page.admin.crud.index" public="true">
-            <argument>sylius_price_history_admin_channel_pricing_log_entry_index</argument>
+            <argument>sylius_admin_channel_pricing_log_entry_index</argument>
         </service>
     </services>
 </container>

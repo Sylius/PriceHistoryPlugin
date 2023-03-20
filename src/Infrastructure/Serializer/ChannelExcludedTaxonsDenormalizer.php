@@ -25,7 +25,7 @@ final class ChannelExcludedTaxonsDenormalizer implements ContextAwareDenormalize
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'sylius_price_history_channel_excluded_taxons_denormalizer_already_called';
+    private const ALREADY_CALLED = 'sylius_channel_excluded_taxons_denormalizer_already_called';
 
     public function __construct(private IriConverterInterface $iriConverter)
     {
