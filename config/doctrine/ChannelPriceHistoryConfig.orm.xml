@@ -30,16 +30,12 @@
 
         <field name="lowestPriceForDiscountedProductsVisible" column="lowest_price_for_discounted_products_visible" type="boolean">
             <options>
-                <option name="default">true</option>
+                <option name="default">1</option>
             </options>
         </field>
 
-        <one-to-one field="channel" target-entity="Sylius\Component\Core\Model\ChannelInterface">
-            <join-column name="channel_id" />
-        </one-to-one>
-
         <many-to-many field="taxonsExcludedFromShowingLowestPrice" target-entity="Sylius\Component\Taxonomy\Model\TaxonInterface">
-            <join-table name="sylius_price_history_channel_excluded_taxons">
+            <join-table name="sylius_channel_price_history_config_excluded_taxons">
                 <join-columns>
                     <join-column name="channel_id" nullable="false" on-delete="CASCADE" />
                 </join-columns>

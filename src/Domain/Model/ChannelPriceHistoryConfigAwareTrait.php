@@ -17,21 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait ChannelPriceHistoryConfigAwareTrait
 {
-    /** @ORM\OneToOne(targetEntity=ChannelPriceHistoryConfig::class, cascade={"persist", "remove"}) */
-    /** @ORM\JoinColumn(name="channel_price_history_config_id", referencedColumnName="id") */
-    #[ORM\OneToOne(targetEntity: ChannelPriceHistoryConfig::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'channel_price_history_config_id', referencedColumnName: 'id')]
+    /** @ORM\OneToOne(targetEntity=ChannelPriceHistoryConfig::class, cascade={"all"}, ) */
+    /** @ORM\JoinColumn(name="channel_price_history_config_id", referencedColumnName="id", onDelete="CASCADE") */
+    #[ORM\OneToOne(targetEntity: ChannelPriceHistoryConfig::class, cascade: ['all'])]
+    #[ORM\JoinColumn(name: 'channel_price_history_config_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function setChannelPriceHistoryConfig(ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig): void
     {
         $this->channelPriceHistoryConfig = $channelPriceHistoryConfig;
-        $this->channelPriceHistoryConfig->setChannel($this);
     }
 
     public function getChannelPriceHistoryConfig(): ChannelPriceHistoryConfigInterface

@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Sylius\PriceHistoryPlugin\Domain\Model;
 
 use Doctrine\Common\Collections\Collection;
-use Sylius\Component\Channel\Model\ChannelAwareInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 use Sylius\Component\Taxonomy\Model\TaxonInterface;
 
-interface ChannelPriceHistoryConfigInterface extends ResourceInterface, ChannelAwareInterface
+interface ChannelPriceHistoryConfigInterface extends ResourceInterface
 {
     public function isLowestPriceForDiscountedProductsVisible(): bool;
 

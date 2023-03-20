@@ -15,15 +15,12 @@ namespace Sylius\PriceHistoryPlugin\Domain\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Taxonomy\Model\TaxonInterface;
 
 class ChannelPriceHistoryConfig implements ChannelPriceHistoryConfigInterface
 {
     /** @var mixed|null */
     protected $id;
-
-    protected ?ChannelInterface $channel = null;
 
     protected int $lowestPriceForDiscountedProductsCheckingPeriod = 30;
 
@@ -41,16 +38,6 @@ class ChannelPriceHistoryConfig implements ChannelPriceHistoryConfigInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getChannel(): ?ChannelInterface
-    {
-        return $this->channel;
-    }
-
-    public function setChannel(?ChannelInterface $channel): void
-    {
-        $this->channel = $channel;
     }
 
     public function getLowestPriceForDiscountedProductsCheckingPeriod(): int
