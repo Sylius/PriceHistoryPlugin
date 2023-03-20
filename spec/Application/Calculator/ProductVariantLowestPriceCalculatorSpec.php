@@ -33,7 +33,7 @@ final class ProductVariantLowestPriceCalculatorSpec extends ObjectBehavior
         $this->shouldImplement(ProductVariantLowestPriceCalculatorInterface::class);
     }
 
-    function it_returns_the_lowest_price_before_discount(
+    function it_returns_lowest_price_before_discount(
         ProductVariantLowestPriceDisplayCheckerInterface $productVariantLowestPriceDisplayChecker,
         ChannelInterface $channel,
         ChannelPricingInterface $channelPricing,
@@ -61,7 +61,7 @@ final class ProductVariantLowestPriceCalculatorSpec extends ObjectBehavior
         $this->calculateLowestPriceBeforeDiscount($productVariant, ['channel' => $channel])->shouldReturn(null);
     }
 
-    function it_throws_a_channel_not_defined_exception_if_there_is_no_channel_pricing_when_providing_the_lowest_price_before_discount(
+    function it_throws_a_channel_not_defined_exception_if_there_is_no_channel_pricing_when_providing_lowest_price_before_discount(
         ProductVariantLowestPriceDisplayCheckerInterface $productVariantLowestPriceDisplayChecker,
         ChannelInterface $channel,
         ProductVariantInterface $productVariant,
