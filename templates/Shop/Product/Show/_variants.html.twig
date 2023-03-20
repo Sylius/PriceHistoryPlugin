@@ -26,18 +26,22 @@
             </td>
             {% set appliedPromotions = channelPricing.appliedPromotions|map(promotion => ({'label': promotion.label, 'description': promotion.description})) %}
             {% set days = sylius.channel.lowestPriceForDiscountedProductsCheckingPeriod %}
-            {% set lowest_price_before_discount = money.calculateLowestPrice(variant) %}
+            {% set has_lowest_price = variant|sylius_has_lowest_price({'channel': sylius.channel})%}
+            {% set has_discount = variant|sylius_has_discount({'channel': sylius.channel}) %}
 
             <td class="sylius-product-variant-price"
                 data-applied-promotions="{{ appliedPromotions|json_encode }}"
-                {% if variant|sylius_has_discount({'channel': sylius.channel}) %}
+                {% if has_discount %}
                     data-original-price="{{ money.calculateOriginalPrice(variant) }}"
-                    data-product-lowest-price-before-the-discount="{{
-                        'sylius.ui.the_lowest_price_days_before_the_discount_was'|trans({
-                            '%days%': days,
-                            '%price%': lowest_price_before_discount
-                        })
-                    }}"
+                    {% if has_lowest_price %}
+                        {% set lowest_price_before_discount = money.calculateLowestPrice(variant) %}
+                        data-product-lowest-price-before-the-discount="{{
+                            'sylius.ui.the_lowest_price_days_before_the_discount_was'|trans({
+                                '%days%': days,
+                                '%price%': lowest_price_before_discount
+                            })
+                        }}"
+                    {% endif %}
                 {% endif %}>
                 {{ money.calculatePrice(variant) }}
             </td>
