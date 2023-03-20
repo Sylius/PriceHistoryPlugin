@@ -12,8 +12,8 @@ sylius_price_history_admin_channel_pricing_log_entry_index:
                 icon: book
                 templates:
                     breadcrumb: "@SyliusPriceHistoryPlugin/Admin/ChannelPricingLogEntry/Index/_breadcrumb.html.twig"
-                header: sylius_price_history.ui.channel_pricing_history
-                subheader: sylius_price_history.ui.show_history_for_channel_pricing
+                header: sylius.ui.channel_pricing_history
+                subheader: sylius.ui.show_history_for_channel_pricing
                 product_variant: "expr:service('sylius.repository.product_variant').find($variantId)"
 
 sylius_admin_product_show:

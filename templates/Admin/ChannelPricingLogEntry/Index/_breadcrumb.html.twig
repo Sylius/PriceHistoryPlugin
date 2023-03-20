@@ -9,5 +9,5 @@
     { label: product.name|default(product.code), url: path('sylius_admin_product_show', {'id': product.id }) },
     { label: 'sylius.ui.variants'|trans, url: path('sylius_admin_product_variant_index', {'productId': product.id }) },
     { label: product_variant.name|default(product_variant.code), url: path('sylius_admin_product_variant_update', {'id': product_variant.id, 'productId': product.id }) },
-    { label: 'sylius_price_history.ui.price_history'|trans },
+    { label: 'sylius.ui.price_history'|trans },
 ]) }}

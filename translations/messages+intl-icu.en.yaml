@@ -1,4 +1,4 @@
-sylius_price_history:
+sylius:
     ui:
         the_lowest_price_days_before_the_discount_was: '{days, plural, 
             one {The lowest price of this product from # day prior to the current discount was {price}} 

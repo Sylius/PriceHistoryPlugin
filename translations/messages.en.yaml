@@ -1,7 +1,7 @@
 # This file is part of the Sylius package.
 # (c) Paweł Jędrzejewski
 
-sylius_price_history:
+sylius:
     form:
         channel:
             lowest_price_for_discounted_products_visible: 'Show the lowest price of discounted products prior to the current discount?'

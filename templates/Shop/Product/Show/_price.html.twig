@@ -22,6 +22,6 @@
     {% endif %}
 >
     {% if has_discount and has_lowest_price %}
-        {{ 'sylius_price_history.ui.the_lowest_price_days_before_the_discount_was'|trans({'%days%': days, '%price%': money.calculateLowestPrice(variant)}) }}
+        {{ 'sylius.ui.the_lowest_price_days_before_the_discount_was'|trans({'%days%': days, '%price%': money.calculateLowestPrice(variant)}) }}
     {% endif %}
 </div>

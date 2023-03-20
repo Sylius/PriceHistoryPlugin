@@ -74,7 +74,7 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
 
         $channel->getLowestPriceForDiscountedProductsCheckingPeriod()->willReturn(30);
         $translator->trans(
-            'sylius_price_history.ui.the_lowest_price_days_before_the_discount_was',
+            'sylius.ui.the_lowest_price_days_before_the_discount_was',
             [
                 '%days%' => 30,
                 '%price%' => '$20.00',
@@ -119,7 +119,7 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
         $moneyFormatter->format(20, 'USD')->willReturn('$20.00');
 
         $translator->trans(
-            'sylius_price_history.ui.the_lowest_price_days_before_the_discount_was',
+            'sylius.ui.the_lowest_price_days_before_the_discount_was',
             [
                 '%days%' => 30,
                 '%price%' => '$20.00',
