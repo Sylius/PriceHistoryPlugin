@@ -74,7 +74,7 @@ final class ProductVariantsPricesProvider implements ProductVariantsPricesProvid
         $lowestPriceBeforeDiscount = $this->productVariantLowestPriceCalculator->calculateLowestPriceBeforeDiscount($variant, ['channel' => $channel]);
 
         if ($lowestPriceBeforeDiscount !== null) {
-            $optionMap['product-lowest-price-before-the-discount'] = $this->translator->trans(
+            $optionMap['product-lowest-price-before-discount'] = $this->translator->trans(
                 'sylius.ui.lowest_price_days_before_discount_was',
                 [
                     '%days%' => $lowestPriceAwareChannel->getLowestPriceForDiscountedProductsCheckingPeriod(),

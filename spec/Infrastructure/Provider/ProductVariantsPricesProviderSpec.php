@@ -130,7 +130,7 @@ final class ProductVariantsPricesProviderSpec extends ObjectBehavior
             [
                 'color' => 'red',
                 'value' => 10,
-                'product-lowest-price-before-the-discount' => 'The lowest price of this product from 30 days prior to the current discount was $20.00',
+                'product-lowest-price-before-discount' => 'The lowest price of this product from 30 days prior to the current discount was $20.00',
                 'original-price' => 20,
             ],
         ]);

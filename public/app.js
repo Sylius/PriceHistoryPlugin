@@ -17,13 +17,13 @@ function handleProductOptionChanges() {
       selector += `[data-${select.attr('data-option')}="${option}"]`;
     });
 
-    const lowestPriceBeforeTheDiscount = $('#sylius-variants-pricing').find(selector).attr('data-product-lowest-price-before-the-discount')
+    const lowestPriceBeforeTheDiscount = $('#sylius-variants-pricing').find(selector).attr('data-product-lowest-price-before-discount')
 
     if (lowestPriceBeforeTheDiscount !== undefined) {
-      $('#product-lowest-price-before-the-discount').html(lowestPriceBeforeTheDiscount);
-      $('#product-lowest-price-before-the-discount').css({'white-space': 'nowrap', 'display': 'inline'});
+      $('#product-lowest-price-before-discount').html(lowestPriceBeforeTheDiscount);
+      $('#product-lowest-price-before-discount').css({'white-space': 'nowrap', 'display': 'inline'});
     } else {
-      $('#product-lowest-price-before-the-discount').css('display', 'none');
+      $('#product-lowest-price-before-discount').css('display', 'none');
     }
   });
 };
@@ -35,13 +35,13 @@ function handleProductVariantChanges() {
 
     $('#product-price').text(price);
 
-    const lowestPriceBeforeTheDiscount = priceRow.attr('data-product-lowest-price-before-the-discount');
+    const lowestPriceBeforeTheDiscount = priceRow.attr('data-product-lowest-price-before-discount');
 
     if (lowestPriceBeforeTheDiscount !== undefined) {
-      $('#product-lowest-price-before-the-discount').html(lowestPriceBeforeTheDiscount);
-      $('#product-lowest-price-before-the-discount').css({'white-space': 'nowrap', 'display': 'inline'});
+      $('#product-lowest-price-before-discount').html(lowestPriceBeforeTheDiscount);
+      $('#product-lowest-price-before-discount').css({'white-space': 'nowrap', 'display': 'inline'});
     } else {
-      $('#product-lowest-price-before-the-discount').css('display', 'none');
+      $('#product-lowest-price-before-discount').css('display', 'none');
     }
   });
 };
