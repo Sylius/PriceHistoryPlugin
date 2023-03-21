@@ -13,48 +13,32 @@ declare(strict_types=1);
 
 namespace Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver;
 
-use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Sylius\PriceHistoryPlugin\Application\Processor\ProductLowestPriceBeforeDiscountProcessorInterface;
+use Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
-use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingInterface;
 use Webmozart\Assert\Assert;
 
 final class ProcessLowestPriceOnCheckingPeriodChangeObserver implements EntityObserverInterface
 {
-    public function __construct(
-        private ProductLowestPriceBeforeDiscountProcessorInterface $productLowestPriceBeforeDiscountProcessor,
-        private RepositoryInterface $channelPricingRepository,
-        private int $batchSize,
-    ) {
+    private array $channelsCurrentlyProcessed = [];
+
+    public function __construct(private ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface $commandDispatcher)
+    {
     }
 
     public function onChange(object $entity): void
     {
         Assert::isInstanceOf($entity, ChannelInterface::class);
 
-        $limit = $this->batchSize;
-        $offset = 0;
+        $this->channelsCurrentlyProcessed = [(string) $entity->getCode() => true];
 
-        do {
-            /** @var ChannelPricingInterface[] $channelPricings */
-            $channelPricings = $this->channelPricingRepository->findBy(
-                ['channelCode' => $entity->getCode()],
-                ['id' => 'ASC'],
-                $limit,
-                $offset,
-            );
+        $this->commandDispatcher->applyWithinChannel($entity);
 
-            foreach ($channelPricings as $channelPricing) {
-                $this->productLowestPriceBeforeDiscountProcessor->process($channelPricing);
-            }
-
-            $offset += $limit;
-        } while ([] !== $channelPricings);
+        unset($this->channelsCurrentlyProcessed[(string) $entity->getCode()]);
     }
 
     public function supports(object $entity): bool
     {
-        return $entity instanceof ChannelInterface;
+        return $entity instanceof ChannelInterface && !isset($this->channelsCurrentlyProcessed[$entity->getCode()]);
     }
 
     public function observedFields(): array
