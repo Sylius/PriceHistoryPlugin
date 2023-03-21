@@ -35,8 +35,8 @@
                     data-original-price="{{ money.calculateOriginalPrice(variant) }}"
                     {% if has_lowest_price %}
                         {% set lowest_price_before_discount = money.calculateLowestPrice(variant) %}
-                        data-product-lowest-price-before-the-discount="{{
-                            'sylius.ui.the_lowest_price_days_before_the_discount_was'|trans({
+                        data-product-lowest-price-before-discount="{{
+                            'sylius.ui.lowest_price_days_before_discount_was'|trans({
                                 '%days%': days,
                                 '%price%': lowest_price_before_discount
                             })

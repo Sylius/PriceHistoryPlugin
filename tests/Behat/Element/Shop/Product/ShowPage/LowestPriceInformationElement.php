@@ -32,8 +32,8 @@ final class LowestPriceInformationElement extends Element implements LowestPrice
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
-            'lowest_price_information_element' => '#product-lowest-price-before-the-discount:contains("The lowest price of this product from")',
-            'lowest_price_information_element_with_price' => '#product-lowest-price-before-the-discount:contains("%lowestPriceBeforeDiscount%")',
+            'lowest_price_information_element' => '#product-lowest-price-before-discount:contains("The lowest price of this product from")',
+            'lowest_price_information_element_with_price' => '#product-lowest-price-before-discount:contains("%lowestPriceBeforeDiscount%")',
         ]);
     }
 }
