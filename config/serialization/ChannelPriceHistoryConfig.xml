@@ -16,20 +16,23 @@
             xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
     <class name="Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfig">
-        <attribute name="lowestPriceForDiscountedProductsVisible">
+        <attribute name="id">
             <group>admin:channel_price_history_config:read</group>
-            <group>admin:channel_price_history_config:create</group>
+        </attribute>
+        <attribute name="lowestPriceForDiscountedProductsVisible">
+            <group>admin:channel:create</group>
             <group>admin:channel_price_history_config:update</group>
+            <group>admin:channel_price_history_config:read</group>
         </attribute>
         <attribute name="lowestPriceForDiscountedProductsCheckingPeriod">
-            <group>admin:channel_price_history_config:read</group>
-            <group>admin:channel_price_history_config:create</group>
+            <group>admin:channel:create</group>
             <group>admin:channel_price_history_config:update</group>
+            <group>admin:channel_price_history_config:read</group>
         </attribute>
         <attribute name="taxonsExcludedFromShowingLowestPrice">
-            <group>admin:channel_price_history_config:read</group>
-            <group>admin:channel_price_history_config:create</group>
+            <group>admin:channel:create</group>
             <group>admin:channel_price_history_config:update</group>
+            <group>admin:channel_price_history_config:read</group>
         </attribute>
     </class>
 </serializer>

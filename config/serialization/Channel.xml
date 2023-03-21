@@ -19,7 +19,6 @@
         <attribute name="channelPriceHistoryConfig">
             <group>admin:channel:read</group>
             <group>admin:channel:create</group>
-            <group>admin:channel:update</group>
         </attribute>
     </class>
 </serializer>

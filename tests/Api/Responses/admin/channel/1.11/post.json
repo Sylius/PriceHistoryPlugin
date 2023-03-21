@@ -19,14 +19,12 @@
     "skippingShippingStepAllowed": false,
     "skippingPaymentStepAllowed": false,
     "accountVerificationRequired": true,
-    "lowestPriceForDiscountedProductsVisible": true,
-    "lowestPriceForDiscountedProductsCheckingPeriod": @integer@,
-    "taxonsExcludedFromShowingLowestPrice": ["\/api\/v2\/admin\/taxons\/BRAND"],
     "shopBillingData": null,
     "menuTaxon": null,
     "description": null,
     "hostname": null,
     "color": null,
     "createdAt": @string@,
-    "updatedAt": @string@
+    "updatedAt": @string@,
+    "channelPriceHistoryConfig": "\/api\/v2\/admin\/channel-price-history-configs\/@integer@"
 }

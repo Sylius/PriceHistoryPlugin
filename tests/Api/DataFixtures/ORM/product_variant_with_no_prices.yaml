@@ -10,6 +10,12 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         color: 'black'
         enabled: true
         taxCalculationStrategy: 'order_items_based'
+        channelPriceHistoryConfig: '@home_price_history_config'
+
+Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfig:
+    home_price_history_config:
+        lowestPriceForDiscountedProductsCheckingPeriod: 30
+        lowestPriceForDiscountedProductsVisible: true
 
 Sylius\Component\Currency\Model\Currency:
     currency_usd:
@@ -46,7 +52,7 @@ Sylius\Component\Core\Model\ProductVariant:
         currentLocale: 'en_US'
         translations:
             en_US: '@product_variant_translation_mug_blue'
-    
+
     product_variant_mug_red:
         code: 'MUG_RED'
         product: '@product_mug'

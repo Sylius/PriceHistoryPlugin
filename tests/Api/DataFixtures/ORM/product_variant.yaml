@@ -24,7 +24,7 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         taxCalculationStrategy: 'order_items_based'
         channelPriceHistoryConfig: '@fashion_price_history_config'
 
-Tests\Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfig:
+Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfig:
     home_price_history_config:
         lowestPriceForDiscountedProductsCheckingPeriod: 30
         lowestPriceForDiscountedProductsVisible: true

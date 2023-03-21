@@ -71,11 +71,12 @@ final class ProductVariantsPricesProvider implements ProductVariantsPricesProvid
         /** @var string $currencyCode */
         $currencyCode = $currency->getCode();
 
-        $lowestPriceBeforeDiscount = $this->productVariantLowestPriceCalculator->calculateLowestPriceBeforeDiscount($variant, ['channel' => $channel]);
+        $lowestPriceBeforeDiscount = $this->productVariantLowestPriceCalculator
+            ->calculateLowestPriceBeforeDiscount($variant, ['channel' => $channel])
+        ;
+        $channelPriceHistoryConfig = $channel->getChannelPriceHistoryConfig();
 
-        if ($lowestPriceBeforeDiscount !== null) {
-            $channelPriceHistoryConfig = $channel->getChannelPriceHistoryConfig();
-
+        if (null !== $lowestPriceBeforeDiscount && null !== $channelPriceHistoryConfig) {
             $optionMap['product-lowest-price-before-discount'] = $this->translator->trans(
                 'sylius.ui.lowest_price_days_before_discount_was',
                 [

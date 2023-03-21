@@ -19,5 +19,5 @@ interface ChannelInterface extends BaseChannelInterface
 {
     public function setChannelPriceHistoryConfig(ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig): void;
 
-    public function getChannelPriceHistoryConfig(): ChannelPriceHistoryConfigInterface;
+    public function getChannelPriceHistoryConfig(): ?ChannelPriceHistoryConfigInterface;
 }

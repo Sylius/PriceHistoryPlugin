@@ -15,8 +15,8 @@
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping https://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd"
 >
-    <class name="Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigInterface">
-        <getter property="lowestPriceForDiscountedProductsCheckingPeriod">
+    <class name="Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfig">
+        <property name="lowestPriceForDiscountedProductsCheckingPeriod">
             <constraint name="NotNull">
                 <option name="groups">
                     <value>sylius</value>
@@ -42,6 +42,6 @@
                 </option>
                 <option name="message">sylius_price_history.channel.lowest_price_for_discounted_products_checking_period.greater_than</option>
             </constraint>
-        </getter>
+        </property>
     </class>
 </constraint-mapping>

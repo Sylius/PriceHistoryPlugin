@@ -28,8 +28,8 @@ trait ChannelPriceHistoryConfigAwareTrait
         $this->channelPriceHistoryConfig = $channelPriceHistoryConfig;
     }
 
-    public function getChannelPriceHistoryConfig(): ChannelPriceHistoryConfigInterface
+    public function getChannelPriceHistoryConfig(): ?ChannelPriceHistoryConfigInterface
     {
-        return $this->channelPriceHistoryConfig;
+        return $this->channelPriceHistoryConfig ?? null;
     }
 }
