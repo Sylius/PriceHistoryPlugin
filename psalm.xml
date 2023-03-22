@@ -37,7 +37,7 @@
 
         <MoreSpecificImplementedParamType>
             <errorLevel type="info">
-                <file name="src/Infrastructure/Form/Extension/ChannelTypeExtension.php" />
+                <file name="src/Infrastructure/Form/Type/ChannelPriceHistoryConfigType.php" />
             </errorLevel>
         </MoreSpecificImplementedParamType>
 

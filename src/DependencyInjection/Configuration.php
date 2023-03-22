@@ -22,6 +22,7 @@ use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntry;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Sylius\PriceHistoryPlugin\Infrastructure\Doctrine\ORM\ChannelPricingLogEntryRepository;
+use Sylius\PriceHistoryPlugin\Infrastructure\Form\Type\ChannelPriceHistoryConfigType;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -90,7 +91,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->end()
-                                        ->scalarNode('form')->defaultValue(DefaultResourceType::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(ChannelPriceHistoryConfigType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
