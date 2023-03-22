@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Tests\Sylius\PriceHistoryPlugin\Behat\Page\Admin\Channel;
 
 use Sylius\Behat\Page\Admin\Channel\UpdatePage as BaseUpdatePage;
-use Sylius\Behat\Page\Admin\Channel\UpdatePageInterface;
 
-class UpdatePage extends BaseUpdatePage implements UpdatePageInterface
+class UpdatePage extends BaseUpdatePage
 {
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
-            'discounted_products_checking_period' => '#sylius_channel_lowestPriceForDiscountedProductsCheckingPeriod',
+            'discounted_products_checking_period' => '#sylius_channel_channelPriceHistoryConfig_lowestPriceForDiscountedProductsCheckingPeriod',
         ]);
     }
 }
