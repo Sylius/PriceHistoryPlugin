@@ -47,11 +47,11 @@ Before you start, you need to have both SyliusRecipes and SyliusRector installed
 4. Ensure you have modified resource configured in `config/packages/_sylius.yaml`:
 
     ```yaml
-    sylius_customer:
+    sylius_channel:
         resources:
-            customer:
+            channel:
                 classes:
-                    model: App\Entity\Customer\Customer
+                    model: App\Entity\Channel\Channel
     sylius_core:
         resources:
             channel_pricing:
