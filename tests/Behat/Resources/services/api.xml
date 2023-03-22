@@ -21,5 +21,10 @@
             <argument>channel-pricing-log-entries</argument>
             <argument>admin</argument>
         </service>
+
+        <service id="sylius_price_history.behat.api_platform_client.admin.channel_price_history_config" class="Sylius1_11\Behat\Client\ApiPlatformClient" parent="sylius.behat.api_platform_client.legacy">
+            <argument>channel-price-history-configs</argument>
+            <argument>admin</argument>
+        </service>
     </services>
 </container>

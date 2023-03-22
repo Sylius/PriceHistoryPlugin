@@ -29,6 +29,14 @@
             <argument type="service" id="api_platform.iri_converter" />
         </service>
 
+        <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ManagingChannelPriceHistoryConfigsContext" public="true">
+            <argument type="service" id="sylius.behat.shared_storage" />
+            <argument type="service" id="sylius.behat.api_platform_client.admin.channel" />
+            <argument type="service" id="sylius_price_history.behat.api_platform_client.admin.channel_price_history_config" />
+            <argument type="service" id="Sylius\Behat\Client\ResponseCheckerInterface" />
+            <argument type="service" id="api_platform.iri_converter" />
+        </service>
+
         <service id="Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ManagingProductVariantsContext" public="true">
             <argument type="service" id="sylius.behat.api_platform_client.admin.product_variant" />
             <argument type="service" id="Sylius\Behat\Client\ResponseCheckerInterface" />

@@ -30,6 +30,7 @@ default:
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Setup\PriceHistoryContext
 
                 - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ManagingChannelsContext
+                - Tests\Sylius\PriceHistoryPlugin\Behat\Context\Api\Admin\ManagingChannelPriceHistoryConfigsContext
 
             filters:
                 tags: "@managing_channels&&@api"
