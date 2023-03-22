@@ -21,7 +21,13 @@
             <tag name="sylius_price_history.entity_observer" />
         </service>
 
-        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPriceOnCheckingPeriodChangeObserver">
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPricesOnChannelChangeObserver">
+            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface" />
+            <tag name="sylius_price_history.entity_observer" />
+        </service>
+
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPricesOnChannelPriceHistoryConfigChangeObserver">
+            <argument type="service" id="sylius.repository.channel" />
             <argument type="service" id="Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface" />
             <tag name="sylius_price_history.entity_observer" />
         </service>

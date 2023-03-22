@@ -18,27 +18,23 @@ use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigInterface;
 use Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\EntityObserverInterface;
 
-final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectBehavior
+final class ProcessLowestPricesOnChannelChangeObserverSpec extends ObjectBehavior
 {
     function let(ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface $commandDispatcher): void
     {
         $this->beConstructedWith($commandDispatcher);
     }
 
-    function it_implements_on_entity_observer_interface(): void
+    function it_is_an_entity_observer(): void
     {
         $this->shouldImplement(EntityObserverInterface::class);
     }
 
-    function it_supports_channel_interface_only(
-        ChannelInterface $channel,
-        OrderInterface $order,
-    ): void {
-        $channel->getCode()->willReturn('test');
-
-        $this->supports($channel)->shouldReturn(true);
+    function it_does_not_support_anything_other_than_channel_interface(OrderInterface $order): void
+    {
         $this->supports($order)->shouldReturn(false);
     }
 
@@ -46,6 +42,7 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectB
         ChannelInterface $channel,
     ): void {
         $channel->getCode()->willReturn('test');
+        $channel->getChannelPriceHistoryConfig()->shouldNotBeCalled();
 
         $object = $this->object->getWrappedObject();
         $objectReflection = new \ReflectionObject($object);
@@ -56,9 +53,39 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserverSpec extends ObjectB
         $this->supports($channel)->shouldReturn(false);
     }
 
-    function it_supports_lowest_price_for_discounted_products_checking_period_field(): void
+    function it_does_not_support_channels_with_no_price_history_config(ChannelInterface $channel): void
     {
-        $this->observedFields()->shouldReturn(['lowestPriceForDiscountedProductsCheckingPeriod']);
+        $channel->getCode()->willReturn('test');
+        $channel->getChannelPriceHistoryConfig()->willReturn(null);
+
+        $this->supports($channel)->shouldReturn(false);
+    }
+
+    function it_does_not_support_channels_with_existing_price_history_config(
+        ChannelInterface $channel,
+        ChannelPriceHistoryConfigInterface $config,
+    ): void {
+        $channel->getCode()->willReturn('test');
+        $channel->getChannelPriceHistoryConfig()->willReturn($config);
+        $config->getId()->willReturn(12);
+
+        $this->supports($channel)->shouldReturn(false);
+    }
+
+    function it_only_supports_channels_with_new_price_history_config(
+        ChannelInterface $channel,
+        ChannelPriceHistoryConfigInterface $config,
+    ): void {
+        $channel->getCode()->willReturn('test');
+        $channel->getChannelPriceHistoryConfig()->willReturn($config);
+        $config->getId()->willReturn(null);
+
+        $this->supports($channel)->shouldReturn(true);
+    }
+
+    function it_observes_channel_price_history_config_field(): void
+    {
+        $this->observedFields()->shouldReturn(['channelPriceHistoryConfig']);
     }
 
     function it_delegates_processing_lowest_prices_to_command_dispatcher(

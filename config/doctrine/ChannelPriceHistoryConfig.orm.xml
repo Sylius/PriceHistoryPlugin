@@ -43,6 +43,9 @@
                     <join-column name="taxon_id" nullable="false" on-delete="CASCADE" />
                 </inverse-join-columns>
             </join-table>
+            <order-by>
+                <order-by-field name="id" />
+            </order-by>
         </many-to-many>
     </mapped-superclass>
 </doctrine-mapping>

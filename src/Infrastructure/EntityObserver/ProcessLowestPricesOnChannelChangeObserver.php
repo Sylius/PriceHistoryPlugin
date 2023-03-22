@@ -17,7 +17,7 @@ use Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnCh
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Webmozart\Assert\Assert;
 
-final class ProcessLowestPriceOnCheckingPeriodChangeObserver implements EntityObserverInterface
+final class ProcessLowestPricesOnChannelChangeObserver implements EntityObserverInterface
 {
     private array $channelsCurrentlyProcessed = [];
 
@@ -38,11 +38,23 @@ final class ProcessLowestPriceOnCheckingPeriodChangeObserver implements EntityOb
 
     public function supports(object $entity): bool
     {
-        return $entity instanceof ChannelInterface && !isset($this->channelsCurrentlyProcessed[$entity->getCode()]);
+        return
+            $entity instanceof ChannelInterface &&
+            !isset($this->channelsCurrentlyProcessed[$entity->getCode()]) &&
+            $this->hasNewPriceHistoryConfig($entity)
+        ;
     }
 
     public function observedFields(): array
     {
-        return ['lowestPriceForDiscountedProductsCheckingPeriod'];
+        return ['channelPriceHistoryConfig'];
+    }
+
+    private function hasNewPriceHistoryConfig(ChannelInterface $channel): bool
+    {
+        return
+            (null !== $config = $channel->getChannelPriceHistoryConfig()) &&
+            null === $config->getId()
+        ;
     }
 }

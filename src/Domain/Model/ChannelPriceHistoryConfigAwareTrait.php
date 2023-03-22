@@ -21,7 +21,7 @@ trait ChannelPriceHistoryConfigAwareTrait
     /** @ORM\JoinColumn(name="channel_price_history_config_id", referencedColumnName="id", onDelete="CASCADE") */
     #[ORM\OneToOne(targetEntity: ChannelPriceHistoryConfig::class, cascade: ['all'])]
     #[ORM\JoinColumn(name: 'channel_price_history_config_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    protected ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig;
+    protected ?ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig = null;
 
     public function setChannelPriceHistoryConfig(ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig): void
     {
@@ -30,6 +30,6 @@ trait ChannelPriceHistoryConfigAwareTrait
 
     public function getChannelPriceHistoryConfig(): ?ChannelPriceHistoryConfigInterface
     {
-        return $this->channelPriceHistoryConfig ?? null;
+        return $this->channelPriceHistoryConfig;
     }
 }
