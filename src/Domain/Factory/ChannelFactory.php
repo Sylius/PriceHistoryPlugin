@@ -26,10 +26,10 @@ final class ChannelFactory implements ChannelFactoryInterface
     ) {
     }
 
-    public function createNamed(string $name): ChannelInterface
+    public function createNew(): ChannelInterface
     {
         /** @var ChannelInterface $channel */
-        $channel = $this->decorated->createNamed($name);
+        $channel = $this->decorated->createNew();
         /** @var ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig */
         $channelPriceHistoryConfig = $this->channelPriceHistoryConfigFactory->createNew();
         $channel->setChannelPriceHistoryConfig($channelPriceHistoryConfig);
@@ -37,10 +37,10 @@ final class ChannelFactory implements ChannelFactoryInterface
         return $channel;
     }
 
-    public function createNew()
+    public function createNamed(string $name): ChannelInterface
     {
         /** @var ChannelInterface $channel */
-        $channel = $this->decorated->createNew();
+        $channel = $this->decorated->createNamed($name);
         /** @var ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig */
         $channelPriceHistoryConfig = $this->channelPriceHistoryConfigFactory->createNew();
         $channel->setChannelPriceHistoryConfig($channelPriceHistoryConfig);

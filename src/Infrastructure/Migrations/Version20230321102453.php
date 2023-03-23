@@ -40,6 +40,20 @@ final class Version20230321102453 extends AbstractMigration
         $this->addSql('ALTER TABLE sylius_channel_pricing_log_entry RENAME INDEX idx_b3f5aac23eadffe5 TO IDX_77181A53EADFFE5');
     }
 
+    public function postUp(Schema $schema): void
+    {
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $channelsIds = $this->connection->executeQuery('SELECT id from sylius_channel')->fetchAllAssociative();
+        foreach ($channelsIds as $channelId) {
+            $this->connection->executeQuery('INSERT INTO sylius_channel_price_history_config (lowest_price_for_discounted_products_checking_period, lowest_price_for_discounted_products_visible) VALUES (30, true)');
+            $this->connection->executeQuery('UPDATE sylius_channel SET channel_price_history_config_id = :priceHistoryConfig WHERE id = :channel', [
+                'channel' => $channelId['id'],
+                'priceHistoryConfig' => $this->connection->lastInsertId(),
+            ]);
+        }
+    }
+
     public function down(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');

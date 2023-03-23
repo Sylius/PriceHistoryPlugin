@@ -25,7 +25,7 @@ final class ChannelDenormalizer implements ContextAwareDenormalizerInterface, De
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'sylius_price_history_channel_denormalizer_already_called';
+    private const ALREADY_CALLED = 'sylius_channel_denormalizer_already_called';
 
     public function __construct(private FactoryInterface $channelPriceHistoryConfigFactory)
     {

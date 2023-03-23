@@ -23,13 +23,13 @@ trait ChannelPriceHistoryConfigAwareTrait
     #[ORM\JoinColumn(name: 'channel_price_history_config_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected ?ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig = null;
 
-    public function setChannelPriceHistoryConfig(ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig): void
-    {
-        $this->channelPriceHistoryConfig = $channelPriceHistoryConfig;
-    }
-
     public function getChannelPriceHistoryConfig(): ?ChannelPriceHistoryConfigInterface
     {
         return $this->channelPriceHistoryConfig;
+    }
+
+    public function setChannelPriceHistoryConfig(ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig): void
+    {
+        $this->channelPriceHistoryConfig = $channelPriceHistoryConfig;
     }
 }

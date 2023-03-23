@@ -99,7 +99,7 @@ final class ProcessLowestPricesOnChannelPriceHistoryConfigChangeObserverSpec ext
         $this->onChange($config);
     }
 
-    function it_delegates_processing_powest_prices_to_command_dispatcher(
+    function it_delegates_processing_lowest_prices_to_command_dispatcher(
         ChannelRepositoryInterface $channelRepository,
         ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface $commandDispatcher,
         ChannelInterface $channel,
