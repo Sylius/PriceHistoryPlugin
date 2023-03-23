@@ -71,3 +71,11 @@ Before you start, you need to have both SyliusRecipes and SyliusRector installed
     bin/console cache:clear
     bin/console cache:warmup
    ```
+
+7. Run messenger consumer:
+
+    ```bash
+    bin/console messenger:consume main
+    ```
+
+   For more information check official [Symfony docs](https://symfony.com/doc/current/messenger.html#consuming-messages-running-the-worker).
