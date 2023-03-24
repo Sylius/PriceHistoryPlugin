@@ -21,7 +21,13 @@
             <tag name="sylius_price_history.entity_observer" />
         </service>
 
-        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPriceOnCheckingPeriodChangeObserver">
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPricesOnChannelChangeObserver">
+            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface" />
+            <tag name="sylius_price_history.entity_observer" />
+        </service>
+
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPricesOnChannelPriceHistoryConfigChangeObserver">
+            <argument type="service" id="sylius.repository.channel" />
             <argument type="service" id="Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface" />
             <tag name="sylius_price_history.entity_observer" />
         </service>
@@ -29,13 +35,6 @@
         <service id="sylius_price_history.listener.channel_pricing_change" class="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\OnFlushEntityObserverListener">
             <argument type="tagged_iterator" tag="sylius_price_history.entity_observer" />
             <tag name="doctrine.event_listener" event="onFlush" lazy="true" />
-        </service>
-
-        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\BeforeDenormalizationChannelValidationListener">
-            <argument type="service" id="validator" />
-            <argument type="service" id="sylius.custom_factory.channel" />
-            <argument>%sylius_price_history.channel.validation_groups%</argument>
-            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="3" />
         </service>
     </services>
 </container>

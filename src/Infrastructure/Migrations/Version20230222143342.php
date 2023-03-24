@@ -16,9 +16,6 @@ namespace Sylius\PriceHistoryPlugin\Infrastructure\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20230222143342 extends AbstractMigration
 {
     public function getDescription(): string

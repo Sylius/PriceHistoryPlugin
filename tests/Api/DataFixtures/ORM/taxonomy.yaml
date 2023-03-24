@@ -9,6 +9,15 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         menuTaxon: '@category_taxon'
         enabled: true
         taxCalculationStrategy: "order_items_based"
+        channelPriceHistoryConfig: "@us_price_history_config"
+
+Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfig:
+    us_price_history_config:
+        lowestPriceForDiscountedProductsCheckingPeriod: 30
+        lowestPriceForDiscountedProductsVisible: true
+        __calls:
+            - addTaxonExcludedFromShowingLowestPrice: ["@mug_taxon"]
+            - addTaxonExcludedFromShowingLowestPrice: ["@hat_taxon"]
 
 Sylius\Component\Currency\Model\Currency:
     dollar:

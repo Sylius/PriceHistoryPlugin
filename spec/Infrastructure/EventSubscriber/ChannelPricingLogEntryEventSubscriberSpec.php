@@ -28,7 +28,7 @@ final class ChannelPricingLogEntryEventSubscriberSpec extends ObjectBehavior
 
     function it_does_nothing_when_object_is_not_channel_pricing_log_entry(
         LifecycleEventArgs $event,
-        ChannelPricingInterface $channelPricing
+        ChannelPricingInterface $channelPricing,
     ): void {
         $event->getObject()->willReturn($channelPricing);
 
@@ -39,7 +39,7 @@ final class ChannelPricingLogEntryEventSubscriberSpec extends ObjectBehavior
         ProductLowestPriceBeforeDiscountProcessorInterface $lowestPriceProcessor,
         ChannelPricingInterface $channelPricing,
         ChannelPricingLogEntryInterface $channelPricingLogEntry,
-        LifecycleEventArgs $event
+        LifecycleEventArgs $event,
     ): void {
         $event->getObject()->willReturn($channelPricingLogEntry);
         $channelPricingLogEntry->getChannelPricing()->willReturn($channelPricing);

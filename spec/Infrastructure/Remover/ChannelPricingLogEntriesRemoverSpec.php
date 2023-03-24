@@ -9,16 +9,18 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\Remover;
 
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Calendar\Provider\DateTimeProviderInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Sylius\PriceHistoryPlugin\Domain\Repository\ChannelPricingLogEntryRepositoryInterface;
 use Sylius\PriceHistoryPlugin\Infrastructure\Event\OldChannelPricingLogEntriesEvents;
 use Sylius\PriceHistoryPlugin\Infrastructure\Remover\ChannelPricingLogEntriesRemover;
-use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPricingLogEntryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

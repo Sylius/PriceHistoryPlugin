@@ -13,27 +13,11 @@ declare(strict_types=1);
 
 namespace Sylius\PriceHistoryPlugin\Domain\Model;
 
-use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ChannelInterface as BaseChannelInterface;
-use Sylius\Component\Taxonomy\Model\TaxonInterface;
 
 interface ChannelInterface extends BaseChannelInterface
 {
-    public function isLowestPriceForDiscountedProductsVisible(): bool;
+    public function setChannelPriceHistoryConfig(ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig): void;
 
-    public function setLowestPriceForDiscountedProductsVisible(bool $visible = true): void;
-
-    public function getLowestPriceForDiscountedProductsCheckingPeriod(): int;
-
-    public function setLowestPriceForDiscountedProductsCheckingPeriod(int $periodInDays): void;
-
-    public function getTaxonsExcludedFromShowingLowestPrice(): Collection;
-
-    public function hasTaxonExcludedFromShowingLowestPrice(TaxonInterface $taxon): bool;
-
-    public function addTaxonExcludedFromShowingLowestPrice(TaxonInterface $taxon): void;
-
-    public function removeTaxonExcludedFromShowingLowestPrice(TaxonInterface $taxon): void;
-
-    public function clearTaxonsExcludedFromShowingLowestPrice(): void;
+    public function getChannelPriceHistoryConfig(): ?ChannelPriceHistoryConfigInterface;
 }

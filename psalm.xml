@@ -28,7 +28,8 @@
 
         <PropertyNotSetInConstructor>
             <errorLevel type="info">
-                <file name="src/Infrastructure/Serializer/ChannelExcludedTaxonsDenormalizer.php" />
+                <file name="src/Infrastructure/Serializer/ChannelDenormalizer.php" />
+                <file name="src/Infrastructure/Serializer/ChannelPriceHistoryConfigDenormalizer.php" />
                 <file name="src/Infrastructure/Serializer/ProductVariantNormalizer.php" />
                 <file name="src/Infrastructure/Cli/Command/ClearPriceHistoryCommand.php" />
             </errorLevel>
@@ -36,7 +37,7 @@
 
         <MoreSpecificImplementedParamType>
             <errorLevel type="info">
-                <file name="src/Infrastructure/Form/Extension/ChannelTypeExtension.php" />
+                <file name="src/Infrastructure/Form/Type/ChannelPriceHistoryConfigType.php" />
             </errorLevel>
         </MoreSpecificImplementedParamType>
 

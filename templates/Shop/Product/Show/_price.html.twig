@@ -11,7 +11,7 @@
 <span class="ui huge header" id="product-price" {{ sylius_test_html_attribute('product-price', money.calculatePrice(variant)) }}>
     {{ money.calculatePrice(variant) }}
 </span>
-    {% set days = sylius.channel.lowestPriceForDiscountedProductsCheckingPeriod %}
+    {% set days = sylius.channel.channelPriceHistoryConfig.lowestPriceForDiscountedProductsCheckingPeriod %}
     {% set has_lowest_price = variant|sylius_has_lowest_price({'channel': sylius.channel})%}
 
 <div class="ui mini label" id="product-lowest-price-before-discount"

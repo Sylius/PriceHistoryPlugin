@@ -22,8 +22,16 @@
             <tag name="serializer.normalizer" priority="128" />
         </service>
 
-        <service id="Sylius\PriceHistoryPlugin\Infrastructure\Serializer\ChannelExcludedTaxonsDenormalizer">
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\Serializer\ChannelPriceHistoryConfigDenormalizer">
             <argument type="service" id="api_platform.iri_converter.legacy" />
+            <argument type="service" id="sylius_price_history.factory.channel_price_history_config" />
+            <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Validator\ResourceInputDataPropertiesValidatorInterface" />
+            <argument>%sylius_price_history.channel_price_history_config.validation_groups%</argument>
+            <tag name="serializer.normalizer" priority="64" />
+        </service>
+
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\Serializer\ChannelDenormalizer">
+            <argument type="service" id="sylius_price_history.factory.channel_price_history_config" />
             <tag name="serializer.normalizer" priority="64" />
         </service>
     </services>

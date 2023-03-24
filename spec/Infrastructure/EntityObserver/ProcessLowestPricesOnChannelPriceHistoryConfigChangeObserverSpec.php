@@ -1,0 +1,114 @@
+<?php
+
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Paweł Jędrzejewski
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
+use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigInterface;
+use Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\EntityObserverInterface;
+use Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPricesOnChannelPriceHistoryConfigChangeObserver;
+
+final class ProcessLowestPricesOnChannelPriceHistoryConfigChangeObserverSpec extends ObjectBehavior
+{
+    function let(
+        ChannelRepositoryInterface $channelRepository,
+        ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface $commandDispatcher,
+    ): void {
+        $this->beConstructedWith($channelRepository, $commandDispatcher);
+    }
+
+    function it_is_an_entity_observer(): void
+    {
+        $this->shouldImplement(EntityObserverInterface::class);
+    }
+
+    function it_does_not_support_anything_other_than_channel_price_history_config_interface(
+        OrderInterface $order,
+    ): void {
+        $this->supports($order)->shouldReturn(false);
+    }
+
+    function it_does_not_support_new_configs(ChannelPriceHistoryConfigInterface $config): void
+    {
+        $config->getId()->willReturn(null);
+
+        $this->supports($config)->shouldReturn(false);
+    }
+
+    function it_only_supports_existing_configs(ChannelPriceHistoryConfigInterface $config): void
+    {
+        $config->getId()->willReturn(1);
+
+        $this->supports($config)->shouldReturn(true);
+    }
+
+    function it_does_not_support_a_config_that_is_currently_being_processed(
+        ChannelPriceHistoryConfigInterface $config,
+    ): void {
+        $config->getId()->willReturn(1);
+
+        $object = $this->object->getWrappedObject();
+        $objectReflection = new \ReflectionObject($object);
+        $property = $objectReflection->getProperty('configsCurrentlyProcessed');
+        $property->setAccessible(true);
+        $property->setValue($object, [1 => true]);
+
+        $this->supports($config)->shouldReturn(false);
+    }
+
+    function it_observes_lowest_price_for_discounted_products_checking_period_field(): void
+    {
+        $this->observedFields()->shouldReturn(['lowestPriceForDiscountedProductsCheckingPeriod']);
+    }
+
+    function it_throws_an_exception_when_entity_is_not_a_channel_price_history_config_interface(
+        ChannelRepositoryInterface $channelRepository,
+        ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface $commandDispatcher,
+        OrderInterface $order
+    ): void {
+        $channelRepository->findOneBy(Argument::any())->shouldNotBeCalled();
+        $commandDispatcher->applyWithinChannel(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('onChange', [$order]);
+    }
+
+    function it_does_nothing_when_config_has_no_channel_counterpart(
+        ChannelRepositoryInterface $channelRepository,
+        ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface $commandDispatcher,
+        ChannelPriceHistoryConfigInterface $config
+    ): void {
+        $channelRepository->findOneBy(['channelPriceHistoryConfig' => $config])->willReturn(null);
+
+        $commandDispatcher->applyWithinChannel(Argument::any())->shouldNotBeCalled();
+
+        $this->onChange($config);
+    }
+
+    function it_delegates_processing_lowest_prices_to_command_dispatcher(
+        ChannelRepositoryInterface $channelRepository,
+        ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface $commandDispatcher,
+        ChannelInterface $channel,
+        ChannelPriceHistoryConfigInterface $config
+    ): void {
+        $channelRepository->findOneBy(['channelPriceHistoryConfig' => $config])->willReturn($channel);
+
+        $commandDispatcher->applyWithinChannel($channel)->shouldBeCalled();
+
+        $this->onChange($config);
+    }
+}

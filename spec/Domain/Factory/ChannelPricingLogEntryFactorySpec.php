@@ -45,7 +45,7 @@ final class ChannelPricingLogEntryFactorySpec extends ObjectBehavior
         $originalPrice = 2000;
 
         $this
-            ->create($channelPricing, $date, $price, $originalPrice,)
+            ->create($channelPricing, $date, $price, $originalPrice)
             ->shouldBeLike(new ChannelPricingLogEntry(
                 $channelPricing->getWrappedObject(),
                 $date,

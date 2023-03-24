@@ -8,7 +8,7 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         defaultLocale: '@locale_en'
         enabled: true
         taxCalculationStrategy: 'order_items_based'
-        lowestPriceForDiscountedProductsVisible: false
+        channelPriceHistoryConfig: '@us_price_history_config'
     eu_channel:
         code: 'EU'
         name: 'EU Channel'
@@ -18,8 +18,14 @@ Tests\Sylius\PriceHistoryPlugin\Application\Entity\Channel:
         defaultLocale: '@locale_en'
         enabled: true
         taxCalculationStrategy: 'order_items_based'
-        lowestPriceForDiscountedProductsVisible: true
+        channelPriceHistoryConfig: '@eu_price_history_config'
+
+Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfig:
+    us_price_history_config:
+        lowestPriceForDiscountedProductsVisible: false
+    eu_price_history_config:
         lowestPriceForDiscountedProductsCheckingPeriod: 25
+        lowestPriceForDiscountedProductsVisible: true
 
 Sylius\Component\Currency\Model\Currency:
     currency_usd:

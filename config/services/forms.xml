@@ -16,10 +16,18 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
 >
     <services>
-        <service id="Sylius\PriceHistoryPlugin\Infrastructure\Form\Extension\ChannelTypeExtension" public="true">
+        <defaults public="true" />
+
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\Form\Type\ChannelPriceHistoryConfigType">
             <argument type="service">
                 <service class="\Symfony\Component\Form\Extension\Core\DataMapper\DataMapper" />
             </argument>
+            <argument>%sylius_price_history.model.channel_price_history_config.class%</argument>
+            <argument>%sylius_price_history.channel_price_history_config.validation_groups%</argument>
+            <tag name="form.type" />
+        </service>
+
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\Form\Extension\ChannelTypeExtension">
             <tag name="form.type_extension" extended-type="Sylius\Bundle\ChannelBundle\Form\Type\ChannelType" />
         </service>
     </services>

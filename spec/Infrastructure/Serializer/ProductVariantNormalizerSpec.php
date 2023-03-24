@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace spec\Sylius\PriceHistoryPlugin\Infrastructure\Serializer;
 
 use PhpSpec\ObjectBehavior;
@@ -91,7 +93,7 @@ final class ProductVariantNormalizerSpec extends ObjectBehavior
             ->normalize(
                 $variant,
                 null,
-                array_merge($context, [self::ALREADY_CALLED => true])
+                array_merge($context, [self::ALREADY_CALLED => true]),
             )
             ->willReturn([])
         ;
@@ -115,7 +117,7 @@ final class ProductVariantNormalizerSpec extends ObjectBehavior
             ->normalize(
                 $variant,
                 null,
-                array_merge($context, [self::ALREADY_CALLED => true])
+                array_merge($context, [self::ALREADY_CALLED => true]),
             )
             ->willReturn([])
         ;
@@ -157,7 +159,7 @@ final class ProductVariantNormalizerSpec extends ObjectBehavior
             ->shouldThrow(\InvalidArgumentException::class)
             ->during(
                 'normalize',
-                [$variant, null, [self::ALREADY_CALLED => false]]
+                [$variant, null, [self::ALREADY_CALLED => false]],
             )
         ;
     }

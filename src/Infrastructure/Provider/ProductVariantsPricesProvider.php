@@ -16,15 +16,16 @@ namespace Sylius\PriceHistoryPlugin\Infrastructure\Provider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Bundle\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Sylius\Component\Core\Calculator\ProductVariantPricesCalculatorInterface;
-use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ChannelInterface as BaseChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Provider\ProductVariantsPricesProviderInterface;
 use Sylius\Component\Currency\Model\CurrencyInterface;
 use Sylius\Component\Product\Model\ProductOptionValueInterface;
 use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface;
-use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface as LowestPriceCheckingPeriodAwareChannelInterface;
+use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 final class ProductVariantsPricesProvider implements ProductVariantsPricesProviderInterface
 {
@@ -36,8 +37,10 @@ final class ProductVariantsPricesProvider implements ProductVariantsPricesProvid
     ) {
     }
 
-    public function provideVariantsPrices(ProductInterface $product, ChannelInterface $channel): array
+    public function provideVariantsPrices(ProductInterface $product, BaseChannelInterface $channel): array
     {
+        Assert::isInstanceOf($channel, ChannelInterface::class);
+
         $variantsPrices = [];
 
         /** @var ProductVariantInterface $variant */
@@ -62,22 +65,22 @@ final class ProductVariantsPricesProvider implements ProductVariantsPricesProvid
         $price = $this->productVariantPriceCalculator->calculate($variant, ['channel' => $channel]);
         $optionMap['value'] = $price;
 
-        /** @var LowestPriceCheckingPeriodAwareChannelInterface $lowestPriceAwareChannel */
-        $lowestPriceAwareChannel = $channel;
-
         /** @var CurrencyInterface $currency */
         $currency = $channel->getBaseCurrency();
 
         /** @var string $currencyCode */
         $currencyCode = $currency->getCode();
 
-        $lowestPriceBeforeDiscount = $this->productVariantLowestPriceCalculator->calculateLowestPriceBeforeDiscount($variant, ['channel' => $channel]);
+        $lowestPriceBeforeDiscount = $this->productVariantLowestPriceCalculator
+            ->calculateLowestPriceBeforeDiscount($variant, ['channel' => $channel])
+        ;
+        $channelPriceHistoryConfig = $channel->getChannelPriceHistoryConfig();
 
-        if ($lowestPriceBeforeDiscount !== null) {
+        if (null !== $lowestPriceBeforeDiscount && null !== $channelPriceHistoryConfig) {
             $optionMap['product-lowest-price-before-discount'] = $this->translator->trans(
                 'sylius.ui.lowest_price_days_before_discount_was',
                 [
-                    '%days%' => $lowestPriceAwareChannel->getLowestPriceForDiscountedProductsCheckingPeriod(),
+                    '%days%' => $channelPriceHistoryConfig->getLowestPriceForDiscountedProductsCheckingPeriod(),
                     '%price%' => $this->moneyFormatter->format(
                         $lowestPriceBeforeDiscount,
                         $currencyCode,
