@@ -17,8 +17,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait ChannelPriceHistoryConfigAwareTrait
 {
-    /** @ORM\OneToOne(targetEntity=ChannelPriceHistoryConfig::class, cascade={"all"}, ) */
-    /** @ORM\JoinColumn(name="channel_price_history_config_id", referencedColumnName="id", onDelete="CASCADE") */
+    /**
+     * @ORM\OneToOne(targetEntity="Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfig", cascade={"all"})
+     * @ORM\JoinColumn(name="channel_price_history_config_id", referencedColumnName="id", onDelete="CASCADE")
+     */
     #[ORM\OneToOne(targetEntity: ChannelPriceHistoryConfig::class, cascade: ['all'])]
     #[ORM\JoinColumn(name: 'channel_price_history_config_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected ?ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig = null;

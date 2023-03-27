@@ -13,7 +13,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->paths(['src', 'tests/Behat']);
     $ecsConfig->ruleWithConfiguration(PhpdocSeparationFixer::class, ['groups' => [
         ['Given', 'When', 'Then'],
-        ['ORM\ManyToMany', 'ORM\JoinTable'],
+        ['ORM\\*'],
     ]]);
     $ecsConfig->ruleWithConfiguration(
         HeaderCommentFixer::class,
