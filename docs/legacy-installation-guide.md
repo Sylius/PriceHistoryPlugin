@@ -37,7 +37,7 @@ Legacy installation
     use Doctrine\ORM\Mapping as ORM;
     use Sylius\Component\Core\Model\Channel as BaseChannel;
     use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
-    use Sylius\PriceHistoryPlugin\Domain\Model\LowestPriceForDiscountedProductsAwareTrait;
+    use Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigAwareTrait;
     
    /**
     * @ORM\Entity
@@ -47,7 +47,7 @@ Legacy installation
     #[ORM\Table(name: 'sylius_channel')]
     class Channel extends BaseChannel implements ChannelInterface
     {
-        use LowestPriceForDiscountedProductsAwareTrait;
+        use ChannelPriceHistoryConfigAwareTrait;
     }
     ```
 
@@ -131,3 +131,11 @@ Legacy installation
     bin/console cache:clear
     bin/console cache:warmup
     ```
+
+10. Run messenger consumer:
+
+    ```bash
+    bin/console messenger:consume main
+    ```
+
+   For more information check official [Symfony docs](https://symfony.com/doc/current/messenger.html#consuming-messages-running-the-worker).
