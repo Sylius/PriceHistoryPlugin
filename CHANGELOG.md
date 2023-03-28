@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.2.0 (2023-03-28)
+
+- [#69](https://github.com/Sylius/PriceHistoryPlugin/issues/69) Reprocess lowest prices asynchronously ([@coldic3](https://github.com/coldic3), [@NoResponseMate](https://github.com/NoResponseMate))
+- [#80](https://github.com/Sylius/PriceHistoryPlugin/issues/80) [Maintenance] Unify translations ([@Rafikooo](https://github.com/Rafikooo))
+- [#81](https://github.com/Sylius/PriceHistoryPlugin/issues/81) Fix resource configuration in installation guides ([@GSadee](https://github.com/GSadee))
+- [#82](https://github.com/Sylius/PriceHistoryPlugin/issues/82) [Docs] Add info about running messenger consumer to the installation guide ([@coldic3](https://github.com/coldic3))
+- [#76](https://github.com/Sylius/PriceHistoryPlugin/issues/76) Introduce ChannelPriceHistoryConfig ([@coldic3](https://github.com/coldic3), [@NoResponseMate](https://github.com/NoResponseMate))
+- [#84](https://github.com/Sylius/PriceHistoryPlugin/issues/84) Fix price history config annotations mapping ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#83](https://github.com/Sylius/PriceHistoryPlugin/issues/83) [Documentation] Update legacy installation guide with current trait and messenger config ([@GSadee](https://github.com/GSadee))
+
 ## v0.1.0 (2023-03-20)
 
 - [#1](https://github.com/Sylius/PriceHistoryPlugin/issues/1) SyliusPriceHistoryPlugin initialization ([@Rafikooo](https://github.com/Rafikooo))
