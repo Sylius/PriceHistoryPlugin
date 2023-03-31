@@ -33,14 +33,14 @@
                 <option name="groups">
                     <value>sylius</value>
                 </option>
-                <option name="message">sylius_price_history.channel.lowest_price_for_discounted_products_checking_period.less_than</option>
+                <option name="message">sylius.channel_price_history_config.lowest_price_for_discounted_products_checking_period.less_than</option>
             </constraint>
             <constraint name="GreaterThan">
                 <option name="value">0</option>
                 <option name="groups">
                     <value>sylius</value>
                 </option>
-                <option name="message">sylius_price_history.channel.lowest_price_for_discounted_products_checking_period.greater_than</option>
+                <option name="message">sylius.channel_price_history_config.lowest_price_for_discounted_products_checking_period.greater_than</option>
             </constraint>
         </property>
     </class>

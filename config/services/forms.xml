@@ -23,7 +23,7 @@
                 <service class="\Symfony\Component\Form\Extension\Core\DataMapper\DataMapper" />
             </argument>
             <argument>%sylius_price_history.model.channel_price_history_config.class%</argument>
-            <argument>%sylius_price_history.channel_price_history_config.validation_groups%</argument>
+            <argument>%sylius.form.type.channel_price_history_config.validation_groups%</argument>
             <tag name="form.type" />
         </service>
 

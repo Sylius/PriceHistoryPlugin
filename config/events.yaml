@@ -5,28 +5,28 @@ sylius_ui:
     events:
         sylius.admin.channel.form.second_column_content:
             blocks:
-                price_history_configuration:
-                    template: '@SyliusPriceHistoryPlugin/Admin/Channel/Form/_additionalConfiguration.html.twig'
+                price_history:
+                    template: '@SyliusPriceHistoryPlugin/Admin/Channel/Form/_priceHistoryConfig.html.twig'
                     priority: 5
         sylius.admin.configurable_product.show.variant_content:
             blocks:
                 pricing:
                     template: '@SyliusPriceHistoryPlugin/Admin/Product/Show/_variantContentPricing.html.twig'
                     priority: 10
-        
+
         sylius.admin.simple_product.show.pricing:
             blocks:
                 content:
                     template: '@SyliusPriceHistoryPlugin/Admin/Product/Show/_pricing.html.twig'
                     priority: 10
-                    
+
         sylius.shop.product.show.right_sidebar:
             blocks:
                 price_widget:
                     template: "@SyliusPriceHistoryPlugin/Shop/Product/Show/_priceWidget.html.twig"
                 variant_selection:
                     template: "@SyliusPriceHistoryPlugin/Shop/Product/Show/_variantSelection.html.twig"
-                    
+
         sylius.shop.layout.javascripts:
             blocks:
                 price_history_javascript:

@@ -18,22 +18,22 @@
     <services>
         <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\CreateLogEntryOnPriceChangeObserver">
             <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Logger\PriceChangeLoggerInterface" />
-            <tag name="sylius_price_history.entity_observer" />
+            <tag name="sylius.entity_observer" />
         </service>
 
         <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPricesOnChannelChangeObserver">
             <argument type="service" id="Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface" />
-            <tag name="sylius_price_history.entity_observer" />
+            <tag name="sylius.entity_observer" />
         </service>
 
         <service id="Sylius\PriceHistoryPlugin\Infrastructure\EntityObserver\ProcessLowestPricesOnChannelPriceHistoryConfigChangeObserver">
             <argument type="service" id="sylius.repository.channel" />
             <argument type="service" id="Sylius\PriceHistoryPlugin\Application\CommandDispatcher\ApplyLowestPriceOnChannelPricingsCommandDispatcherInterface" />
-            <tag name="sylius_price_history.entity_observer" />
+            <tag name="sylius.entity_observer" />
         </service>
 
         <service id="sylius_price_history.listener.channel_pricing_change" class="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\OnFlushEntityObserverListener">
-            <argument type="tagged_iterator" tag="sylius_price_history.entity_observer" />
+            <argument type="tagged_iterator" tag="sylius.entity_observer" />
             <tag name="doctrine.event_listener" event="onFlush" lazy="true" />
         </service>
     </services>
