@@ -39,11 +39,11 @@ final class ChannelPriceHistoryConfigType extends AbstractResourceType implement
     {
         $builder
             ->add('lowestPriceForDiscountedProductsVisible', CheckboxType::class, [
-                'label' => 'sylius.form.channel.lowest_price_for_discounted_products_visible',
+                'label' => 'sylius.form.admin.channel.lowest_price_for_discounted_products_visible',
                 'required' => false,
             ])
             ->add('lowestPriceForDiscountedProductsCheckingPeriod', IntegerType::class, [
-                'label' => 'sylius.form.channel.period_for_which_the_lowest_price_is_calculated',
+                'label' => 'sylius.form.admin.channel.period_for_which_the_lowest_price_is_calculated',
             ])
             ->add('taxonsExcludedFromShowingLowestPrice', TaxonAutocompleteChoiceType::class, [
                 'label' => 'sylius.ui.taxons_for_which_the_lowest_price_is_not_displayed',
