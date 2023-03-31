@@ -26,7 +26,7 @@
             <argument type="service" id="api_platform.iri_converter.legacy" />
             <argument type="service" id="sylius_price_history.factory.channel_price_history_config" />
             <argument type="service" id="Sylius\PriceHistoryPlugin\Application\Validator\ResourceInputDataPropertiesValidatorInterface" />
-            <argument>%sylius_price_history.channel_price_history_config.validation_groups%</argument>
+            <argument>%sylius.form.type.channel_price_history_config.validation_groups%</argument>
             <tag name="serializer.normalizer" priority="64" />
         </service>
 
