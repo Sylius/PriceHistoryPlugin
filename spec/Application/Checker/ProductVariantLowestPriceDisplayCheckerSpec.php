@@ -29,6 +29,15 @@ final class ProductVariantLowestPriceDisplayCheckerSpec extends ObjectBehavior
         $this->shouldImplement(ProductVariantLowestPriceDisplayCheckerInterface::class);
     }
 
+    function it_returns_false_if_channel_has_no_price_history_config(
+        ChannelInterface $channel,
+        ProductVariantInterface $productVariant,
+    ): void {
+        $channel->getChannelPriceHistoryConfig()->willReturn(null);
+
+        $this->isLowestPriceDisplayable($productVariant, ['channel' => $channel])->shouldReturn(false);
+    }
+
     function it_returns_false_if_showing_lowest_price_before_discount_is_turned_off_on_channel(
         ChannelInterface $channel,
         ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig,

@@ -27,10 +27,13 @@ final class ProductVariantLowestPriceDisplayChecker implements ProductVariantLow
         Assert::keyExists($context, 'channel');
         $channel = $context['channel'];
         Assert::isInstanceOf($channel, ChannelInterface::class);
-        /** @var ChannelPriceHistoryConfigInterface $channelPriceHistoryConfig */
+        /** @var ChannelPriceHistoryConfigInterface|null $channelPriceHistoryConfig */
         $channelPriceHistoryConfig = $channel->getChannelPriceHistoryConfig();
 
-        if (!$channelPriceHistoryConfig->isLowestPriceForDiscountedProductsVisible()) {
+        if (
+            null === $channelPriceHistoryConfig ||
+            !$channelPriceHistoryConfig->isLowestPriceForDiscountedProductsVisible()
+        ) {
             return false;
         }
 
