@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.0.0-RC.1 (2023-03-31)
+
+- [#85](https://github.com/Sylius/PriceHistoryPlugin/issues/85) [Maintenance] Cover no price history config in display checker ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#86](https://github.com/Sylius/PriceHistoryPlugin/issues/86) [Maintenance] Overall cleanup ([@NoResponseMate](https://github.com/NoResponseMate))
+
 ## v0.2.0 (2023-03-28)
 
 - [#69](https://github.com/Sylius/PriceHistoryPlugin/issues/69) Reprocess lowest prices asynchronously ([@coldic3](https://github.com/coldic3), [@NoResponseMate](https://github.com/NoResponseMate))
