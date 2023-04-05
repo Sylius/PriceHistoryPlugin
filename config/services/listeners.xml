@@ -32,7 +32,7 @@
             <tag name="sylius.entity_observer" />
         </service>
 
-        <service id="sylius_price_history.listener.channel_pricing_change" class="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\OnFlushEntityObserverListener">
+        <service id="Sylius\PriceHistoryPlugin\Infrastructure\EventListener\OnFlushEntityObserverListener">
             <argument type="tagged_iterator" tag="sylius.entity_observer" />
             <tag name="doctrine.event_listener" event="onFlush" lazy="true" />
         </service>
