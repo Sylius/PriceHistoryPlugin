@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.0.0 (2023-04-06)
+
+- [#87](https://github.com/Sylius/PriceHistoryPlugin/issues/87) [Maintenance] Add conflict for Symfony/FrameworkBundle 6.2.8 ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#88](https://github.com/Sylius/PriceHistoryPlugin/issues/88) [Maintenance] Rename the OnFlushEntityObserverListener service ([@NoResponseMate](https://github.com/NoResponseMate))
+
 ## v1.0.0-RC.1 (2023-03-31)
 
 - [#85](https://github.com/Sylius/PriceHistoryPlugin/issues/85) [Maintenance] Cover no price history config in display checker ([@NoResponseMate](https://github.com/NoResponseMate))
