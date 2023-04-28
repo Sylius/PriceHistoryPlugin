@@ -1,0 +1,16 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+sylius:
+    form:
+        admin:
+            channel:
+                lowest_price_for_discounted_products_visible: 'Mutassa a kedvezményes termékek legalacsonyabb árát az aktuális kedvezmény előtt?'
+                period_for_which_the_lowest_price_is_calculated: 'Időszak, amelyre a legalacsonyabb árat kiszámítja'
+    ui:
+        channel_pricing_history: 'Csatorna árképzés története'
+        days: 'Napok'
+        price_history: 'Árképzés történet'
+        show_history_for_channel_pricing: 'Előzmények megjelenítése a csatorna árazásnál'
+        taxons_for_which_the_lowest_price_is_not_displayed: 'Taxonok, amelyeknél a legalacsonyabb ár nem jelenik meg'
+        lowest_price_before_discount: 'Kedvezmény előtti legalacsonyabb ár'
