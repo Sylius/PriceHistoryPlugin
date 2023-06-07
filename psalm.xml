@@ -49,6 +49,7 @@
 
         <DeprecatedInterface>
             <errorLevel type="info">
+                <referencedClass name="Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface" /> <!-- deprecated in DoctrineBundle 2.10.0 -->
                 <referencedClass name="Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface" /> <!-- deprecated in Symfony 6.1 -->
                 <referencedClass name="Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface" /> <!-- deprecated in Symfony 6.1 -->
             </errorLevel>
