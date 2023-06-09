@@ -1,0 +1,5 @@
+sylius:
+    ui:
+        lowest_price_days_before_discount_was: '{days, plural, 
+            one {A termék legalacsonyabb ára # nappal az aktuális kedvezmény előtt {price} volt}
+            other {A termék legalacsonyabb ára # nappal az aktuális kedvezmény előtt {price} volt}}'
