@@ -1,0 +1,8 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+sylius:
+    channel_price_history_config:
+        lowest_price_for_discounted_products_checking_period:
+            greater_than: 'Az értéknek nagyobbnak kell lennie, mint {{ compared_value }}'
+            less_than: 'Az értéknek kisebbnek kell lennie, mint {{ compared_value }}'
