@@ -22,7 +22,7 @@ Legacy installation
    and use trait:
 
     ```php
-    Sylius\PriceHistoryPlugin\Domain\Model\LowestPriceForDiscountedProductsAwareTrait
+    Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigAwareTrait;
     ```
 
    Final result:
