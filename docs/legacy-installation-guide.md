@@ -85,7 +85,7 @@ Legacy installation
     #[ORM\Table(name: 'sylius_channel_pricing')]
     class ChannelPricing extends BaseChannelPricing implements ChannelPricingInterface
     {
-    use LowestPriceBeforeDiscountAwareTrait;
+        use LowestPriceBeforeDiscountAwareTrait;
     }
     ```
 
