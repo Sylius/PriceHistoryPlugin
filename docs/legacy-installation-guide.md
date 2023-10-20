@@ -22,7 +22,7 @@ Legacy installation
    and use trait:
 
     ```php
-    Sylius\PriceHistoryPlugin\Domain\Model\LowestPriceForDiscountedProductsAwareTrait
+    Sylius\PriceHistoryPlugin\Domain\Model\ChannelPriceHistoryConfigAwareTrait;
     ```
 
    Final result:
@@ -85,7 +85,7 @@ Legacy installation
     #[ORM\Table(name: 'sylius_channel_pricing')]
     class ChannelPricing extends BaseChannelPricing implements ChannelPricingInterface
     {
-    use LowestPriceBeforeDiscountAwareTrait;
+        use LowestPriceBeforeDiscountAwareTrait;
     }
     ```
 
