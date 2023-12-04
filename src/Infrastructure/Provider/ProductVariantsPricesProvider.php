@@ -21,6 +21,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Provider\ProductVariantsPricesProviderInterface;
 use Sylius\Component\Currency\Model\CurrencyInterface;
+use Sylius\Component\Locale\Context\LocaleContextInterface;
 use Sylius\Component\Product\Model\ProductOptionValueInterface;
 use Sylius\PriceHistoryPlugin\Application\Calculator\ProductVariantLowestPriceCalculatorInterface;
 use Sylius\PriceHistoryPlugin\Domain\Model\ChannelInterface;
@@ -34,6 +35,7 @@ final class ProductVariantsPricesProvider implements ProductVariantsPricesProvid
         private ProductVariantPricesCalculatorInterface $productVariantPriceCalculator,
         private MoneyFormatterInterface $moneyFormatter,
         private TranslatorInterface $translator,
+        private LocaleContextInterface $localeContext,
     ) {
     }
 
@@ -71,6 +73,9 @@ final class ProductVariantsPricesProvider implements ProductVariantsPricesProvid
         /** @var string $currencyCode */
         $currencyCode = $currency->getCode();
 
+        /** @var string $localeCode */
+        $localeCode = $this->localeContext->getLocaleCode();
+
         $lowestPriceBeforeDiscount = $this->productVariantLowestPriceCalculator
             ->calculateLowestPriceBeforeDiscount($variant, ['channel' => $channel])
         ;
@@ -84,6 +89,7 @@ final class ProductVariantsPricesProvider implements ProductVariantsPricesProvid
                     '%price%' => $this->moneyFormatter->format(
                         $lowestPriceBeforeDiscount,
                         $currencyCode,
+                        $localeCode
                     ),
                 ],
             );
