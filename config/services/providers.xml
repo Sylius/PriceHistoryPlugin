@@ -18,6 +18,7 @@
             <argument type="service" id="sylius.calculator.product_variant_price" />
             <argument type="service" id="sylius.money_formatter" />
             <argument type="service" id="translator" />
+            <argument type="service" id="sylius.context.locale" />
         </service>
     </services>
 </container>
